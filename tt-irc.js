@@ -1459,9 +1459,9 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 			var tab = find_tab(connection_id, channel);
 
-			if (tab && notify_events[2] && (get_selected_tab() != tab || !window_active)) {
-				if (tab.getAttribute("tab_type") == "P" && message.id > last_old_id) {
-					var msg = __("Received new private message from %n: %s");
+			if (tab && (get_selected_tab() != tab || !window_active)) {
+				if (notify_events[2] && tab.getAttribute("tab_type") == "P" && message.id > last_old_id) {
+					var msg = __("<%n> %s");
 
 					msg = msg.replace("%n", message.sender);
 					msg = msg.replace("%s", message.message);
@@ -1469,6 +1469,18 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					notify(msg);
 
 				}
+
+				if (notify_events[4] && tab.getAttribute("tab_type") == "C" && message.id > last_old_id) {
+					var msg = __("(%c) <%n>: %s");
+
+					msg = msg.replace("%n", message.sender);
+					msg = msg.replace("%s", message.message);
+					msg = msg.replace("%c", message.channel);
+
+					notify(msg);
+
+				}
+
 			}
 
 			if (!no_tab_hl && message.ts > startup_date)
@@ -1510,6 +1522,10 @@ function set_window_active(active) {
 		if (active) {
 			new_messages = 0;
 			new_highlights = 0;
+
+			while (notifications.length > 0) {
+				notifications.pop().cancel();
+			}
 
 			$("log").scrollTop = $("log").scrollHeight;
 
@@ -2077,7 +2093,6 @@ function twitter_update() {
 function title_timeout() {
 	try {
 		update_title();
-
 		window.setTimeout('title_timeout()', 2000);
 	} catch (e) {
 		exception_error("title_timeout", e);

@@ -134,6 +134,12 @@
 					</label>
 			<br clear='left'/>
 
+			<input name="notify_event[]" <?php echo $nev_checked[4] ?>
+				id="n_chanmsg" type="checkbox" value="4">
+				<label for="n_chanmsg"><?php echo __('Channel message') ?>
+					</label>
+			<br clear='left'/>
+
 		</div>
 
 		</form>
