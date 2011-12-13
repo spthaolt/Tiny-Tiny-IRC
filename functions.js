@@ -398,6 +398,11 @@ function notify(msg) {
 
 			notifications.push(notification);
 
+			setTimeout(function() {
+					notification.cancel();
+					notifications.remove(notification);
+					}, 5000);
+
 			notification.show();
 
 			if (notifications.length > 3) {
