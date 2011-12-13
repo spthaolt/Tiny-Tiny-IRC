@@ -391,17 +391,15 @@ function notify(msg) {
 		if (window.webkitNotifications &&
 				window.webkitNotifications.checkPermission() == 0) {
 
-			var notification = webkitNotifications.createNotification(
-				'images/icon32.png',
-				__('Tiny Tiny IRC'),
-				msg);
+			var notification = webkitNotifications.createHTMLNotification(
+				"backend.php?op=notify&msg=" + param_escape(msg));
 
 			notifications.push(notification);
 
 			setTimeout(function() {
 					notification.cancel();
 					notifications.remove(notification);
-					}, 5000);
+					}, 10000);
 
 			notification.show();
 
