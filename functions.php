@@ -1128,8 +1128,7 @@
 				$result = array_reverse(json_decode($result, true));
 
 				foreach ($result as $line) {
-
-					if ($since_id) {
+					if ($since_id && is_array($line['user'])) {
 						$message = 'TWITTER_MSG:' . $line['id_str'] .
 							':' . $line['user']['screen_name'] . ':' . $line['text'];
 
