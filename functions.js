@@ -399,7 +399,7 @@ function notify(msg) {
 			setTimeout(function() {
 					notification.cancel();
 					notifications.remove(notification);
-					}, 10000);
+					}, 5000);
 
 			notification.show();
 
