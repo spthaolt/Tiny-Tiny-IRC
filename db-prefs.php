@@ -11,13 +11,21 @@
 
 		$pref_name = db_escape_string($pref_name);
 		$prefs_cache = true;
+		$profile = false;
 
 		if (!$user_id) {
 			$user_id = $_SESSION["uid"];
-			$profile = $_SESSION["profile"];
+			@$profile = $_SESSION["profile"];
 		} else {
 			$user_id = sprintf("%d", $user_id);
-			$prefs_cache = false;
+			//$prefs_cache = false;
+		}
+
+		if ($prefs_cache && !defined('DISABLE_SESSIONS')) {
+			if ($_SESSION["prefs_cache"] && @$_SESSION["prefs_cache"][$pref_name]) {
+				$tuple = $_SESSION["prefs_cache"][$pref_name];
+				return convert_pref_type($tuple["value"], $tuple["type"]);
+			}
 		}
 
 		if ($profile) {
@@ -26,22 +34,13 @@
 			$profile_qpart = "profile IS NULL AND";
 		}
 
-		if (get_schema_version($link) < 63) $profile_qpart = "";
-
-		if ($prefs_cache && !defined('DISABLE_SESSIONS') && !SINGLE_USER_MODE) {	
-			if ($_SESSION["prefs_cache"] && $_SESSION["prefs_cache"][$pref_name]) {
-				$tuple = $_SESSION["prefs_cache"][$pref_name];
-				return convert_pref_type($tuple["value"], $tuple["type"]);
-			}
-		}
-
-		$result = db_query($link, "SELECT 
-			value,ttirc_prefs_types.type_name as type_name 
-			FROM 
+		$result = db_query($link, "SELECT
+			value,ttirc_prefs_types.type_name as type_name
+			FROM
 				ttirc_user_prefs,ttirc_prefs,ttirc_prefs_types
-			WHERE 
+			WHERE
 				$profile_qpart
-				ttirc_user_prefs.pref_name = '$pref_name' AND 
+				ttirc_user_prefs.pref_name = '$pref_name' AND
 				ttirc_prefs_types.id = type_id AND
 				owner_uid = '$user_id' AND
 				ttirc_user_prefs.pref_name = ttirc_prefs.pref_name");
@@ -50,16 +49,16 @@
 			$value = db_fetch_result($result, 0, "value");
 			$type_name = db_fetch_result($result, 0, "type_name");
 
-			if (!defined('DISABLE_SESSIONS') && !SINGLE_USER_MODE) {	
-				if ($user_id = $_SESSION["uid"]) {
+			if (!defined('DISABLE_SESSIONS')) {
+				if ($user_id == $_SESSION["uid"]) {
 					$_SESSION["prefs_cache"][$pref_name]["type"] = $type_name;
 					$_SESSION["prefs_cache"][$pref_name]["value"] = $value;
 				}
 			}
 
 			return convert_pref_type($value, $type_name);
-			
-		} else {		
+
+		} else {
 			if ($die_on_error) {
 				die("Fatal error, unknown preferences key: $pref_name");
 			} else {
@@ -69,22 +68,22 @@
 	}
 
 	function convert_pref_type($value, $type_name) {
-		if ($type_name == "bool") {			
-			return $value == "true";				
-		} else if ($type_name == "integer") {			
-			return sprintf("%d", $value);				
+		if ($type_name == "bool") {
+			return $value == "true";
+		} else if ($type_name == "integer") {
+			return sprintf("%d", $value);
 		} else {
 			return $value;
 		}
 	}
 
-	function set_pref($link, $key, $value, $user_id = false) {
-		$key = db_escape_string($key);
+	function set_pref($link, $pref_name, $value, $user_id = false) {
+		$pref_name = db_escape_string($pref_name);
 		$value = db_escape_string($value);
 
 		if (!$user_id) {
 			$user_id = $_SESSION["uid"];
-			$profile = $_SESSION["profile"];
+			@$profile = $_SESSION["profile"];
 		} else {
 			$user_id = sprintf("%d", $user_id);
 			$prefs_cache = false;
@@ -96,16 +95,28 @@
 			$profile_qpart = "AND profile IS NULL";
 		}
 
-		if (get_schema_version($link) < 63) $profile_qpart = "";
+		$type_name = "";
+		$current_value = "";
 
-		$result = db_query($link, "SELECT type_name 
-			FROM ttirc_prefs,ttirc_prefs_types 
-			WHERE pref_name = '$key' AND type_id = ttirc_prefs_types.id");
+		if (!defined('DISABLE_SESSIONS')) {
+			if ($_SESSION["prefs_cache"] && @$_SESSION["prefs_cache"][$pref_name]) {
+				$type_name = $_SESSION["prefs_cache"][$pref_name]["type"];
+				$current_value = $_SESSION["prefs_cache"][$pref_name]["value"];
+			}
+		}
 
-		if (db_num_rows($result) > 0) {
+		if (!$type_name) {
+			$result = db_query($link, "SELECT type_name
+				FROM ttirc_prefs,ttirc_prefs_types
+				WHERE pref_name = '$pref_name' AND type_id = ttirc_prefs_types.id");
 
-			$type_name = db_fetch_result($result, 0, "type_name");
+			if (db_num_rows($result) > 0)
+				$type_name = db_fetch_result($result, 0, "type_name");
+		} else if ($current_value == $value) {
+			return;
+		}
 
+		if ($type_name) {
 			if ($type_name == "bool") {
 				if ($value == "1" || $value == "true") {
 					$value = "true";
@@ -116,17 +127,21 @@
 				$value = sprintf("%d", $value);
 			}
 
-			if ($pref_name == 'DEFAULT_ARTICLE_LIMIT' && $value == 0) {
-				$value = 30;
+			if ($pref_name == 'USER_TIMEZONE' && $value == '') {
+				$value = 'UTC';
 			}
 
-			db_query($link, "UPDATE ttirc_user_prefs SET 
-				value = '$value' WHERE pref_name = '$key' 
+			db_query($link, "UPDATE ttirc_user_prefs SET
+				value = '$value' WHERE pref_name = '$pref_name'
 					$profile_qpart
 					AND owner_uid = " . $_SESSION["uid"]);
 
-			$_SESSION["prefs_cache"] = array();
-
+			if (!defined('DISABLE_SESSIONS')) {
+				if ($user_id == $_SESSION["uid"]) {
+					$_SESSION["prefs_cache"][$pref_name]["type"] = $type_name;
+					$_SESSION["prefs_cache"][$pref_name]["value"] = $value;
+				}
+			}
 		}
 	}
 ?>
