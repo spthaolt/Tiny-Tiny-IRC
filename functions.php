@@ -466,35 +466,6 @@
 		print "[$ts] $msg\n";
 	} // function _debug
 
-	function file_is_locked($filename) {
-		if (function_exists('flock')) {
-			$fp = @fopen(LOCK_DIRECTORY . "/$filename", "r");
-			if ($fp) {
-				if (flock($fp, LOCK_EX | LOCK_NB)) {
-					flock($fp, LOCK_UN);
-					fclose($fp);
-					return false;
-				}
-				fclose($fp);
-				return true;
-			} else {
-				return false;
-			}
-		}
-		return true; // consider the file always locked and skip the test
-	}
-
-	function make_lockfile($filename) {
-		$fp = fopen(LOCK_DIRECTORY . "/$filename", "w");
-
-		if (flock($fp, LOCK_EX | LOCK_NB)) {
-			fwrite($fp, posix_getpid() . "\n");
-			return $fp;
-		} else {
-			return false;
-		}
-	}
-
 	# TODO return actual nick, not hardcoded one
 	function get_nick($link, $connection_id) {
 		$result = db_query($link, "SELECT active_nick FROM ttirc_connections

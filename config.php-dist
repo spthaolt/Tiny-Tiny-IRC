@@ -1,5 +1,9 @@
 <?php
 
+	// *******************************************
+	// *** Database configuration (important!) ***
+	// *******************************************
+
 	define('DB_TYPE', "pgsql"); // or mysql
 	define('DB_HOST', "localhost");
 	define('DB_USER', "");
@@ -7,10 +11,17 @@
 	define('DB_PASS', "");
 	define('DB_PORT', '5432'); // when neeeded, PG-only
 
-	define('DATABASE_BACKED_SESSIONS', true);
-	// Store session information in a database, recommended for multiuser 
-	// configurations. Doesn't seem to work for everyone, so enable with caution.
-	// tt-rss uses default PHP session storing mechanism if disabled.
+	// ***********************************
+	// *** Basic settings (important!) ***
+	// ***********************************
+
+	define('SINGLE_USER_MODE', false);
+	// Operate in single user mode, disables all functionality related to
+	// multiple users.
+
+	// **********************************
+	// *** Cookies and login sessions ***
+	// **********************************
 
 	define('SESSION_CHECK_ADDRESS', false);
 	// Bind session to client IP address (recommended)
@@ -26,28 +37,30 @@
 	// Hard expiration limit for sessions. Should be
 	// >= SESSION_COOKIE_LIFETIME_REMEMBER
 
-	define('SINGLE_USER_MODE', false);
-	// Operate in single user mode, disables all functionality related to
-	// multiple users.
-
-	define('LOCK_DIRECTORY', '/path/to/tt-irc/lock');
-	// Directory for lockfiles, must be writable to the user you run
-	// daemon process or cronjobs under.
-
-	define('ENABLE_TRANSLATIONS', false);
-	// Enable interface translations
-
-	define('UPDATE_DELAY_MAX', 0);
-	// Maximum amount of seconds to delay in faux-PUSH updates. 
-	// Should be less than maximum script lifetime configured in your HTTPD
-	// 0 disables the functionality.
+	// ************************************
+	// *** Twitter integration settings ***
+	// ************************************
 
 	define('CONSUMER_KEY', '');
 	define('CONSUMER_SECRET', '');
 	// Your OAuth instance authentication information for Twitter, visit
 	// http://twitter.com/oauth_clients to register your instance.
 
+	// ***************************************
+	// *** Other settings (less important) ***
+	// ***************************************
+
+	define('ENABLE_TRANSLATIONS', false);
+	// Enable interface translations
+
+	define('UPDATE_DELAY_MAX', 15);
+	// Maximum amount of seconds to delay in faux-PUSH updates. 
+	// Should be less than maximum script lifetime configured in your HTTPD
+	// 0 disables the functionality.
+
 	define('CONFIG_VERSION', 2);
+	// Expected config version. Please update this option in config.php
+	// if necessary (after migrating all new options from this file).
 
 	// vim:ft=php
 ?>

@@ -91,7 +91,7 @@
 		db_query($session_connection, $query);
 	}
 
-	if (DATABASE_BACKED_SESSIONS) {
+	if (!SINGLE_USER_MODE && DB_TYPE != "mysql") {
 		session_set_save_handler("ttirc_open",
 			"ttirc_close", "ttirc_read", "ttirc_write",
 			"ttirc_destroy", "ttirc_gc");
