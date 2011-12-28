@@ -101,8 +101,6 @@
 </div>
 
 <div id="header">
-	Tiny Tiny IRC
-
 	<div class="topLinks" id="topLinks">
 
 	<img id="spinner" style="display : none"
