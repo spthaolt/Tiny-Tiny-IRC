@@ -83,8 +83,8 @@ table.loginForm2 .innerLoginCell {
 #header {
 	color : #4684ff;
 	font-size : 12px;
-	margin : 10px;
-	height : 35px;
+	margin : 5px;
+	height : 15px;
 }
 
 #input {
@@ -173,7 +173,7 @@ table.loginForm2 .innerLoginCell {
 
 #tabs {
 	position : absolute;
-	top : 80px;
+	top : 25px;
 	width : 156px;
 	left : 0px;
 	bottom : 5px;
@@ -247,7 +247,7 @@ ul.sub-tabs {
 	border-width : 1px;
 	border-style : solid;
 	border-color : #88b0f0;
-	top : 50px;
+	top : 25px;
 	right : 5px;
 	left : 155px;
 	position : absolute;
@@ -594,17 +594,6 @@ ul#userlist-list li {
 
 ul#userlist-list li:hover {
 	color : #4684ff;
-}
-
-#actions {
-	position : relative;
-	left : 5px;
-	width : 145px;
-	text-align : right;
-}
-
-#actions select {
-	max-width : 145px;
 }
 
 .even, .even td {

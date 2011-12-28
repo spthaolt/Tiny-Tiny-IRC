@@ -101,6 +101,8 @@
 </div>
 
 <div id="header">
+	Tiny Tiny IRC
+
 	<div class="topLinks" id="topLinks">
 
 	<img id="spinner" style="display : none"
@@ -116,33 +118,13 @@
 	| <a href="#" onclick="show_users()"><?php echo __('Users') ?></a>
 	<?php } ?>
 
+	| <a href="#" onclick="join_channel()">Join channel</a>
+
 	<?php if (!SINGLE_USER_MODE) { ?>
 			| <a href="logout.php"><?php echo __('Logout') ?></a>
 	<?php } ?>
 
 	</div>
-
-	<img src="<?php echo theme_image($link, 'images/logo.png') ?>" alt="Tiny Tiny IRC"/>
-</div>
-
-<!-- <div id="actions">
-	<select onchange="handle_action(this)" disabled>
-		<option value="">Actions...</option>
-		<option value="cmd_nick">Change nick</option>
-		<optgroup label="Channel">
-			<option value="cmd_join">Join</option>
-			<option value="cmd_part">Part</option>
-			<option value="cmd_mode">Change mode</option>
-		</optgroup>
-		<optgroup label="Server">
-			<option value="cmd_connect" id="cmd_connect">Connect</option>
-			<option value="cmd_disconnect">Disconnect</option>
-		</optgroup>
-	</select>
-</div> -->
-
-<div id="actions">
-	<a href="#" onclick="join_channel()">Join channel</a>
 </div>
 
 <div id="tabs">
