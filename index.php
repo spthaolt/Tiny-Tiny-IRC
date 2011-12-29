@@ -119,7 +119,14 @@
 	| <a href="#" onclick="show_users()"><?php echo __('Users') ?></a>
 	<?php } ?>
 
-	| <a href="#" onclick="join_channel()">Join channel</a>
+	| <a href="#" onclick="join_channel()"><?php echo __('Join channel') ?></a>
+
+	<?php if (CONSUMER_KEY != '' && twitter_configured($link)) { ?>
+
+	| <a href="#" title="<?php echo __('Tweet selected text') ?>"
+				onclick="tweet_selection()"><?php echo __('Tweet') ?></a>
+
+	<?php } ?>
 
 	<?php if (!SINGLE_USER_MODE) { ?>
 			| <a href="logout.php"><?php echo __('Logout') ?></a>
@@ -146,14 +153,6 @@
 
 	<div id="userlist">
 		<div id="userlist-inner"><ul id="userlist-list"></ul></div>
-
-		<?php if (CONSUMER_KEY != '' && twitter_configured($link)) { ?>
-
-		<div title="<?php echo __('Tweet selected text') ?>"
-			id="tweet-button"><button href="#"
-				onclick="tweet_selection()"><?php echo __('Tweet') ?></button></div>
-
-		<?php } ?>
 	</div>
 
 	<div id="nick" onclick="change_nick()"></div>

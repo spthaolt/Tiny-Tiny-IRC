@@ -792,14 +792,4 @@ span.italic {
 	font-style : italic;
 }
 
-div#tweet-button {
-	text-align : center;
-}
 
-div#tweet-button a {
-	background : white;
-	border : 1px solid #88b0f0;
-	padding : 2px 4px 2px 4px;
-	font-size : 11px;
-	color : black;
-}
