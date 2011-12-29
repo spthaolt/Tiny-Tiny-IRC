@@ -116,23 +116,49 @@ function create_tab_if_needed(chan, connection_id, tab_type) {
 	}
 }
 
-function show_nicklist(show) {
-/*	try {
-		console.log("show_nicklist: " + show);
-		if (show) {
-			Element.show("userlist");
-			$("log-outer").style.right = ($("userlist").offsetWidth + 0) + "px";
-			$("input").style.right = ($("userlist").offsetWidth + 0) + "px";
+function toggle_sidebar() {
+try {
+		if (Element.visible('sidebar-inner')) {
+			Element.hide("sidebar-inner");
+			$("log").setStyle({
+				right : "5px",
+			});
+
+			$("sidebar").setStyle({
+				width : "5px",
+			});
+
+			$("topic").setStyle({
+				right : "5px",
+			});
+
+			$("input").setStyle({
+				right : "5px",
+			});
 
 		} else {
-			Element.hide("userlist");
-			$("log-outer").style.right = "0px";
-			$("input").style.right = "0px";
+			Element.show("sidebar-inner");
+
+			$("log").setStyle({
+				right : "155px",
+			});
+
+			$("sidebar").setStyle({
+				width : "155px",
+			});
+
+			$("topic").setStyle({
+				right : "155px",
+			});
+
+			$("input").setStyle({
+				right : "155px",
+			});
 
 		}
 	} catch (e) {
-		exception_error("show_nicklist", e);
-	} */
+		exception_error("toggle_sidebar", e);
+	}
 }
 
 function init_second_stage(transport) {

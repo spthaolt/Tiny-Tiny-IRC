@@ -146,13 +146,22 @@
 	</div>
 	<div id="log"><ul id="log-list"></ul></div>
 
-	<div id="sidebar">&nbsp;</div>
+	<div id="sidebar">
 
-	<div id="connect"><button onclick="toggle_connection(this)"
-		id="connect-btn">Connect</button></div>
+		<div onclick="toggle_sidebar()" id="sidebar-grip"
+			title="<?php echo __("Toggle sidebar") ?>"></div>
 
-	<div id="userlist">
-		<div id="userlist-inner"><ul id="userlist-list"></ul></div>
+		<div id="sidebar-inner">
+
+		<div id="connect"><button onclick="toggle_connection(this)"
+			id="connect-btn">Connect</button></div>
+
+		<div id="userlist">
+			<div id="userlist-inner"><ul id="userlist-list"></ul></div>
+		</div>
+
+		</div>
+
 	</div>
 
 	<div id="nick" onclick="change_nick()"></div>

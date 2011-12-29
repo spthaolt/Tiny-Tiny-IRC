@@ -102,20 +102,39 @@ table.loginForm2 .innerLoginCell {
 
 #sidebar {
 	position : absolute;
+	overflow : auto;
 	top : 0px;
 	right : 0px;
-	width : 148px;
+	width : 155px;
 	overflow : auto;
 	bottom : 0px;
 }
 
+#sidebar-grip {
+	float : left;
+	height : 100%;
+	width : 5px;
+}
+
+#sidebar-inner { 
+	margin : 5px;
+}
+
+#sidebar-grip:hover {
+	background-image: linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
+	background-image: -o-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
+	background-image: -moz-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
+	background-image: -webkit-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
+	background-image: -ms-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
+
+	background-image: -webkit-gradient(
+		linear, left top, left bottom,
+		color-stop(0, #C0D8FF),
+		color-stop(0.5, #FFFFFF),
+		color-stop(1, #C0D8FF) );
+}
+
 #connect {
-	top : 5px;
-	right : 5px;
-	position : absolute;
-	width : 143px;
-	overflow : auto;
-	bottom : 5px;
 	text-align : center;
 }
 
@@ -315,16 +334,8 @@ ul.sub-tabs {
 }
 
 #userlist {
-/*	border-width : 1px;
-	border-color : #88b0f0;
-	border-style : solid; */
+	margin-top : 5px;
 	font-size : 12px;
-	top : 35px;
-	right : 5px;
-	position : absolute;
-	width : 143px;
-	overflow : auto;
-	bottom : 5px;
 }
 
 #userlist img {
