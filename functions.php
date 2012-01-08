@@ -575,7 +575,23 @@
 			'$message_type', NOW())");
 	}
 
+	function get_initial_last_id($link) {
+		$result = db_query($link, "SELECT ttirc_messages.id
+			FROM ttirc_messages, ttirc_connections
+			WHERE
+				owner_uid = ".$_SESSION["uid"]." AND
+				connection_id = ttirc_connections.id
+			ORDER BY id DESC LIMIT 1 OFFSET 50");
+
+		if (db_num_rows($result) != 0) {
+			return db_fetch_result($result, 0, "id");
+		} else {
+			return 0;
+		}
+	}
+
 	function num_new_lines($link, $last_id) {
+		if (!$last_id) $last_id = get_initial_last_id($link);
 
 		$result = db_query($link, "SELECT COUNT(*) AS cl
 			FROM ttirc_messages, ttirc_connections WHERE
@@ -588,6 +604,8 @@
 	}
 
 	function get_new_lines($link, $last_id, $rewrite_urls = true) {
+
+		if (!$last_id) $last_id = get_initial_last_id($link);
 
 		$result = db_query($link, "SELECT ttirc_messages.id,
 			message_type, sender, channel, connection_id, incoming,
