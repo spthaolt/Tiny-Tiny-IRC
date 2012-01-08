@@ -577,46 +577,26 @@
 
 	function num_new_lines($link, $last_id) {
 
-		if (DB_TYPE == "pgsql") {
-			$interval = "ts > NOW() - INTERVAL '15 minutes'";
-		} else {
-			$interval = "ts > DATE_SUB(NOW(), INTERVAL 15 MINUTE)";
-		}
-
-
 		$result = db_query($link, "SELECT COUNT(*) AS cl
 			FROM ttirc_messages, ttirc_connections WHERE
 			connection_id = ttirc_connections.id AND
-			message_type != ".MSGT_COMMAND." AND $interval AND
+			message_type != ".MSGT_COMMAND." AND
 			ttirc_messages.id > '$last_id' AND
-			owner_uid = ".$_SESSION["uid"]);
+			owner_uid = ".$_SESSION["uid"]." LIMIT 50");
 
 		return db_fetch_result($result, 0, "cl");
 	}
 
 	function get_new_lines($link, $last_id, $rewrite_urls = true) {
 
-		if (DB_TYPE == "pgsql") {
-			$interval = "((ts > NOW() - INTERVAL '15 minutes' AND
-				message_type != ".MSGT_PRIVATE_PRIVMSG.") OR
-			(ts > NOW() - INTERVAL '5 hours' AND
-				message_type = ".MSGT_PRIVATE_PRIVMSG."))";
-		} else {
-			$interval = "((ts > DATE_SUB(NOW(), INTERVAL 15 MINUTE) AND
-				message_type != ".MSGT_PRIVATE_PRIVMSG.") OR
-			(ts > DATE_SUB(NOW(), INTERVAL 5 HOUR) AND
-				message_type = ".MSGT_PRIVATE_PRIVMSG."))";
-		}
-
-
 		$result = db_query($link, "SELECT ttirc_messages.id,
 			message_type, sender, channel, connection_id, incoming,
 			message, ".SUBSTRING_FOR_DATE."(ts,1,19) AS ts
 			FROM ttirc_messages, ttirc_connections WHERE
 			connection_id = ttirc_connections.id AND
-			message_type != ".MSGT_COMMAND." AND $interval AND
+			message_type != ".MSGT_COMMAND." AND
 			ttirc_messages.id > '$last_id' AND
-			owner_uid = ".$_SESSION["uid"]." ORDER BY ttirc_messages.id LIMIT 50");
+			owner_uid = ".$_SESSION["uid"]." ORDER BY id LIMIT 50");
 
 		$lines = array();
 
