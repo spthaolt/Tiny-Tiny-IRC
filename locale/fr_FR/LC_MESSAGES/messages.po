@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Tiny Tiny IRC\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-12 17:08+0400\n"
+"POT-Creation-Date: 2012-01-23 14:48+0400\n"
 "PO-Revision-Date: 2011-08-11 13:13+0000\n"
 "Last-Translator: raphaelh <raphael.huck@gmail.com>\n"
 "Language-Team: French (France) (http://www.transifex.net/projects/p/tt-irc/"
@@ -18,148 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
-#: backend.php:59
+#: backend.php:62
 #, php-format
 msgid "Created user %s with password <b>%s</b>."
 msgstr "Utilisateur %s créé avec mot de passe <b>%s</b>."
 
-#: backend.php:67
+#: backend.php:70
 #, php-format
 msgid "User %s already exists"
 msgstr "L'utilisateur %s existe déjà"
 
-#: backend.php:89
+#: backend.php:92
 #, php-format
 msgid "Reset password of user %s to <b>%s</b>."
 msgstr "Réinitialiser le mot de passe de l'utilisateur %s vers <b>%s</b>."
 
-#: backend.php:267
+#: backend.php:300
 msgid "[Untitled]"
 msgstr "[Sans titre]"
 
-#: backend.php:358
+#: backend.php:393
 #, php-format
 msgid "Couldn't add server (%s:%d): Invalid syntax."
 msgstr "Impossible d'ajouter le serveur (%s:%d) : syntaxe incorrecte."
 
-#: backend.php:409 login_form.php:124
+#: backend.php:444 include/login_form.php:124
 msgid "Default profile"
 msgstr "Profil par défaut"
 
-#: errors.php:3
-msgid "Unknown error"
-msgstr "Erreur inconnue"
-
-#: errors.php:5
-msgid ""
-"This program requires XmlHttpRequest to function properly. Your browser "
-"doesn't seem to support it."
-msgstr ""
-"Ce programme nécessite XmlHttpRequest pour fonctionner correctement. Votre "
-"navigateur semble ne pas le supporter."
-
-#: errors.php:8
-msgid ""
-"This program requires cookies to function properly. Your browser doesn't "
-"seem to support them."
-msgstr "Ce programme nécessite les cookies pour fonctionner correctement. "
-
-#: errors.php:11
-msgid "Backend sanity check failed"
-msgstr "La vérification du backend a échoué."
-
-#: errors.php:13
-msgid "Frontend sanity check failed."
-msgstr "La vérification du frontend a échoué."
-
-#: errors.php:15
-msgid ""
-"Incorrect database schema version. &lt;a href='update.php'&gt;Please "
-"update&lt;/a&gt;."
-msgstr ""
-"La version du schéma de la base de donnée est incorrect. &lt;a href='update."
-"php'&gt;Veuillez la mettre à jour&lt;/a&gt;."
-
-#: errors.php:17
-msgid "Request not authorized."
-msgstr "Requête non autorisée."
-
-#: errors.php:19
-msgid "No operation to perform."
-msgstr "Aucune action à effectuer."
-
-#: errors.php:23
-msgid "Denied. Your access level is insufficient to access this page."
-msgstr ""
-"Accès refusé. Vos permissions sont insuffisantes pour accéder à cette page."
-
-#: errors.php:25
-msgid "Configuration check failed"
-msgstr "La vérification de la configuration a échoué."
-
-#: errors.php:27
-msgid ""
-"Your version of MySQL is not currently supported. Please see \n"
-"\t\tofficial site for more information."
-msgstr ""
-"La version de MySQL installée n'est pas supportée. Veuillez consulter le "
-"site officiel pour plus d'information."
-
-#: errors.php:32
-msgid "SQL escaping test failed, check your database and PHP configuration"
-msgstr ""
-"Le test d'échappement SQL a échoué, veuillez vérifier votre base de donnée "
-"et votre configuration PHP"
-
-#: errors.php:33
-msgid "Backend connection daemon is not running."
-msgstr "Le démon de configuration n'est pas lancé."
-
-#: errors.php:35 tt-irc.js:143
-msgid "The application failed to initialize."
-msgstr "L'application n'a pas pu être initialisée correctement."
-
-#: functions.php:152
-msgid "Incorrect username or password"
-msgstr "Identifiant ou mot de passe incorrect"
-
-#: functions.php:321
-msgid "Session failed to validate (incorrect IP)"
-msgstr "La session n'a pas pu être validée (IP incorrecte)"
-
-#: functions.php:904
-msgid "Default"
-msgstr "Défaut"
-
-#: functions.php:991
-msgid "Send Tweet"
-msgstr "Envoyer le tweet"
-
-#: functions.php:999
-msgid "Your tweet:"
-msgstr "Votre tweet :"
-
-#: functions.php:1005
-msgid "Full IRC snippet:"
-msgstr "Fragment IRC complet:"
-
-#: functions.php:1014
-msgid "Tweet this!"
-msgstr "Tweeter ceci !"
-
-#: functions.php:1015
-msgid "Cancel"
-msgstr "Annuler"
-
-#: index.php:64 index.php:68
+#: index.php:70 index.php:74
 msgid "Click to close"
 msgstr "Cliquer pour fermer"
 
-#: index.php:72
+#: index.php:78
 msgid "Loading, please wait..."
 msgstr "Chargement en cours, veuillez patienter..."
 
-#: index.php:79
+#: index.php:85
 msgid ""
 "Your browser doesn't support Javascript, which is required\n"
 "\t\tfor this application to function properly. Please check your\n"
@@ -169,71 +64,56 @@ msgstr ""
 "pour que cette application fonctionne correctement. Veuillez vérifier les "
 "paramètres de votre navigateur."
 
-#: index.php:94
+#: index.php:100
 msgid "Fatal Exception"
 msgstr "Erreur fatale"
 
-#: index.php:98
+#: index.php:104
 msgid "Try again"
 msgstr "Veuillez essayer à nouveau"
 
-#: index.php:111
+#: index.php:117
 msgid "Hello,"
 msgstr "Bonjour, "
 
-#: index.php:113 prefs.php:325
+#: index.php:119 prefs.php:340
 msgid "Preferences"
 msgstr "Préférences"
 
-#: index.php:116
+#: index.php:122
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: index.php:120
-msgid "Logout"
-msgstr "Déconnexion"
+#: index.php:125
+#, fuzzy
+msgid "Join channel"
+msgstr "Canaux favoris :"
 
-#: index.php:169
+#: index.php:129
 msgid "Tweet selected text"
 msgstr "Tweeter le texte sélectionné"
 
-#: index.php:171
+#: index.php:130
 msgid "Tweet"
 msgstr "Tweeter"
 
-#: login_form.php:102
-msgid "Login:"
-msgstr "Identifiant :"
+#: index.php:135
+msgid "Logout"
+msgstr "Déconnexion"
 
-#: login_form.php:106
-msgid "Password:"
-msgstr "Mot de passe :"
+#: index.php:155
+msgid "Toggle sidebar"
+msgstr ""
 
-#: login_form.php:111
-msgid "Language:"
-msgstr "Langue :"
-
-#: login_form.php:121
-msgid "Profile:"
-msgstr "Profil :"
-
-#: login_form.php:129
-msgid "Log in"
-msgstr "Connexion"
-
-#: login_form.php:133
-msgid "Create new account"
-msgstr "Créer un nouveau compte"
-
-#: prefs.php:7
+#: prefs.php:10
 msgid "Customize Theme"
 msgstr "Personnaliser le thème."
 
-#: prefs.php:11
+#: prefs.php:14
 msgid "Custom CSS declarations"
 msgstr "Règles CSS personnalisé"
 
-#: prefs.php:17
+#: prefs.php:20
 #, php-format
 msgid ""
 "You can override colors, fonts and layout of your currently selected theme "
@@ -244,23 +124,23 @@ msgstr ""
 "sélectionné avec des règles CSS personnalisées. <a target=\"_blank\" href="
 "\"%s\">Ce fichier</a> peut être utilisé comme point de départ."
 
-#: prefs.php:22
+#: prefs.php:25
 msgid "Save & Reload"
 msgstr "Sauvegarder et recharger"
 
-#: prefs.php:23 prefs.php:52 prefs.php:146 prefs.php:273
+#: prefs.php:26 prefs.php:55 prefs.php:155 prefs.php:282
 msgid "Go back"
 msgstr "Retour"
 
-#: prefs.php:37 prefs.php:374 twitter.php:95
+#: prefs.php:40 prefs.php:388 twitter.php:98
 msgid "Register with Twitter"
 msgstr "Créer un compte Twitter"
 
-#: prefs.php:41 prefs.php:380
+#: prefs.php:44 prefs.php:402
 msgid "Authentication"
 msgstr "Identification"
 
-#: prefs.php:44
+#: prefs.php:47
 msgid ""
 "You'll need to register with Twitter.com before you'll be able to send "
 "tweets from Tiny Tiny IRC."
@@ -268,23 +148,23 @@ msgstr ""
 "Vous devez créer un compte Twitter avant de pouvoir envoyer des tweets "
 "depuis Tiny Tiny IRC."
 
-#: prefs.php:46
+#: prefs.php:49
 msgid "You have been successfully registered with Twitter.com.."
 msgstr "Votre compte Twitter a été créé avec succès."
 
-#: prefs.php:51
+#: prefs.php:54
 msgid "Register with Twitter.com"
 msgstr "Créer un compte Twitter"
 
-#: prefs.php:78
+#: prefs.php:81
 msgid "(connected)"
 msgstr "(connecté)"
 
-#: prefs.php:106
+#: prefs.php:109
 msgid "Configure Notifications"
 msgstr "Configurer les notifications"
 
-#: prefs.php:110
+#: prefs.php:113
 msgid ""
 "Desktop notifications are only shown for events happening in background "
 "channels or when your Tiny Tiny IRC window is unfocused."
@@ -292,198 +172,211 @@ msgstr ""
 "Les notifications n'apparaissent que pour les évènements survenant dans les "
 "canaux non visibles ou quand la fenêtre de Tiny Tiny IRC n'est pas active."
 
-#: prefs.php:112
+#: prefs.php:115
 msgid "Show notifications on:"
 msgstr "Afficher les notifications sur :"
 
-#: prefs.php:121
+#: prefs.php:124
 msgid "Channel highlight"
 msgstr "Notification de canal"
 
-#: prefs.php:127
+#: prefs.php:130
 msgid "Private message"
 msgstr "Message privé"
 
-#: prefs.php:133
+#: prefs.php:136
 msgid "Connection status change"
 msgstr "Changement d'état de la connexion"
 
-#: prefs.php:143
+#: prefs.php:142
+#, fuzzy
+msgid "Channel message"
+msgstr "Message privé"
+
+#: prefs.php:152
 msgid "Enable notifications"
 msgstr "Activer les notifications"
 
-#: prefs.php:145 prefs.php:272 prefs.php:407
+#: prefs.php:154 prefs.php:281 prefs.php:429
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: prefs.php:187
+#: prefs.php:196
 msgid "Edit Connection"
 msgstr "Modifier la connexion"
 
-#: prefs.php:191
+#: prefs.php:200
 msgid "Connection"
 msgstr "Connexion"
 
-#: prefs.php:199
+#: prefs.php:208
 msgid "Title:"
 msgstr "Titre :"
 
-#: prefs.php:203
+#: prefs.php:212
 msgid "Server password:"
 msgstr "Mot de passe du serveur :"
 
-#: prefs.php:208 prefs.php:341
+#: prefs.php:217 prefs.php:356
 msgid "Nickname:"
 msgstr "Pseudo :"
 
-#: prefs.php:212
+#: prefs.php:221
 msgid "Favorite channels:"
 msgstr "Canaux favoris :"
 
-#: prefs.php:216
+#: prefs.php:225
 msgid "Connect command:"
 msgstr "Commande de connexion :"
 
-#: prefs.php:220
+#: prefs.php:229
 msgid "Character set:"
 msgstr "Jeu de caractères :"
 
-#: prefs.php:233
+#: prefs.php:242
 msgid "Enable connection"
 msgstr "Activer la connexio"
 
-#: prefs.php:239
+#: prefs.php:248
 msgid "Automatically connect"
 msgstr "Connexion automatique"
 
-#: prefs.php:245
+#: prefs.php:254
 msgid "Stay connected permanently"
 msgstr "Rester connecté en permanence"
 
-#: prefs.php:251
+#: prefs.php:260
 msgid "Connect using SSL"
 msgstr "Se connecter en utilisant SSL"
 
-#: prefs.php:261
+#: prefs.php:270
 msgid "Servers"
 msgstr "Serveurs"
 
-#: prefs.php:269
+#: prefs.php:278
 msgid "Add server"
 msgstr "Ajouter un serveur"
 
-#: prefs.php:270 prefs.php:404 users.php:50
+#: prefs.php:279 prefs.php:426 users.php:53
 msgid "Delete"
 msgstr "Supprimer"
 
-#: prefs.php:293
+#: prefs.php:302
 msgid "(active)"
 msgstr "(actif)"
 
-#: prefs.php:301
+#: prefs.php:310
 msgid "Click to edit connection"
 msgstr "Cliquer pour modifier une connexion"
 
-#: prefs.php:334
+#: prefs.php:349
 msgid "Personal data"
 msgstr "Données personnelles"
 
-#: prefs.php:337
+#: prefs.php:352
 msgid "Real name:"
 msgstr "Nom :"
 
-#: prefs.php:345
+#: prefs.php:360
 msgid "E-mail:"
 msgstr "Email :"
 
-#: prefs.php:349
+#: prefs.php:364
 msgid "Quit message:"
 msgstr "Message de déconnexion :"
 
-#: prefs.php:353
+#: prefs.php:368
 msgid "Highlight on:"
 msgstr "Notification sur :"
 
-#: prefs.php:357
+#: prefs.php:372
 msgid "Theme:"
 msgstr "Thème :"
 
-#: prefs.php:362
+#: prefs.php:376
 msgid "Customize"
 msgstr "Personnaliser"
 
-#: prefs.php:367
+#: prefs.php:381
 msgid "Configure desktop notifications"
 msgstr "Configurer les notifications"
 
-#: prefs.php:383
+#: prefs.php:394
+msgid "Other options"
+msgstr ""
+
+#: prefs.php:397
+msgid "Do not highlight tabs on auxiliary messages"
+msgstr ""
+
+#: prefs.php:405
 msgid "New password:"
 msgstr "Nouveau mot de passe :"
 
-#: prefs.php:387
+#: prefs.php:409
 msgid "Confirm:"
 msgstr "Confirmer :"
 
-#: prefs.php:393
+#: prefs.php:415
 msgid "Connections"
 msgstr "Connexions"
 
-#: prefs.php:402
+#: prefs.php:424
 msgid "Create connection"
 msgstr "Créer une connexion"
 
-#: prefs.php:408 users.php:53
+#: prefs.php:430 users.php:56
 msgid "Close"
 msgstr "Fermer"
 
-#: twitter.php:99
+#: twitter.php:102
 msgid "Could not connect to Twitter. Refresh the page or try again later."
 msgstr ""
 "La connexion à Twitter a échoué. Veuillez rafraichir la page ou réssayer "
 "plus tard."
 
-#: twitter.php:103
+#: twitter.php:106
 msgid "Congratulations! You have successfully registered with Twitter."
 msgstr "Félicitations ! Vous avez créé un compte Twitter avec succès."
 
-#: twitter.php:107 twitter.php:119 update.php:90
+#: twitter.php:110 twitter.php:122 update.php:93
 msgid "Return to Tiny Tiny IRC"
 msgstr "Retour vers Tiny Tiny IRC"
 
-#: twitter.php:114
+#: twitter.php:117
 msgid "Register"
 msgstr "Créer un compte"
 
-#: update.php:16
+#: update.php:19
 msgid "Your access level is insufficient to run this script."
 msgstr "V"
 
-#: update.php:41
+#: update.php:44
 msgid "Database Updater"
 msgstr "Agent de mise à jour de la base de données"
 
-#: update.php:81
+#: update.php:84
 msgid "Could not update database"
 msgstr "La base de données n'a pas pu être mise à jour"
 
-#: update.php:84
+#: update.php:87
 msgid "Could not find necessary schema file, need version:"
 msgstr ""
 "Le fichier contenant le schéma n'a pas pu être trouvé, version requise :"
 
-#: update.php:85
+#: update.php:88
 msgid ", found: "
 msgstr ", trouvé :"
 
-#: update.php:88
+#: update.php:91
 msgid "Tiny Tiny IRC database is up to date."
 msgstr "La base de données de Tiny Tiny IRC est à jour."
 
-#: update.php:98
+#: update.php:101
 msgid "Please backup your database before proceeding."
 msgstr "Veuillez sauvegarder votre base de données avant de continuer."
 
-#: update.php:100
+#: update.php:103
 #, php-format
 msgid ""
 "Your Tiny Tiny RSS database needs update to the latest version (<b>%d</b> to "
@@ -492,32 +385,32 @@ msgstr ""
 "La base de données de Tiny Tiny IRC doit être mise à jour vers la dernière "
 "version (<b>%d</b> to <b>%d</b>)."
 
-#: update.php:114
+#: update.php:117
 msgid "Perform updates"
 msgstr "Effectuer les mises à jour"
 
-#: update.php:119
+#: update.php:122
 msgid "Performing updates..."
 msgstr "Mise à jour en cours..."
 
-#: update.php:125
+#: update.php:128
 #, php-format
 msgid "Updating to version %d..."
 msgstr "Mise à jour vers la version %d..."
 
-#: update.php:138
+#: update.php:141
 msgid "Checking version... "
 msgstr "Vérification de la version en cours..."
 
-#: update.php:144
+#: update.php:147
 msgid "OK!"
 msgstr "OK !"
 
-#: update.php:146
+#: update.php:149
 msgid "ERROR!"
 msgstr "ERREUR !"
 
-#: update.php:154
+#: update.php:157
 #, php-format
 msgid ""
 "Finished. Performed <b>%d</b> update(s) up to schema\n"
@@ -526,214 +419,354 @@ msgstr ""
 "Terminé. <b>%d</b> mise(s) à jour ont été effectuées jusqu'à la version <b>"
 "%d</b> du schéma."
 
-#: update.php:158
+#: update.php:161
 msgid "Return to Tiny Tiny RSS"
 msgstr "Retour vers Tiny Tiny IRC"
 
-#: users.php:20
+#: users.php:23
 msgid "Click to edit user"
 msgstr "Cliquer pour modifier l'utilisateur"
 
-#: users.php:35
+#: users.php:38
 msgid "Edit Users"
 msgstr "Modifier les utilisateurs"
 
-#: users.php:46
+#: users.php:49
 msgid "Add user"
 msgstr "Ajouter un utilisateur"
 
-#: users.php:48
+#: users.php:51
 msgid "Reset password"
 msgstr "Réinitialisation du mot de passe"
 
-#: prefs.js:111
+#: include/errors.php:3
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#: include/errors.php:5
+msgid ""
+"This program requires XmlHttpRequest to function properly. Your browser "
+"doesn't seem to support it."
+msgstr ""
+"Ce programme nécessite XmlHttpRequest pour fonctionner correctement. Votre "
+"navigateur semble ne pas le supporter."
+
+#: include/errors.php:8
+msgid ""
+"This program requires cookies to function properly. Your browser doesn't "
+"seem to support them."
+msgstr "Ce programme nécessite les cookies pour fonctionner correctement. "
+
+#: include/errors.php:11
+msgid "Backend sanity check failed"
+msgstr "La vérification du backend a échoué."
+
+#: include/errors.php:13
+msgid "Frontend sanity check failed."
+msgstr "La vérification du frontend a échoué."
+
+#: include/errors.php:15
+msgid ""
+"Incorrect database schema version. &lt;a href='update.php'&gt;Please "
+"update&lt;/a&gt;."
+msgstr ""
+"La version du schéma de la base de donnée est incorrect. &lt;a href='update."
+"php'&gt;Veuillez la mettre à jour&lt;/a&gt;."
+
+#: include/errors.php:17
+msgid "Request not authorized."
+msgstr "Requête non autorisée."
+
+#: include/errors.php:19
+msgid "No operation to perform."
+msgstr "Aucune action à effectuer."
+
+#: include/errors.php:23
+msgid "Denied. Your access level is insufficient to access this page."
+msgstr ""
+"Accès refusé. Vos permissions sont insuffisantes pour accéder à cette page."
+
+#: include/errors.php:25
+msgid "Configuration check failed"
+msgstr "La vérification de la configuration a échoué."
+
+#: include/errors.php:27
+msgid ""
+"Your version of MySQL is not currently supported. Please see \n"
+"\t\tofficial site for more information."
+msgstr ""
+"La version de MySQL installée n'est pas supportée. Veuillez consulter le "
+"site officiel pour plus d'information."
+
+#: include/errors.php:32
+msgid "SQL escaping test failed, check your database and PHP configuration"
+msgstr ""
+"Le test d'échappement SQL a échoué, veuillez vérifier votre base de donnée "
+"et votre configuration PHP"
+
+#: include/errors.php:33
+msgid "Backend connection daemon is not running."
+msgstr "Le démon de configuration n'est pas lancé."
+
+#: include/errors.php:35 js/tt-irc.js:172
+msgid "The application failed to initialize."
+msgstr "L'application n'a pas pu être initialisée correctement."
+
+#: include/functions.php:158
+msgid "Incorrect username or password"
+msgstr "Identifiant ou mot de passe incorrect"
+
+#: include/functions.php:327
+msgid "Session failed to validate (incorrect IP)"
+msgstr "La session n'a pas pu être validée (IP incorrecte)"
+
+#: include/functions.php:896
+msgid "Default"
+msgstr "Défaut"
+
+#: include/functions.php:989
+msgid "Send Tweet"
+msgstr "Envoyer le tweet"
+
+#: include/functions.php:997
+msgid "Your tweet:"
+msgstr "Votre tweet :"
+
+#: include/functions.php:1003
+msgid "Full IRC snippet:"
+msgstr "Fragment IRC complet:"
+
+#: include/functions.php:1012
+msgid "Tweet this!"
+msgstr "Tweeter ceci !"
+
+#: include/functions.php:1013
+msgid "Cancel"
+msgstr "Annuler"
+
+#: include/login_form.php:102
+msgid "Login:"
+msgstr "Identifiant :"
+
+#: include/login_form.php:106
+msgid "Password:"
+msgstr "Mot de passe :"
+
+#: include/login_form.php:111
+msgid "Language:"
+msgstr "Langue :"
+
+#: include/login_form.php:121
+msgid "Profile:"
+msgstr "Profil :"
+
+#: include/login_form.php:129
+msgid "Log in"
+msgstr "Connexion"
+
+#: include/login_form.php:133
+msgid "Create new account"
+msgstr "Créer un nouveau compte"
+
+#: js/prefs.js:111
 msgid "Delete selected connections? Active connections will not be deleted."
 msgstr ""
 "Supprimer les connexions sélectionnées ? Les connexions actives ne seront "
 "pas supprimées."
 
-#: prefs.js:134
+#: js/prefs.js:134
 msgid "Please select some connections to delete."
 msgstr "Veuillez sélectionner une connexion à supprimer."
 
-#: prefs.js:145
+#: js/prefs.js:145
 msgid "Title for a new connection:"
 msgstr "Titre de la nouvelle connexion :"
 
-#: prefs.js:201
+#: js/prefs.js:201
 msgid "Delete selected servers?"
 msgstr "Supprimer les serveurs sélectionnés ?"
 
-#: prefs.js:227
+#: js/prefs.js:227
 msgid "Please select some servers to delete."
 msgstr "Veuillez sélectionner les serveurs à supprimer."
 
-#: prefs.js:238
+#: js/prefs.js:238
 msgid "Server:Port (e.g. irc.example.org:6667):"
 msgstr "Serveur:Port (par exemple irc.exemple.org:6667) :"
 
-#: prefs.js:330
+#: js/prefs.js:330
 msgid "Your browser doesn't seem to support desktop notifications."
 msgstr "Votre navigateur ne supporte pas les notifications."
 
-#: tt-irc.js:87
+#: js/tt-irc.js:90
 msgid "Close this tab"
 msgstr "Fermer cet onglet"
 
-#: tt-irc.js:486
+#: js/tt-irc.js:524
 msgid "Last message: %d seconds ago."
 msgstr "Dernier message : il y a %d secondes."
 
-#: tt-irc.js:525
+#: js/tt-irc.js:563
 msgid "Connected to: "
 msgstr "Connecté à :"
 
-#: tt-irc.js:529 tt-irc.js:535
+#: js/tt-irc.js:567 js/tt-irc.js:573
 msgid "Disconnected."
 msgstr "Déconnecté."
 
-#: tt-irc.js:547
+#: js/tt-irc.js:585
 msgid "Conversation with"
 msgstr "Conversation avec"
 
-#: tt-irc.js:577
+#: js/tt-irc.js:615
 msgid "Connect"
 msgstr "Connexion"
 
-#: tt-irc.js:582
+#: js/tt-irc.js:620
 msgid "Connecting..."
 msgstr "Connexion en cours..."
 
-#: tt-irc.js:587
+#: js/tt-irc.js:625
 msgid "Disconnect"
 msgstr "Déconnexion"
 
-#: tt-irc.js:780
-msgid "Received highlight on %c by %n: %s"
-msgstr "Notification reçue de %c par %n : %s"
+#: js/tt-irc.js:821 js/tt-irc.js:1500
+msgid "(%c) &lt;%n&gt; %s"
+msgstr ""
 
-#: tt-irc.js:916
+#: js/tt-irc.js:957
 msgid "Topic for %c is: %s"
 msgstr "Le sujet de %c est : %s"
 
-#: tt-irc.js:949
+#: js/tt-irc.js:967
+#, fuzzy
+msgid "Topic for %c set by %n at %d"
+msgstr "Le sujet de %c est : %s"
+
+#: js/tt-irc.js:1004
 msgid "Tiny Tiny IRC [%a @ %b / %c]"
 msgstr "Tiny Tiny IRC [%a @ %b / %c]"
 
-#: tt-irc.js:979 tt-irc.js:983
+#: js/tt-irc.js:1043 js/tt-irc.js:1047
 msgid "Tiny Tiny IRC"
 msgstr "Tiny Tiny IRC"
 
-#: tt-irc.js:1103
+#: js/tt-irc.js:1167
 msgid "Close this tab?"
 msgstr "Fermer cet onglet ?"
 
-#: tt-irc.js:1134
+#: js/tt-irc.js:1198
 msgid "Start conversation with %s?"
 msgstr "Démarrer une conversation avec %s ?"
 
-#: tt-irc.js:1170
+#: js/tt-irc.js:1234
 msgid "%u has changed the topic to: %s"
 msgstr "%u a changé le sujet en : %s"
 
-#: tt-irc.js:1184
+#: js/tt-irc.js:1248
 msgid "%u has changed mode [%m] on %s"
 msgstr "%u a changé le mode [%m] sur %s"
 
-#: tt-irc.js:1194
+#: js/tt-irc.js:1258
 msgid "%u has changed mode [%m]"
 msgstr "%u a changé le mode [%m]"
 
-#: tt-irc.js:1208
+#: js/tt-irc.js:1272
 msgid "%u has been kicked from %c by %n (%m)"
 msgstr "%u a été éjecté de %c par %n (%m)"
 
-#: tt-irc.js:1222
+#: js/tt-irc.js:1286
 msgid "%u has left %c (%m)"
 msgstr "%u a quitté %c (%m)"
 
-#: tt-irc.js:1233
+#: js/tt-irc.js:1297
 msgid "%u (%h) has joined %c"
 msgstr "%u (%h) a rejoint %c"
 
-#: tt-irc.js:1244
+#: js/tt-irc.js:1308
 msgid "%u has quit IRC (%s)"
 msgstr "%u a quitté IRC (%s)"
 
-#: tt-irc.js:1251
+#: js/tt-irc.js:1315
 msgid "Connection terminated."
 msgstr "Connexion terminée."
 
-#: tt-irc.js:1259
+#: js/tt-irc.js:1323
 msgid "Requesting connection..."
 msgstr "Demande de connexion..."
 
-#: tt-irc.js:1267
+#: js/tt-irc.js:1331
 msgid "Connecting to %s:%d..."
 msgstr "Connexion en cours à %s:%d..."
 
-#: tt-irc.js:1275
+#: js/tt-irc.js:1339
 msgid "Ping reply from %u: %d second(s)."
 msgstr "Réponse au ping de %u : %d seconde(s)."
 
-#: tt-irc.js:1309
+#: js/tt-irc.js:1373
 msgid "Received CTCP %c (%a) from %u"
 msgstr "Vous avez reçu une requête CTCP %c (%a) de %u"
 
-#: tt-irc.js:1321
+#: js/tt-irc.js:1385
 msgid "CTCP %c reply from %u: %a"
 msgstr "Réponse CTCP %c de %u: %a"
 
-#: tt-irc.js:1333
+#: js/tt-irc.js:1397
 msgid "Received ping (%s) from %u"
 msgstr "Vous avez reçu un ping (%s) de %u"
 
-#: tt-irc.js:1340
+#: js/tt-irc.js:1404
 msgid "Connection established."
 msgstr "La connexion a été établie."
 
-#: tt-irc.js:1348
+#: js/tt-irc.js:1412
 msgid "Unknown command: /%s."
 msgstr "Commande inconnue : /%s."
 
-#: tt-irc.js:1358
+#: js/tt-irc.js:1422
 msgid "%u is now known as %n"
 msgstr "%u est désormais connu sous le nom de %n"
 
-#: tt-irc.js:1376
+#: js/tt-irc.js:1440
 msgid "%s (via %l)"
 msgstr "%s (via %l)"
 
-#: tt-irc.js:1424
-msgid "Received new private message from %n: %s"
-msgstr "Vous avez reçu un message privé de %n : %s"
+#: js/tt-irc.js:1490
+msgid "&lt;%n&gt; %s"
+msgstr ""
 
-#: tt-irc.js:1985
+#: js/tt-irc.js:2072
 msgid "Your message is too long."
 msgstr "Votre message est trop long."
 
-#: tt-irc.js:1990
+#: js/tt-irc.js:2077
 msgid "Your message is too short."
 msgstr "Votre message est trop court."
 
-#: users.js:19
+#: js/users.js:19
 msgid "Login for a new user:"
 msgstr "Connexion pour un nouvel utilisateur :"
 
-#: users.js:52
+#: js/users.js:52
 msgid "Delete selected users?"
 msgstr "Supprimer les utilisateurs sélectionnés ?"
 
-#: users.js:75
+#: js/users.js:75
 msgid "Please select some users to delete."
 msgstr "Veuillez sélectionner les utilisateurs à supprimer."
 
-#: users.js:89
+#: js/users.js:89
 msgid "Reset password of selected user?"
 msgstr "Réinitialiser le mot de passe de l'utilisateur sélectionné ?"
 
-#: users.js:109
+#: js/users.js:109
 msgid "Please select one user to reset password."
 msgstr ""
 "Veuillez sélectionner un seul utilisateur pour la réinitialisation du mot de "
 "passe."
+
+#~ msgid "Received highlight on %c by %n: %s"
+#~ msgstr "Notification reçue de %c par %n : %s"
+
+#~ msgid "Received new private message from %n: %s"
+#~ msgstr "Vous avez reçu un message privé de %n : %s"

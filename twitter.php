@@ -1,20 +1,23 @@
 <?php
+	set_include_path(get_include_path() . PATH_SEPARATOR .
+		dirname(__FILE__) ."/include");
+
 	require_once "functions.php";
 	require_once "sessions.php";
 	require_once "sanity_check.php";
 	require_once "config.php";
 	require_once "db.php";
 	require_once "lib/twitteroauth/twitteroauth.php";
-	
-	$link = db_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);	
 
-	init_connection($link);	
+	$link = db_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+	init_connection($link);
 	login_sequence($link);
-	
+
 	$owner_uid = $_SESSION["uid"];
 	$op = $_REQUEST['op'];
 
-	if (!SINGLE_USER_MODE && !$_SESSION['uid']) { 
+	if (!SINGLE_USER_MODE && !$_SESSION['uid']) {
 		render_login_form($link);
 		exit;
 	}
@@ -33,7 +36,7 @@
 
 	if ($op == 'callback') {
 		/* If the oauth_token is old redirect to the connect page. */
-		if (isset($_REQUEST['oauth_token']) && 
+		if (isset($_REQUEST['oauth_token']) &&
 				$_SESSION['oauth_token'] !== $_REQUEST['oauth_token']) {
 
 		  $_SESSION['oauth_status'] = 'oldtoken';
@@ -68,14 +71,14 @@
 
 		/* Get temporary credentials. */
 		$request_token = $connection->getRequestToken($callback_url);
-		
+
 		/* Save temporary credentials to session. */
 		$_SESSION['oauth_token'] = $token = $request_token['oauth_token'];
 		$_SESSION['oauth_token_secret'] = $request_token['oauth_token_secret'];
 
 		if ($connection->http_code == 200) {
 		    $url = $connection->getAuthorizeURL($token);
-			 header('Location: ' . $url); 
+			 header('Location: ' . $url);
 			 return;
 		}
 	}

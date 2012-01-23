@@ -1,4 +1,7 @@
 <?php
+	set_include_path(get_include_path() . PATH_SEPARATOR .
+		dirname(__FILE__) ."/include");
+
 	require_once "functions.php";
 	require_once "sessions.php";
 	require_once "sanity_check.php";
@@ -32,10 +35,10 @@
 	<script type="text/javascript" charset="utf-8" src="localized_js.php?<?php echo $dt_add ?>"></script>
 	<script type="text/javascript" src="lib/prototype.js"></script>
 	<script type="text/javascript" src="lib/scriptaculous/scriptaculous.js?load=effects,dragdrop,controls"></script>
-		<script type="text/javascript" charset="utf-8" src="tt-irc.js?<?php echo $dt_add ?>"></script>
-		<script type="text/javascript" charset="utf-8" src="prefs.js?<?php echo $dt_add ?>"></script>
-	<script type="text/javascript" charset="utf-8" src="users.js?<?php echo $dt_add ?>"></script>
-	<script type="text/javascript" charset="utf-8" src="functions.js?<?php echo $dt_add ?>"></script>
+		<script type="text/javascript" charset="utf-8" src="js/tt-irc.js?<?php echo $dt_add ?>"></script>
+		<script type="text/javascript" charset="utf-8" src="js/prefs.js?<?php echo $dt_add ?>"></script>
+	<script type="text/javascript" charset="utf-8" src="js/users.js?<?php echo $dt_add ?>"></script>
+	<script type="text/javascript" charset="utf-8" src="js/functions.js?<?php echo $dt_add ?>"></script>
 
 	<?php	$user_theme = get_user_theme_path($link);
 		if ($user_theme) { ?>
@@ -129,7 +132,7 @@
 	<?php } ?>
 
 	<?php if (!SINGLE_USER_MODE) { ?>
-			| <a href="logout.php"><?php echo __('Logout') ?></a>
+			| <a href="backend.php?op=logout"><?php echo __('Logout') ?></a>
 	<?php } ?>
 
 	</div>

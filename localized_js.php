@@ -1,9 +1,12 @@
 <?php
 	define('DISABLE_SESSIONS', true);
 
+	set_include_path(get_include_path() . PATH_SEPARATOR .
+		dirname(__FILE__) ."/include");
+
 	require "functions.php";
 	header("Content-Type: text/plain; charset=UTF-8");
-	
+
 	function T_js_decl($s1, $s2) {
 		if ($s1 && $s2) {
 			$s1 = preg_replace("/\n/", "", $s1);
@@ -36,7 +39,7 @@ function __(msg) {
 		for ($i = 0; $i < $l10n->total; $i++) {
 			$orig = $l10n->get_original_string($i);
 			$translation = __($orig);
-	
+
 			print T_js_decl($orig, $translation);
 		}
 	}

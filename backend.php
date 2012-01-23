@@ -1,4 +1,7 @@
 <?php
+	set_include_path(get_include_path() . PATH_SEPARATOR .
+		dirname(__FILE__) ."/include");
+
 	/* remove ill effects of magic quotes */
 
 	if (get_magic_quotes_gpc()) {
@@ -497,6 +500,11 @@
 		$connection_id = db_escape_string($_REQUEST["connection"]);
 
 		print json_encode(array("status" => get_twitter_lines($link, $connection_id)));
+		break;
+
+	case "logout":
+		logout_user();
+		header("Location: index.php");
 		break;
 
 	case "notify":
