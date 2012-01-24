@@ -24,6 +24,7 @@ insert into ttirc_system (key, value) values ('MASTER_HEARTBEAT', '');
 create table ttirc_users (id serial not null primary key,
 	login varchar(120) not null unique,
 	pwd_hash varchar(250) not null,
+	salt varchar(250) not null default '',
 	last_login timestamp default null,
 	access_level integer not null default 0,
 	email varchar(250) not null,
@@ -143,5 +144,5 @@ create table ttirc_snippets(id serial not null primary key,
 
 create table ttirc_version (schema_version int not null);
 
-insert into ttirc_version values (6);
+insert into ttirc_version values (7);
 

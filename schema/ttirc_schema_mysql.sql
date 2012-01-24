@@ -26,6 +26,7 @@ insert into ttirc_system (param, value) values ('MASTER_HEARTBEAT', '');
 create table ttirc_users (id integer not null primary key auto_increment,
 	login varchar(120) not null unique,
 	pwd_hash varchar(250) not null,
+	salt varchar(250) not null default '',
 	last_login datetime default null,
 	access_level integer not null default 0,
 	email varchar(250) not null,
@@ -87,14 +88,14 @@ create table ttirc_messages(id integer not null primary key auto_increment,
 	channel varchar(120) not null,
 	connection_id integer not null references ttirc_connections(id) ON DELETE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-create table ttirc_prefs_types (id integer not null primary key, 
+create table ttirc_prefs_types (id integer not null primary key,
 	type_name varchar(100) not null) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 insert into ttirc_prefs_types (id, type_name) values (1, 'bool');
 insert into ttirc_prefs_types (id, type_name) values (2, 'string');
 insert into ttirc_prefs_types (id, type_name) values (3, 'integer');
 
-create table ttirc_prefs_sections (id integer not null primary key, 
+create table ttirc_prefs_sections (id integer not null primary key,
 	section_name varchar(100) not null) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 insert into ttirc_prefs_sections (id, section_name) values (1, 'General');
@@ -130,7 +131,7 @@ create table ttirc_user_prefs (
 create index ttirc_user_prefs_owner_uid_index on ttirc_user_prefs(owner_uid);
 
 create table ttirc_sessions (id varchar(250) unique not null primary key,
-	data text,	
+	data text,
 	expire integer not null) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
 create index ttirc_sessions_expire_index on ttirc_sessions(expire);
@@ -143,5 +144,5 @@ create table ttirc_snippets(id integer not null primary key auto_increment,
 
 create table ttirc_version (schema_version integer not null) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-insert into ttirc_version values (6);
+insert into ttirc_version values (7);
 

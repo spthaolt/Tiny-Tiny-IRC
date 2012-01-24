@@ -57,15 +57,16 @@
 
 			if (db_num_rows($result) == 0) {
 				$tmp_password = make_password();
-				$pwd_hash = db_escape_string(encrypt_password($tmp_password, $login));
+				$salt = substr(bin2hex(get_random_bytes(125)), 0, 250);
+				$pwd_hash = db_escape_string(encrypt_password($tmp_password, $salt, true));
 
 				$rv[0] = T_sprintf("Created user %s with password <b>%s</b>.",
 					$login, $tmp_password);
 
 				db_query($link, "INSERT INTO ttirc_users
-					(login, pwd_hash, email, nick, realname)
+					(login, pwd_hash, email, nick, realname, salt)
 					VALUES
-					('$login', '$pwd_hash', '$login@localhost', '$login', '$login')");
+					('$login', '$pwd_hash', '$login@localhost', '$login', '$login', '$salt')");
 			} else {
 				$rv[0] = T_sprintf("User %s already exists", $login);
 			}
@@ -83,9 +84,10 @@
 
 			$login = get_user_login($link, $id);
 
-			$pwd_hash = db_escape_string(encrypt_password($tmp_password, $login));
+			$salt = substr(bin2hex(get_random_bytes(125)), 0, 250);
+			$pwd_hash = db_escape_string(encrypt_password($tmp_password, $salt, true));
 
-			db_query($link, "UPDATE ttirc_users SET pwd_hash = '$pwd_hash'
+			db_query($link, "UPDATE ttirc_users SET pwd_hash = '$pwd_hash', salt = '$salt'
 				WHERE id = '$id'");
 
 			print json_encode(array("message" =>
@@ -352,9 +354,10 @@
 		}
 
 		if ($confirm_password == $new_password && $new_password) {
-			$pwd_hash =  encrypt_password($new_password, $_SESSION["name"]);
+			$salt = substr(bin2hex(get_random_bytes(125)), 0, 250);
+			$pwd_hash =  encrypt_password($new_password, $salt, true);
 
-			db_query($link, "UPDATE ttirc_users SET pwd_hash = '$pwd_hash'
+			db_query($link, "UPDATE ttirc_users SET pwd_hash = '$pwd_hash', salt = '$salt'
 				WHERE id = ". $_SESSION["uid"]);
 		}
 

@@ -240,9 +240,11 @@
 		print "</select>";
 	}
 
-	function encrypt_password($pass, $login = '') {
-		if ($login) {
-			return "SHA1X:" . sha1("$login:$pass");
+	function encrypt_password($pass, $salt = '', $mode2 = false) {
+		if ($salt && $mode2) {
+			return "MODE2:" . hash('sha256', $salt . $pass);
+		} else if ($salt) {
+			return "SHA1X:" . sha1("$salt:$pass");
 		} else {
 			return "SHA1:" . sha1($pass);
 		}
@@ -264,6 +266,50 @@
 				$query = "SELECT id,login,access_level,pwd_hash
 	            FROM ttirc_users WHERE
 					login = '$login'";
+
+			} else if (get_schema_version($link) > 6) {
+				$result = db_query($link, "SELECT salt FROM ttirc_users WHERE
+					login = '$login'");
+
+				$salt = db_fetch_result($result, 0, "salt");
+
+				if ($salt == "") {
+
+					$query = "SELECT id,login,access_level,pwd_hash
+		            FROM ttirc_users WHERE
+						login = '$login' AND (pwd_hash = '$pwd_hash1' OR
+						pwd_hash = '$pwd_hash2')";
+
+					// verify and upgrade password to new salt base
+
+					$result = db_query($link, $query);
+
+					if (db_num_rows($result) == 1) {
+						// upgrade password to MODE2
+
+						$salt = substr(bin2hex(get_random_bytes(125)), 0, 250);
+						$pwd_hash = encrypt_password($password, $salt, true);
+
+						db_query($link, "UPDATE ttirc_users SET
+							pwd_hash = '$pwd_hash', salt = '$salt' WHERE login = '$login'");
+
+						$query = "SELECT id,login,access_level,pwd_hash
+			            FROM ttirc_users WHERE
+							login = '$login' AND pwd_hash = '$pwd_hash'";
+
+					} else {
+						return false;
+					}
+
+				} else {
+
+					$pwd_hash = encrypt_password($password, $salt, true);
+
+					$query = "SELECT id,login,access_level,pwd_hash
+			         FROM ttirc_users WHERE
+						login = '$login' AND pwd_hash = '$pwd_hash'";
+
+				}
 
 			} else {
 				$query = "SELECT id,login,access_level,pwd_hash
@@ -845,21 +891,7 @@
 	}
 
 	function make_password($length = 8) {
-
-		$password = "";
-		$possible = "0123456789abcdfghjkmnpqrstvwxyzABCDFGHJKMNPQRSTVWXYZ";
-
-   	$i = 0;
-
-		while ($i < $length) {
-			$char = substr($possible, mt_rand(0, strlen($possible)-1), 1);
-
-			if (!strstr($password, $char)) {
-				$password .= $char;
-				$i++;
-			}
-		}
-		return $password;
+		return substr(bin2hex(get_random_bytes($length / 2)), 0, $length);
 	}
 
 	function rewrite_urls($line) {
@@ -1119,4 +1151,18 @@
 
 		return -1;
 	}
+
+	function get_random_bytes($length) {
+		if (function_exists('openssl_random_pseudo_bytes')) {
+			return openssl_random_pseudo_bytes($length);
+		} else {
+			$output = "";
+
+			for ($i = 0; $i < $length; $i++)
+				$output .= chr(mt_rand(0, 255));
+
+			return $output;
+		}
+	}
+
 ?>
