@@ -156,8 +156,11 @@
 
 		<div id="sidebar-inner">
 
+		<!-- fuck you very much, MSIE team -->
+		<form action="javascript:void(null);" method="post">
 		<div id="connect"><button onclick="toggle_connection(this)"
 			id="connect-btn">Connect</button></div>
+		</form>
 
 		<div id="userlist">
 			<div id="userlist-inner"><ul id="userlist-list"></ul></div>
