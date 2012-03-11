@@ -1685,6 +1685,9 @@ function m_c(elem) {
 function m_i(elem) {
 	try {
 
+		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
+			return;
+
 		if (!elem.href.toLowerCase().match("(jpg|gif|png|bmp)$") ||
 				Element.visible("preview-shadow"))
 			return;
