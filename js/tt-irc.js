@@ -1663,6 +1663,8 @@ function show_preview(img) {
 
 function m_c(elem) {
 	try {
+		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
+			return true;
 
 		if (!elem.href.toLowerCase().match("(jpg|gif|png|bmp)$"))
 			return true;
