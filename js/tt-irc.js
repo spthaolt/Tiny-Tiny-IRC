@@ -50,7 +50,7 @@ var colormap = [ "#00CCCC", "#000000", "#0000CC", "#CC00CC", "#606060",
 
 var commands = [ "/join", "/part", "/nick", "/query", "/quote", "/msg",
 	"/op", "/deop", "/voice", "/devoice", "/ping", "/notice", "/away",
-	"/ctcp" ];
+	"/ctcp", "/clear" ];
 
 function create_tab_if_needed(chan, connection_id, tab_type) {
 	try {
@@ -405,7 +405,7 @@ function get_all_tabs(connection_id) {
 	}
 }
 
-function update_buffer() {
+function update_buffer(force_redraw) {
 	try {
 
 		var tab = get_selected_tab();
@@ -435,7 +435,7 @@ function update_buffer() {
 				var log_connection = $("log-list").getAttribute("connection_id");
 				var log_line_id = $("log-list").getAttribute("last_id");
 
-				if (log_channel != channel || log_connection != connection_id) {
+				if (log_channel != channel || log_connection != connection_id || force_redraw) {
 					var tmp = "";
 					line_id = 0;
 					for (var i = 0; i < buffer.length; i++) {
@@ -702,27 +702,31 @@ function send(elem, evt) {
 
 			if (tab.getAttribute("tab_type") == "S") channel = "---";
 
-			var query = "?op=send&message=" + param_escape(elem.value) +
-				"&chan=" + param_escape(channel) +
-				"&connection=" + param_escape(tab.getAttribute("connection_id")) +
-				"&last_id=" + last_id + "&tab_type=" + tab.getAttribute("tab_type");
+			if (elem.value.trim() == "/clear") {
+				buffers[tab.getAttribute("connection_id")][channel] = [];
+				update_buffer(true);
+			} else {
+				var query = "?op=send&message=" + param_escape(elem.value) +
+					"&chan=" + param_escape(channel) +
+					"&connection=" + param_escape(tab.getAttribute("connection_id")) +
+					"&last_id=" + last_id + "&tab_type=" + tab.getAttribute("tab_type");
+
+				show_spinner();
+
+				new Ajax.Request("backend.php", {
+				parameters: query,
+				onComplete: function (transport) {
+					hide_spinner();
+					handle_update(transport);
+				} });
+			}
 
 			push_cache(elem.value);
-
 			elem.value = '';
-
 			console.log(query);
-
-			show_spinner();
 
 			set_window_active(true);
 
-			new Ajax.Request("backend.php", {
-			parameters: query,
-			onComplete: function (transport) {
-				hide_spinner();
-				handle_update(transport);
-			} });
 		}
 
 	} catch (e) {
@@ -1835,6 +1839,21 @@ function hotkey_handler(e) {
 				return false;
 			}
 
+		}
+
+		if (keycode == 76 && e.ctrlKey) {
+
+			var tab = get_selected_tab();
+
+			if (tab) {
+				var channel = tab.getAttribute("channel");
+				if (tab.getAttribute("tab_type") == "S") channel = "---";
+
+				buffers[tab.getAttribute("connection_id")][channel] = [];
+				update_buffer(true);
+
+				return false;
+			}
 		}
 
 		if (keycode == 9) {
