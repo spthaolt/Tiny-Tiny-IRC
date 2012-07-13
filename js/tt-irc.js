@@ -22,6 +22,7 @@ var update_delay_max = 0;
 var theme = "";
 var hide_join_part = false;
 var startup_date;
+var id_history = [];
 
 var twitter_id = false;
 var timeout_id = false;
@@ -1481,7 +1482,13 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 		if (!buffers[connection_id]) buffers[connection_id] = [];
 		if (!buffers[connection_id][channel]) buffers[connection_id][channel] = [];
 
-		if ($(message.id) != null) return; // dupe
+		if (id_history.indexOf(message.id) != -1)
+			return; // dupe
+
+		id_history.push(message.id);
+
+		while (id_history.length > 20)
+			id_history.shift();
 
 		if (message_type != MSGT_BROADCAST) {
 			toggle_li_class(channel);
