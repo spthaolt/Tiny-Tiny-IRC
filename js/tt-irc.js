@@ -839,7 +839,7 @@ function format_message(row_class, param, connection_id) {
 
 			message = "* " + param.sender + " " + param.message;
 
-			tmp = "<li class=\""+row_class+"\"><span class='timestamp'>" +
+			tmp = "<li id=\""+param.id+"\" class=\""+row_class+"\"><span class='timestamp'>" +
 				make_timestamp(param.ts) + "</span> " +
 				"<span class='action'>" + message + "</span>";
 
@@ -853,7 +853,8 @@ function format_message(row_class, param, connection_id) {
 				sender_class = 'pvt-sender-out';
 			}
 
-			tmp = "<li class=\""+row_class+"\"><span class='timestamp'>" +
+			tmp = "<li cid=\""+param.id+"\" class=\""+row_class+"\">"+
+				"<span class='timestamp'>" +
 				make_timestamp(param.ts) +
 				"</span> <span class='lt'>-</span><span title=\""+nick_ext_info+"\" " +
 				"class='"+sender_class+"' "+color+">" +
@@ -874,7 +875,8 @@ function format_message(row_class, param, connection_id) {
 //			param.message = param.message.replace(/(OO)/g,
 //					"<img src='images/piggie.png' alt='(oo)'>");
 
-			tmp = "<li class=\""+row_class+"\"><span class='timestamp'>" +
+			tmp = "<li id=\""+param.id+"\" "+
+				"class=\""+row_class+"\"><span class='timestamp'>" +
 				make_timestamp(param.ts) +
 				"</span> <span class='lt'>&lt;</span><span title=\""+nick_ext_info+"\" " +
 				"class='sender' "+color+">" +
@@ -882,7 +884,8 @@ function format_message(row_class, param, connection_id) {
 				"<span class='message'>" +
 				param.message + "</span>";
 		} else {
-			tmp = "<li class=\""+row_class+"\"><span class='timestamp'>" +
+			tmp = "<li id=\""+param.id+"\" "+
+				"class=\""+row_class+"\"><span class='timestamp'>" +
 				make_timestamp(param.ts) + "</span> " +
 				"<span class='sys-message'>" +
 				param.message + "</span>";
@@ -1477,6 +1480,8 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 		if (!buffers[connection_id]) buffers[connection_id] = [];
 		if (!buffers[connection_id][channel]) buffers[connection_id][channel] = [];
+
+		if ($(message.id) != null) return; // dupe
 
 		if (message_type != MSGT_BROADCAST) {
 			toggle_li_class(channel);
