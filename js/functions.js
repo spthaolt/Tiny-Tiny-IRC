@@ -10,6 +10,15 @@ Array.prototype.remove = function(s) {
 	}
 }
 
+Array.prototype.nickIndexOf=function(s) {
+	for (var i = 0; i < this.length; i++) {
+		var tmp = this[i].replace(/^[@+]/, "");
+
+		if (tmp == s || this[i] == s) return i;
+	}
+	return -1;
+}
+
 /* create console.log if it doesn't exist */
 
 if (!window.console) console = {};

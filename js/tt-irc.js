@@ -480,8 +480,29 @@ function update_buffer(force_redraw) {
 		//show_nicklist(get_selected_buffer() != "---");
 
 		if (nicklists[connection_id]) {
+			var nicklist;
 
-			var nicklist = nicklists[connection_id][channel];
+			if (tab.getAttribute("tab_type") == "P") {
+				for (var i in nicklists[connection_id]) {
+					if (typeof nicklists[connection_id][i] != 'function') {
+						var tmp = nicklists[connection_id][i];
+						if (tmp) {
+							if (tmp.nickIndexOf(tab.getAttribute("channel")) != -1) {
+								nicklist = [
+									'@' + active_nicks[connection_id],
+									tab.getAttribute("channel") ].sort();
+								break;
+							}
+						}
+					}
+				};
+
+				if (!nicklist && active_nicks[connection_id]) {
+					nicklist = [ '@' + active_nicks[connection_id] ];
+				}
+			} else {
+				nicklist = nicklists[connection_id][channel];
+			}
 
 			if (nicklist) {
 
