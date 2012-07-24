@@ -889,7 +889,7 @@ function format_message(row_class, param, connection_id) {
 			if (is_hl) row_class += "HL";
 
 			param.message = param.message.replace(/\(oo\)/g,
-					"<img src='images/piggie_icon.png' alt='(oo)'>");
+					"<img src='images/piggie_icon.png' height='16px' alt='(oo)'>");
 
 			param.message = param.message.replace(/(^| )_(.*?)_( |$)/g,
 					"$1<span class=\"underline\">$2</span>$3");
