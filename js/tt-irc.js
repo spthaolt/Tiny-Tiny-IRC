@@ -1503,7 +1503,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 		if (!buffers[connection_id]) buffers[connection_id] = [];
 		if (!buffers[connection_id][channel]) buffers[connection_id][channel] = [];
 
-		if (id_history.indexOf(message.id) != -1)
+		if (id_history.indexOf(message.id) != -1 && !message.force_display)
 			return; // dupe
 
 		id_history.push(message.id);
