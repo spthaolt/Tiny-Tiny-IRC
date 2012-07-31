@@ -5,6 +5,8 @@
 		error_reporting(E_ALL & ~E_NOTICE);
 	}
 
+	mb_internal_encoding("UTF-8");
+
 	require_once "config.php";
 	require_once "version.php";
 	require_once "message_types.php";
