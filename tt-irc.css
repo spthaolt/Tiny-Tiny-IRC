@@ -589,6 +589,7 @@ pre {
 
 #log span.message {
 	color : black;
+	white-space : pre;
 }
 
 #log span.sys-message {
