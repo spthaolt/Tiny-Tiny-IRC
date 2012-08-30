@@ -820,7 +820,7 @@ function format_message(row_class, param, connection_id) {
 	try {
 
 		var is_hl = param.sender != conndata_last[connection_id].active_nick &&
-			is_highlight(connection_id, param.message);
+			is_highlight(connection_id, param);
 
 		var tmp;
 
@@ -2012,7 +2012,9 @@ function get_nick_list(connection_id, channel) {
 
 function is_highlight(connection_id, message) {
 	try {
-		message = message.toUpperCase();
+		var message_text = message.message.toUpperCase();
+
+		console.log(message_text);
 
 		if (message.message_type == MSGT_SYSTEM)
 			return false;
@@ -2020,12 +2022,15 @@ function is_highlight(connection_id, message) {
 		if (message.id <= last_old_id)
 			return false;
 
+		if (message_text.match(":\/\/"))
+			return false;
+
 		if (typeof active_nicks[connection_id] == 'string' &&
-				message.match(active_nicks[connection_id].toUpperCase()))
+				message_text.match(active_nicks[connection_id].toUpperCase()))
 			return true;
 
 		for (var i = 0; i < highlight_on.length; i++) {
-			if (highlight_on[i].length > 0 && message.match(highlight_on[i]))
+			if (highlight_on[i].length > 0 && message_text.match(highlight_on[i]))
 				return true;
 		}
 
@@ -2047,7 +2052,7 @@ function highlight_tab_if_needed(connection_id, channel, message) {
 		if (tab && tab != get_selected_tab()) {
 
 		  if (tab.getAttribute("tab_type") != "S" &&
-				  is_highlight(connection_id, message.message)) {
+				  is_highlight(connection_id, message)) {
 
 				tab.className = "highlight";
 
