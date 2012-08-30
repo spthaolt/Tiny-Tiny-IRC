@@ -2014,8 +2014,6 @@ function is_highlight(connection_id, message) {
 	try {
 		var message_text = message.message.toUpperCase();
 
-		console.log(message_text);
-
 		if (message.message_type == MSGT_SYSTEM)
 			return false;
 
