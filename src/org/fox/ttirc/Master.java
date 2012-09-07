@@ -202,7 +202,7 @@ public class Master {
 
 		if (dbType.equals("mysql")) {
 			jdbcUrl = "jdbc:mysql://" + dbHost + ":" + dbPort + 
-				"/" + dbName + "?useUnicode=true&characterEncoding=UTF-8&encoding=UTF-8";
+				"/" + dbName + "?useUnicode=true&characterEncoding=utf8&encoding=utf8";
 			
 			m_dbKeyParam = "param";
 			m_dbType = DbType.MYSQL;
@@ -254,7 +254,7 @@ public class Master {
 		if (dbType.equals("mysql")) {
 			try {
 				Statement st = getConnection().createStatement();
-		     	st.execute("SET NAMES UTF-8");
+		     	st.execute("SET NAMES UTF8");
 				st.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
