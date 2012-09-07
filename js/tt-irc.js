@@ -957,6 +957,8 @@ function handle_chan_data(chandata) {
 		if (chandata != "") {
 			for (var connection_id in chandata) {
 
+				if (!conndata_last[connection_id]) continue;
+
 				if (!nicklists[connection_id]) nicklists[connection_id] = [];
 				if (!topics[connection_id]) topics[connection_id] = [];
 
@@ -1496,6 +1498,8 @@ function toggle_li_class(channel) {
 
 function push_message(connection_id, channel, message, message_type, no_tab_hl) {
 	try {
+		if (!conndata_last[connection_id]) return;
+
 		if (no_tab_hl == undefined) no_tab_hl = false;
 
 		if (!message_type) message_type = MSGT_PRIVMSG;
