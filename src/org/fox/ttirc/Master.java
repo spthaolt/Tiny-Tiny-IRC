@@ -202,7 +202,7 @@ public class Master {
 
 		if (dbType.equals("mysql")) {
 			jdbcUrl = "jdbc:mysql://" + dbHost + ":" + dbPort + 
-				"/" + dbName + "?useUnicode=true&characterEncoding=utf8";
+				"/" + dbName + "?useUnicode=true&characterEncoding=UTF-8&encoding=UTF-8";
 			
 			m_dbKeyParam = "param";
 			m_dbType = DbType.MYSQL;
@@ -241,6 +241,7 @@ public class Master {
 		
 		try {
 			logger.info("Establishing database connection...");
+			logger.info(jdbcUrl);
 			this.m_conn = createConnection();
 		} catch (SQLException e) {
 			logger.severe("error: Couldn't connect to database.");
@@ -249,6 +250,17 @@ public class Master {
 		}
 		
 		logger.info("Database connection established."); 
+
+		if (dbType.equals("mysql")) {
+			try {
+				Statement st = getConnection().createStatement();
+		     	st.execute("SET NAMES UTF-8");
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+		}
 
 		try {
 			cleanup();
