@@ -306,13 +306,13 @@
 			db_query($link, "UPDATE ttirc_connections SET title = '$title',
 				autojoin = '$autojoin',
 				connect_cmd = '$connect_cmd',
-				auto_connect = '$auto_connect',
+				auto_connect = $auto_connect,
 				server_password = '$server_password',
-				visible = '$visible',
-				use_ssl = '$use_ssl',
+				visible = $visible,
+				use_ssl = $use_ssl,
 				nick = '$nick',
 				encoding = '$encoding',
-				permanent = '$permanent'
+				permanent = $permanent
 				WHERE id = '$connection_id'");
 
 			//print json_encode(array("error" => "Function not implemented."));
