@@ -543,7 +543,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		
 		PreparedStatement ps = getConnection().prepareStatement("SELECT enabled " +
             "FROM ttirc_connections, ttirc_users " +
-            "WHERE owner_uid = ttirc_users.id AND " +
+            "WHERE owner_uid = ttirc_users.id AND visible = true AND " +
             interval +
             "ttirc_connections.id = ?");
 		
