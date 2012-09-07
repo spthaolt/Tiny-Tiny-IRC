@@ -1254,6 +1254,8 @@ function query_user(elem) {
 
 function handle_event(li_class, connection_id, line) {
 	try {
+		if (!line.message) return;
+
 		var params = line.message.split(":", 3);
 
 		console.log("handle_event " + params[0]);
