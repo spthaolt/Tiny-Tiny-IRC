@@ -464,7 +464,7 @@
 
 		$status = bool_to_sql_bool(db_escape_string($_REQUEST["set_enabled"]));
 
-		db_query($link, "UPDATE ttirc_connections SET enabled = '$status'
+		db_query($link, "UPDATE ttirc_connections SET enabled = $status
 			WHERE id = '$connection_id' AND owner_uid = " . $_SESSION["uid"]);
 
 		print json_encode(array("status" => $status));
