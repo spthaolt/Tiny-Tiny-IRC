@@ -251,17 +251,6 @@ public class Master {
 		
 		logger.info("Database connection established."); 
 
-		if (dbType.equals("mysql")) {
-			try {
-				Statement st = getConnection().createStatement();
-		     	st.execute("SET NAMES UTF8");
-				st.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-		}
-
 		try {
 			cleanup();
 			if (needCleanup) System.exit(0);
