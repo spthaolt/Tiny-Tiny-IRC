@@ -970,7 +970,9 @@
 		}
 	}
 
-	function get_misc_params($link) {
+	function get_misc_params($link, $uniqid) {
+		if (!$uniqid) $uniqid = uniqid();
+
 		$notify_on = json_decode(get_pref($link, "NOTIFY_ON"));
 
 		if (!is_array($notify_on)) $notify_on = array();
@@ -988,6 +990,7 @@
 
 		$rv = array(
 			"hide_join_part" => $hide_join_part,
+			"uniqid" => $uniqid,
 			"highlight_on" => explode(",", get_pref($link, "HIGHLIGHT_ON")),
 			"notify_events" => $notify_events);
 
@@ -1179,6 +1182,16 @@
 				$output .= chr(mt_rand(0, 255));
 
 			return $output;
+		}
+	}
+
+	function cleanup_session_cache() {
+		if (is_array($_SESSION["cache"])) {
+			foreach (array_keys($_SESSION["cache"]) as $uniqid) {
+				if (time() - $_SESSION["cache"][$uniqid]["last"] > 120) {
+					unset($_SESSION["cache"][$uniqid]);
+				}
+			}
 		}
 	}
 

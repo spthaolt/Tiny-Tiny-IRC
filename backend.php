@@ -191,9 +191,12 @@
 		break;
 
 	case "update":
+		cleanup_session_cache();
+
 		$last_id = (int) db_escape_string($_REQUEST["last_id"]);
 		$init = db_escape_string($_REQUEST["init"]);
 		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
+		$uniqid = db_escape_string($_REQUEST["uniqid"]);
 
 		if (!$init) {
 			$sleep_start = time();
@@ -207,7 +210,22 @@
 		$lines = get_new_lines($link, $last_id, $rewrite_urls);
 		$conn = get_conn_info($link);
 		$chandata = get_chan_data($link, false);
-		$params = get_misc_params($link);
+
+		if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
+			$conn = array("duplicate" => true);
+		} else {
+			$_SESSION["cache"][$uniqid]["conn"] = serialize($conn);
+		}
+
+		if (serialize($chandata) == $_SESSION["cache"][$uniqid]["chandata"]) {
+			$chandata = array("duplicate" => true);
+		} else {
+			$_SESSION["cache"][$uniqid]["chandata"] = serialize($chandata);
+		}
+
+		$_SESSION["cache"][$uniqid]["last"] = time();
+
+		$params = get_misc_params($link, $uniqid);
 
 		print json_encode(array($conn, $lines, $chandata, $params));
 		break;
@@ -249,7 +267,8 @@
 		}
 
 		if (authenticate_user($link, $login, $password)) {
-			print json_encode(array("sid" => session_id(), "version" => VERSION));
+			print json_encode(array("sid" => session_id(), "version" => VERSION,
+				"uniqid" => uniqid()));
 		} else {
 			print json_encode(array("error" => 6));
 		}
@@ -279,6 +298,7 @@
 
 		$rv["theme"] = get_pref($link, "USER_THEME");
 		$rv["update_delay_max"] = UPDATE_DELAY_MAX;
+		$rv["uniqid"] = uniqid();
 
 		print json_encode($rv);
 

@@ -23,6 +23,7 @@ var theme = "";
 var hide_join_part = false;
 var startup_date;
 var id_history = [];
+var uniqid;
 
 var twitter_id = false;
 var timeout_id = false;
@@ -175,11 +176,10 @@ function init_second_stage(transport) {
 		}
 
 		last_old_id = params.max_id;
-
 		theme_images = params.images;
-
 		update_delay_max = params.update_delay_max;
 		theme = params.theme;
+		uniqid = params.uniqid;
 
 		startup_date = new Date();
 
@@ -263,6 +263,7 @@ function handle_update(transport) {
 
 			notify_events = params.notify_events;
 			hide_join_part = params.hide_join_part;
+			uniqid = params.uniqid;
 		}
 
 		last_update = new Date();
@@ -337,7 +338,7 @@ function timeout() {
 
 function update(init) {
 	try {
-		var query = "?op=update&last_id=" + last_id;
+		var query = "?op=update&last_id=" + last_id + "&uniqid=" + uniqid;
 
 		if (init) query += "&init=" + init;
 
@@ -923,6 +924,7 @@ function format_message(row_class, param, connection_id) {
 function handle_conn_data(conndata) {
 	try {
 		if (conndata != "") {
+			if (conndata.duplicate) return;
 
 			conndata_last = [];
 
@@ -955,6 +957,8 @@ function handle_conn_data(conndata) {
 function handle_chan_data(chandata) {
 	try {
 		if (chandata != "") {
+			if (chandata.duplicate) return;
+
 			for (var connection_id in chandata) {
 
 				if (!conndata_last[connection_id]) continue;
