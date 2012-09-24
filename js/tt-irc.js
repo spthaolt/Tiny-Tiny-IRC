@@ -252,7 +252,7 @@ function handle_update(transport) {
 		var chandata = rv[2];
 		var params = rv[3];
 
-		if (params) {
+		if (params && !params.duplicate) {
 			highlight_on = params.highlight_on;
 
 			/* we can't rely on PHP mb_strtoupper() since it sucks cocks */

@@ -210,6 +210,7 @@
 		$lines = get_new_lines($link, $last_id, $rewrite_urls);
 		$conn = get_conn_info($link);
 		$chandata = get_chan_data($link, false);
+		$params = get_misc_params($link, $uniqid);
 
 		if ($uniqid) {
 			if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
@@ -224,10 +225,15 @@
 				$_SESSION["cache"][$uniqid]["chandata"] = serialize($chandata);
 			}
 
+			if (serialize($params) == $_SESSION["cache"][$uniqid]["params"]) {
+				$params = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["params"] = serialize($params);
+			}
+
 			$_SESSION["cache"][$uniqid]["last"] = time();
 		}
 
-		$params = get_misc_params($link, $uniqid);
 
 		print json_encode(array($conn, $lines, $chandata, $params));
 		break;
