@@ -196,7 +196,7 @@
 		$last_id = (int) db_escape_string($_REQUEST["last_id"]);
 		$init = db_escape_string($_REQUEST["init"]);
 		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
-		$uniqid = db_escape_string($_REQUEST["uniqid"]);
+		@$uniqid = db_escape_string($_REQUEST["uniqid"]);
 
 		if (!$init) {
 			$sleep_start = time();
@@ -211,19 +211,21 @@
 		$conn = get_conn_info($link);
 		$chandata = get_chan_data($link, false);
 
-		if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
-			$conn = array("duplicate" => true);
-		} else {
-			$_SESSION["cache"][$uniqid]["conn"] = serialize($conn);
-		}
+		if ($uniqid) {
+			if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
+				$conn = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["conn"] = serialize($conn);
+			}
 
-		if (serialize($chandata) == $_SESSION["cache"][$uniqid]["chandata"]) {
-			$chandata = array("duplicate" => true);
-		} else {
-			$_SESSION["cache"][$uniqid]["chandata"] = serialize($chandata);
-		}
+			if (serialize($chandata) == $_SESSION["cache"][$uniqid]["chandata"]) {
+				$chandata = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["chandata"] = serialize($chandata);
+			}
 
-		$_SESSION["cache"][$uniqid]["last"] = time();
+			$_SESSION["cache"][$uniqid]["last"] = time();
+		}
 
 		$params = get_misc_params($link, $uniqid);
 
