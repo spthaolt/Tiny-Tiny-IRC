@@ -1299,7 +1299,7 @@ function handle_event(li_class, connection_id, line) {
 				msg_type = MSGT_BROADCAST;
 			}
 
-			push_message(connection_id, line.channel, line, msg_type);
+			push_message(connection_id, line.channel, line, msg_type, hide_join_part);
 
 			break;
 		case "KICK":
