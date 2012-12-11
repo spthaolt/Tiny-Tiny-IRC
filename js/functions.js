@@ -400,8 +400,10 @@ function notify(msg) {
 		if (window.webkitNotifications &&
 				window.webkitNotifications.checkPermission() == 0) {
 
-			var notification = webkitNotifications.createHTMLNotification(
-				"backend.php?op=notify&msg=" + param_escape(msg));
+			var notification = webkitNotifications.createNotification(
+					"images/icon32.png",
+					"Tiny Tiny IRC",
+					msg);
 
 			notifications.push(notification);
 

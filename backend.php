@@ -538,12 +538,5 @@
 		header("Location: index.php");
 		break;
 
-	case "notify":
-		header("Content-type: text/html; charset=utf-8");
-		$message = $_REQUEST["msg"];
-		print "<html><head>
-			<style type=\"text/css\">body { font-family : sans-serif; font-size : 13px; color : black; background : #c0d8ff } img { vertical-align : middle }</style>
-			<body><img src='images/favicon.png'> $message</body></html>";
-		break;
 	}
 ?>

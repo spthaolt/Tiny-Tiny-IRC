@@ -845,7 +845,7 @@ function format_message(row_class, param, connection_id) {
 				var tab = find_tab(connection_id, param.channel);
 
 				if (notify_events[1] && (tab != get_selected_tab() || !window_active)) {
-					var msg = __("(%c) &lt;%n&gt; %s");
+					var msg = __("(%c) <%n> %s");
 
 					msg = msg.replace("%c", param.channel);
 					msg = msg.replace("%n", param.sender);
@@ -1534,7 +1534,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 			if (!no_tab_hl && tab && (get_selected_tab() != tab || !window_active)) {
 				if (notify_events[2] && tab.getAttribute("tab_type") == "P" && message.id > last_old_id) {
-					var msg = __("&lt;%n&gt; %s");
+					var msg = __("<%n> %s");
 
 					msg = msg.replace("%n", message.sender);
 					msg = msg.replace("%s", message.message);
@@ -1544,7 +1544,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 				}
 
 				if (message_type == MSGT_PRIVMSG && !no_tab_hl && notify_events[4] && tab.getAttribute("tab_type") == "C" && message.id > last_old_id) {
-					var msg = __("(%c) &lt;%n&gt; %s");
+					var msg = __("(%c) <%n> %s");
 
 					msg = msg.replace("%n", message.sender);
 					msg = msg.replace("%s", message.message);
