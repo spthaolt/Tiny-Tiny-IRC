@@ -970,7 +970,7 @@
 		}
 	}
 
-	function get_misc_params($link, $uniqid) {
+	function get_misc_params($link, $uniqid = false) {
 		if (!$uniqid) $uniqid = uniqid();
 
 		$notify_on = json_decode(get_pref($link, "NOTIFY_ON"));
