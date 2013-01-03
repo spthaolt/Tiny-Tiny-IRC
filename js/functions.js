@@ -403,7 +403,7 @@ function notify(msg) {
 			var notification = webkitNotifications.createNotification(
 					"images/icon32.png",
 					"Tiny Tiny IRC",
-					msg);
+					strip_tags(msg));
 
 			notifications.push(notification);
 
@@ -422,5 +422,10 @@ function notify(msg) {
 	} catch (e) {
 		exception_error("notify", e);
 	}
+}
+
+function strip_tags(str) {	// Strip HTML and PHP tags from a string
+	// +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+	return str.replace(/<\/?[^>]+>/gi, '');
 }
 
