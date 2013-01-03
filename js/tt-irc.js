@@ -1541,7 +1541,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					msg = msg.replace("%n", message.sender);
 					msg = msg.replace("%s", message.message);
 
-					if (param.sender) {
+					if (message.sender) {
 						notify(msg);
 					}
 
@@ -1554,7 +1554,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					msg = msg.replace("%s", message.message);
 					msg = msg.replace("%c", message.channel);
 
-					if (param.sender && param.channel) {
+					if (message.sender && message.channel) {
 						notify(msg);
 					}
 				}
