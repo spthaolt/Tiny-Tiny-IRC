@@ -1201,13 +1201,15 @@
 	function render_emoticons() {
 		global $emoticons_map;
 
-		print "<ul>";
+#		print "<ul>";
 
 		foreach ($emoticons_map as $k => $e) {
-			print "<li>" . "<img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
+#			print "<span class='wrapper'>";
+				print "<img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
+#			print "</span>";
 		}
 
-		print "</ul>";
+#		print "</ul>";
 
 	}
 

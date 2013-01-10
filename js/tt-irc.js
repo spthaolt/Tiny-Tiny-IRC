@@ -907,8 +907,8 @@ function format_message(row_class, param, connection_id) {
 			if (emoticons_map) {
 				for (key in emoticons_map) {
 					param.message = param.message.replace(
-							new RegExp(RegExp.escape(key)),
-						"<img src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+							new RegExp(RegExp.escape(key), "g"),
+						"<img title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
 						" height=\""+emoticons_map[key][1]+"\">");
 				}
 			}

@@ -125,16 +125,8 @@ table.loginForm2 .innerLoginCell {
 	background : #c0d8ff;
 }
 
-#emoticons ul {
-	list-style-type : none;
-	margin : 0px;
-	padding : 0px;
-}
-
-#emoticons ul li {
-	float : left;
-	margin : 0px;
-	padding : 5px;
+#emoticons img {
+	margin : 5px;
 }
 
 #sidebar {
