@@ -851,7 +851,9 @@ function format_message(row_class, param, connection_id) {
 					msg = msg.replace("%n", param.sender);
 					msg = msg.replace("%s", param.message);
 
-					if (param.sender && param.channel) {
+					if (param.sender && param.channel &&
+							param.sender != active_nicks[connection_id]) {
+
 						notify(msg);
 					}
 				}
@@ -1541,7 +1543,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					msg = msg.replace("%n", message.sender);
 					msg = msg.replace("%s", message.message);
 
-					if (message.sender) {
+					if (message.sender && message.sender != active_nicks[connection_id]) {
 						notify(msg);
 					}
 
@@ -1554,7 +1556,9 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					msg = msg.replace("%s", message.message);
 					msg = msg.replace("%c", message.channel);
 
-					if (message.sender && message.channel) {
+					if (message.sender && message.channel &&
+							message.sender != active_nicks[connection_id]) {
+
 						notify(msg);
 					}
 				}
