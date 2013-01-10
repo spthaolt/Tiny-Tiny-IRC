@@ -32,7 +32,7 @@
 
 	no_cache_incantation();
 
-	header('Content-Type: text/plain; charset=utf-8');
+	header('Content-Type: text/json; charset=utf-8');
 
 	$op = $_REQUEST["op"];
 
@@ -307,6 +307,9 @@
 		$rv["theme"] = get_pref($link, "USER_THEME");
 		$rv["update_delay_max"] = UPDATE_DELAY_MAX;
 		$rv["uniqid"] = uniqid();
+
+		global $emoticons_map;
+		$rv["emoticons"] = $emoticons_map;
 
 		print json_encode($rv);
 

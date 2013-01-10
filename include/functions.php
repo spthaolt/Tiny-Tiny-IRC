@@ -15,6 +15,9 @@
 	require_once "lib/ShortUrl.php";
 	require_once "lib/twitteroauth/twitteroauth.php";
 
+	if (file_exists("emoticons/map.php"))
+	  	require_once "emoticons/map.php";
+
 	define('SINGLE_USER_MODE', false);
 
 	if (DB_TYPE == 'mysql') {
@@ -670,13 +673,13 @@
 			if ($rewrite_urls) {
 				$line["message"] = rewrite_urls(htmlspecialchars($line["message"]));
 			}
+
 			$line["sender_color"] = color_of($line["sender"]);
 			$line["incoming"] = sql_bool_to_bool($line["incoming"]);
 			array_push($lines, $line);
 		}
 
 		return $lines;
-
 	}
 
 	function get_chan_data($link, $active_chan = false) {
@@ -1193,6 +1196,19 @@
 				}
 			}
 		}
+	}
+
+	function render_emoticons() {
+		global $emoticons_map;
+
+		print "<ul>";
+
+		foreach ($emoticons_map as $k => $e) {
+			print "<li>" . "<img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
+		}
+
+		print "</ul>";
+
 	}
 
 ?>

@@ -100,6 +100,43 @@ table.loginForm2 .innerLoginCell {
 	text-align : center;
 }
 
+#emoticon-prompt {
+	position : absolute;
+	right : 5px;
+	bottom : 5px;
+	color : gray;
+	width : 15px;
+	text-align : center;
+	cursor : pointer;
+}
+
+#emoticon-prompt:hover {
+	color : #88b0f0;
+}
+
+#emoticons {
+	position : absolute;
+	bottom : 30px;
+	right : 0px;
+	width : 200px;
+	height : 200px;
+	overflow : auto;
+	border : 1px solid #88b0f0;
+	background : #c0d8ff;
+}
+
+#emoticons ul {
+	list-style-type : none;
+	margin : 0px;
+	padding : 0px;
+}
+
+#emoticons ul li {
+	float : left;
+	margin : 0px;
+	padding : 5px;
+}
+
 #sidebar {
 	position : absolute;
 	overflow : auto;

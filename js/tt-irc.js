@@ -24,6 +24,7 @@ var hide_join_part = false;
 var startup_date;
 var id_history = [];
 var uniqid;
+var emoticons_map = false;
 
 var twitter_id = false;
 var timeout_id = false;
@@ -180,6 +181,7 @@ function init_second_stage(transport) {
 		update_delay_max = params.update_delay_max;
 		theme = params.theme;
 		uniqid = params.uniqid;
+		emoticons_map = params.emoticons;
 
 		startup_date = new Date();
 
@@ -893,14 +895,23 @@ function format_message(row_class, param, connection_id) {
 
 			if (is_hl) row_class += "HL";
 
-			param.message = param.message.replace(/\(oo\)/g,
-					"<img src='images/piggie_icon.png' height='16px' alt='(oo)'>");
+//			param.message = param.message.replace(/\(oo\)/g,
+//					"<img src='images/piggie_icon.png' height='16px' alt='(oo)'>");
 
 			param.message = param.message.replace(/(^| )_(.*?)_( |$)/g,
 					"$1<span class=\"underline\">$2</span>$3");
 
 //			param.message = param.message.replace(/(OO)/g,
 //					"<img src='images/piggie.png' alt='(oo)'>");
+
+			if (emoticons_map) {
+				for (key in emoticons_map) {
+					param.message = param.message.replace(
+							new RegExp(RegExp.escape(key)),
+						"<img src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+						" height=\""+emoticons_map[key][1]+"\">");
+				}
+			}
 
 			tmp = "<li id=\""+param.id+"\" "+
 				"class=\""+row_class+"\"><span class='timestamp'>" +
@@ -2201,5 +2212,15 @@ function title_timeout() {
 		window.setTimeout('title_timeout()', 2000);
 	} catch (e) {
 		exception_error("title_timeout", e);
+	}
+}
+
+function inject_text(str) {
+	try {
+		$("input-prompt").value += " " + str + " ";
+		$("input-prompt").focus();
+
+	} catch (e) {
+		exception_error("inject_text", e);
 	}
 }

@@ -1,6 +1,7 @@
 config.php
 messages.pot
 messages.mo
+emoticons/*
 lib/*.jar
 build.number
 lock/*.lock
