@@ -821,6 +821,14 @@ function toggle_connection(elem) {
 
 function format_message(row_class, param, connection_id) {
 	try {
+		if (emoticons_map && param.message) {
+			for (key in emoticons_map) {
+				param.message = param.message.replace(
+						new RegExp(RegExp.escape(key), "g"),
+					"<img title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+					" height=\""+emoticons_map[key][1]+"\">");
+			}
+		}
 
 		var is_hl = param.sender != conndata_last[connection_id].active_nick &&
 			is_highlight(connection_id, param);
@@ -903,15 +911,6 @@ function format_message(row_class, param, connection_id) {
 
 //			param.message = param.message.replace(/(OO)/g,
 //					"<img src='images/piggie.png' alt='(oo)'>");
-
-			if (emoticons_map) {
-				for (key in emoticons_map) {
-					param.message = param.message.replace(
-							new RegExp(RegExp.escape(key), "g"),
-						"<img title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
-						" height=\""+emoticons_map[key][1]+"\">");
-				}
-			}
 
 			tmp = "<li id=\""+param.id+"\" "+
 				"class=\""+row_class+"\"><span class='timestamp'>" +
