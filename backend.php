@@ -536,6 +536,15 @@
 		print json_encode(array("status" => get_twitter_lines($link, $connection_id)));
 		break;
 
+	case "emoticons":
+		global $emoticons_map;
+		if ($emoticons_map) {
+			print json_encode($emoticons_map);
+		} else {
+			print json_encode(false);
+		}
+		break;
+
 	case "logout":
 		logout_user();
 		header("Location: index.php");
