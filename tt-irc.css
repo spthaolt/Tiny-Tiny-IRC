@@ -117,9 +117,9 @@ table.loginForm2 .innerLoginCell {
 #emoticons {
 	position : absolute;
 	bottom : 30px;
-	right : 0px;
-	width : 200px;
-	height : 200px;
+	right : -156px;
+	width : 155px;
+	height : 250px;
 	overflow : auto;
 	border : 1px solid #88b0f0;
 	background : #c0d8ff;
