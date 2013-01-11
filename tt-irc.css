@@ -339,6 +339,10 @@ ul.sub-tabs {
 	white-space : nowrap;	
 }
 
+#topic #topic-input img {
+	max-height : 16px;
+}
+
 #topic div.wrapper {
 	border : 1px solid #88b0f0;
 	padding-right : 1px;
