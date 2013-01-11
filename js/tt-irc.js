@@ -1957,6 +1957,16 @@ function hotkey_handler(e) {
 					}
 				}
 
+				for (var k in emoticons_map) {
+					if (k.match("^" + comp_str)) {
+
+						str = str.replace(r, k) + " ";
+						elem.value = str;
+						return false;
+
+					}
+				}
+
 				for (var i = 0; i < commands.length; i++) {
 					if (commands[i].match("^" + comp_str.toLowerCase())) {
 
