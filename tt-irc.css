@@ -343,6 +343,11 @@ ul.sub-tabs {
 	max-height : 16px;
 }
 
+#topic #topic-input.disabled {
+	background : #f0f0f0;
+	color : gray;
+}
+
 #topic div.wrapper {
 	border : 1px solid #88b0f0;
 	padding-right : 1px;

@@ -620,6 +620,12 @@ function update_buffer(force_redraw) {
 			$("input-prompt").disabled = conndata_last[connection_id].status != 2;
 		}
 
+		if ($("topic-input").disabled) {
+			$("topic-input").addClassName("disabled");
+		} else {
+			$("topic-input").removeClassName("disabled");
+		}
+
 		$("nick").innerHTML = active_nicks[connection_id];
 
 		if (conndata_last && conndata_last[connection_id]) {
@@ -669,7 +675,7 @@ function change_topic(elem, evt) {
 		//if (key == 13) {
 			var tab = get_selected_tab();
 
-			if (!tab) return;
+			if (!tab || elem.disabled) return;
 
 			var topic = prompt(__("Topic for %c:").replace("%c", tab.getAttribute("channel")),
 				elem.title);
