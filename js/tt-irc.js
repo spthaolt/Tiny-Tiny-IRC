@@ -568,34 +568,38 @@ function update_buffer(force_redraw) {
 			}
 		}
 
+		$("topic-input").title = "";
+
+
 		if (topics[connection_id] && tab.getAttribute("tab_type") != "P") {
 			var topic = topics[connection_id][channel];
 
 			if (topic) {
 				if ($("topic-input").title != topics[connection_id][channel][0]) {
-					$("topic-input").value = topics[connection_id][channel][0];
+					$("topic-input").innerHTML = rewrite_emoticons(topics[connection_id][channel][0]);
+					$("topic-input").title = topics[connection_id][channel][0];
 				}
 
 				$("topic-input").disabled = conndata_last[connection_id].status != "2";
 			} else {
 
 				if (tab.getAttribute("tab_type") != "S") {
-					$("topic-input").value = "";
+					$("topic-input").innerHTML = "";
 					$("topic-input").disabled = true;
 
 				} else {
 					if (conndata_last[connection_id].status == CS_CONNECTED) {
-						$("topic-input").value = __("Connected to: ") +
+						$("topic-input").innerHTML = __("Connected to: ") +
 							conndata_last[connection_id]["active_server"];
 						$("topic-input").disabled = true;
 					} else {
-						$("topic-input").value = __("Disconnected.");
+						$("topic-input").innerHTML = __("Disconnected.");
 						$("topic-input").disabled = true;
 					}
 				}
 			}
 		} else if (tab.getAttribute("tab_type") == "S") {
-			$("topic-input").value = __("Disconnected.");
+			$("topic-input").innerHTML = __("Disconnected.");
 			$("topic-input").disabled = true;
 		} else {
 
@@ -607,7 +611,7 @@ function update_buffer(force_redraw) {
 				nick_ext_info = userhosts[nick][0] + '@' + userhosts[nick][1];
 			}
 
-			$("topic-input").value = __("Conversation with") + " " +
+			$("topic-input").innerHTML = __("Conversation with") + " " +
 				tab.getAttribute("channel") + " (" + nick_ext_info + ")";
 			$("topic-input").disabled = true;
 		}
@@ -615,8 +619,6 @@ function update_buffer(force_redraw) {
 		if (conndata_last && conndata_last[connection_id]) {
 			$("input-prompt").disabled = conndata_last[connection_id].status != 2;
 		}
-
-		$("topic-input").title = $("topic-input").value;
 
 		$("nick").innerHTML = active_nicks[connection_id];
 
@@ -664,43 +666,39 @@ function update_buffer(force_redraw) {
 
 function change_topic(elem, evt) {
 	try {
-
-     var key;
-
-		if(window.event)
-			key = window.event.keyCode;     //IE
-		else
-			key = evt.which;     //firefox
-
-		if (key == 13) {
-
+		//if (key == 13) {
 			var tab = get_selected_tab();
 
 			if (!tab) return;
 
-			var channel = tab.getAttribute("channel");
-			var connection_id = tab.getAttribute("connection_id")
+			var topic = prompt(__("Topic for %c:").replace("%c", tab.getAttribute("channel")),
+				elem.title);
 
-			if (tab.getAttribute("tab_type") == "S") channel = "---";
+			if (topic) {
 
-			topics[connection_id][channel] = elem.value;
+				var channel = tab.getAttribute("channel");
+				var connection_id = tab.getAttribute("connection_id")
 
-			var query = "?op=set-topic&topic=" + param_escape(elem.value) +
-				"&chan=" + param_escape(channel) +
-				"&connection=" + param_escape(connection_id) +
-				"&last_id=" + last_id;
+				if (tab.getAttribute("tab_type") == "S") channel = "---";
 
-			console.log(query);
+				topics[connection_id][channel] = topic;
 
-			show_spinner();
+				var query = "?op=set-topic&topic=" + param_escape(topic) +
+					"&chan=" + param_escape(channel) +
+					"&connection=" + param_escape(connection_id) +
+					"&last_id=" + last_id;
 
-			new Ajax.Request("backend.php", {
-			parameters: query,
-			onComplete: function (transport) {
-				hide_spinner();
-				handle_update(transport);
-			} });
-		}
+				console.log(query);
+
+				show_spinner();
+
+				new Ajax.Request("backend.php", {
+				parameters: query,
+				onComplete: function (transport) {
+					hide_spinner();
+					handle_update(transport);
+				} });
+			}
 
 	} catch (e) {
 		exception_error("change_topic", e);
@@ -822,12 +820,7 @@ function toggle_connection(elem) {
 function format_message(row_class, param, connection_id) {
 	try {
 		if (emoticons_map && param.message) {
-			for (key in emoticons_map) {
-				param.message = param.message.replace(
-						new RegExp(RegExp.escape(key), "g"),
-					"<img title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
-					" height=\""+emoticons_map[key][1]+"\">");
-			}
+			param.message = rewrite_emoticons(param.message);
 		}
 
 		var is_hl = param.sender != conndata_last[connection_id].active_nick &&
@@ -2231,5 +2224,23 @@ function inject_text(str) {
 
 	} catch (e) {
 		exception_error("inject_text", e);
+	}
+}
+
+function rewrite_emoticons(str) {
+	try {
+		if (emoticons_map) {
+			for (key in emoticons_map) {
+				str = str.replace(
+						new RegExp(RegExp.escape(key), "g"),
+					"<img title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+					" height=\""+emoticons_map[key][1]+"\">");
+			}
+		}
+
+		return str;
+
+	} catch (e) {
+		exception_error("rewrite_emoticons", e);
 	}
 }
