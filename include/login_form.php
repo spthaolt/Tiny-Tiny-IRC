@@ -6,7 +6,76 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<script type="text/javascript" src="lib/prototype.js"></script>
 	<script type="text/javascript" src="lib/scriptaculous/scriptaculous.js"></script>
-	<script type="text/javascript" src="functions.js"></script>
+	<script type="text/javascript" src="js/functions.js"></script>
+	<style type="text/css">
+	body {
+		padding : 2em;
+		font-size : 14px;
+	}
+
+	fieldset {
+		margin-left : auto;
+		margin-right : auto;
+		display : block;
+		width : 400px;
+		border-width : 0px;
+	}
+
+	input.input {
+		font-family : sans-serif;
+		font-size : medium;
+		border-spacing : 2px;
+		border : 1px solid #b5bcc7;
+		padding : 2px;
+	}
+
+	label {
+		width : 120px;
+		margin-right : 20px;
+		display : inline-block;
+		text-align : right;
+		color : gray;
+	}
+
+	div.header {
+		border-width : 0px 0px 1px 0px;
+		border-style : solid;
+		border-color : #88b0f0;
+		margin-bottom : 1em;
+		padding-bottom : 5px;
+	}
+
+	div.footer {
+		margin-top : 1em;
+		padding-top : 5px;
+		border-width : 1px 0px 0px 0px;
+		border-style : solid;
+		border-color : #88b0f0;
+		text-align : center;
+		color : gray;
+		font-size : 12px;
+	}
+
+	div.footer a {
+		color : gray;
+	}
+
+	div.footer a:hover {
+		color : #88b0f0;
+	}
+
+	div.row {
+		padding : 0px 0px 5px 0px;
+	}
+
+	div.row-error {
+		color : red;
+		text-align : center;
+		padding : 0px 0px 5px 0px;
+	}
+
+	</style>
+
 </head>
 
 <body>
@@ -16,32 +85,10 @@ function init() {
 	document.forms["loginForm"].login.focus();
 }
 
-function fetch_profiles() {
-	try {
-		return false; // no-op
-
-		var params = Form.serialize('loginForm');
-		var query = "?op=fetch-profiles&" + params;
-
-		if (query) {
-			new Ajax.Request("backend.php",	{
-				parameters: query,
-					onComplete: function(transport) {
-						if (transport.responseText.match("select")) {
-							$('profile_box').innerHTML = transport.responseText;
-						}
-				} });
-		}
-
-	} catch (e) {
-		exception_error("fetch-profiles", e);
-	}
-}
-
 function language_change(elem) {
 	try {
 		document.forms['loginForm']['click'].disabled = true;
-	
+
 		var lang = elem[elem.selectedIndex].value;
 		set_cookie("ttirc_lang", lang, <?php print SESSION_COOKIE_LIFETIME ?>);
 		window.location.reload();
@@ -53,6 +100,18 @@ function language_change(elem) {
 function gotoRegForm() {
 	window.location.href = "register.php";
 	return false;
+}
+
+function toggleEmoticons(elem) {
+	try {
+		var enabled = elem.checked;
+
+		set_cookie("ttirc_emoticons", !elem.checked,
+			<?php print SESSION_COOKIE_LIFETIME ?>);
+
+	} catch (e) {
+		exception_error("toggleEmoticons", e);
+	}
 }
 
 function validateLoginForm(f) {
@@ -84,69 +143,71 @@ Event.observe(window, 'load', function() {
 });
 </script>
 
+<div class='header'>
+	<img src="images/logo_big.png">
+</div>
+
 <form action="" method="POST" id="loginForm" name="loginForm" onsubmit="return validateLoginForm(this)">
 <input type="hidden" name="login_action" value="do_login">
 
-<table width="100%" class="loginForm2">
-<tr>
-	<td class="loginTop" valign="bottom" align="left">
-		<img src="images/logo_big.png" alt="Logo">
-	</td>
-</tr><tr>
-	<td align="center" valign="middle" class="loginMiddle" height="100%">
-		<?php if ($_SESSION['login_error_msg']) { ?>
-			<div class="loginError"><?php echo $_SESSION['login_error_msg'] ?></div>
-			<?php $_SESSION['login_error_msg'] = ""; ?>
+<div class='form'>
+
+	<fieldset>
+		<?php if ($_SESSION["login_error_msg"]) { ?>
+		<div class="row-error">
+			<?php echo $_SESSION["login_error_msg"] ?>
+		</div>
+			<?php $_SESSION["login_error_msg"] = ""; ?>
 		<?php } ?>
-		<table>
-			<tr><td align="right"><?php echo __("Login:") ?></td>
-			<td align="right"><input name="login" 
-				onchange="fetch_profiles()" onfocus="fetch_profiles()"
-				value="<?php echo $_SERVER["REMOTE_USER"] ?>"></td></tr>
-			<tr><td align="right"><?php echo __("Password:") ?></td>
-			<td align="right"><input type="password" name="password"
-				onchange="fetch_profiles()" onfocus="fetch_profiles()"
-				value="<?php echo $_SERVER["REMOTE_USER"] ?>"></td></tr>
-			<?php if (ENABLE_TRANSLATIONS) { ?>
-			<tr><td align="right"><?php echo __("Language:") ?></td>
-			<td align="right">
+		<div class="row">
+			<label><?php echo __("Login:") ?></label>
+			<input name="login" class="input"
+				style="width : 220px"
+				required="1"
+				value="<?php echo $_SESSION["fake_login"] ?>" />
+		</div>
+
+		<div class="row">
+			<label><?php echo __("Password:") ?></label>
+			<input type="password" name="password" required="1"
+					style="width : 220px" class="input"
+					value="<?php echo $_SESSION["fake_password"] ?>"/>
+		</div>
+
+		<div class="row">
+			<label><?php echo __("Language:") ?></label>
 			<?php
 				print_select_hash("language", $_COOKIE["ttirc_lang"], get_translations(),
-					"style='width : 100%' onchange='language_change(this)'");
-
+					"style='width : 220px' onchange='language_change(this)'");
 			?>
-			</td></tr>
-			<?php } ?>
+		</div>
 
-			<!-- <tr><td align="right"><?php echo __("Profile:") ?></td>
-			<td align="right" id="profile_box">
-			<select style='width : 100%' disabled='1'>
-				<option><?php echo __("Default profile") ?></option></select>
-			</td></tr> -->
+		<div class="row">
+			<label>&nbsp;</label>
+			<input name="disable_emoticons" id="disable_emoticons" type="checkbox"
+				onchange="toggleEmoticons(this)">
+			<label style='display : inline' for="disable_emoticons">
+				<?php echo __("Disable emoticons") ?></label>
+		</div>
 
-			<tr><td colspan="2" align="right" class="innerLoginCell">
-
-			<button type="submit" name='click'><?php echo __('Log in') ?></button>
-
+		<div class="row" style='text-align : right'>
+			<button type="submit"><?php echo __('Log in') ?></button>
 			<!-- <?php if (defined('ENABLE_REGISTRATION') && ENABLE_REGISTRATION) { ?>
-				<button onclick="return gotoRegForm()">
+				<button onclick="return gotoRegForm()" dojoType="dijit.form.Button">
 					<?php echo __("Create new account") ?></button>
 			<?php } ?> -->
+		</div>
 
-				<input type="hidden" name="action" value="login">
-				<input type="hidden" name="rt" 
-					value="<?php if ($return_to != 'none') { echo $return_to; } ?>">
-			</td></tr>
+	</fieldset>
+</div>
 
-		</table>
-	</td>
-</tr><tr>
-	<td align="center" class="loginBottom">
-		<a href="http://tt-rss.org/">Tiny Tiny IRC</a> &copy; 2010 <a href="http://fakecake.org/">Andrew Dolgov</a>
-	</td>
-</tr>
-
-</table>
+<div class='footer'>
+	<a href="http://tt-rss.org/tt-irc/">Tiny Tiny IRC</a>
+	<?php if (!defined('HIDE_VERSION')) { ?>
+		 v<?php echo VERSION ?>
+	<?php } ?>
+	&copy; 2010&ndash;<?php echo date('Y') ?> <a href="http://fakecake.org/">Andrew Dolgov</a>
+</div>
 
 </form>
 
