@@ -15,8 +15,10 @@
 	require_once "lib/ShortUrl.php";
 	require_once "lib/twitteroauth/twitteroauth.php";
 
-	if (file_exists("emoticons/map.php"))
-	  	require_once "emoticons/map.php";
+	require_once "emoticons/map.php";
+
+	if (file_exists("emoticons/map_local.php"))
+	  	require_once "emoticons/map_local.php";
 
 	define('SINGLE_USER_MODE', false);
 
