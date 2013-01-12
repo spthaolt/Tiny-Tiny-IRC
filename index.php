@@ -176,7 +176,7 @@
 	<div id="nick" onclick="change_nick()"></div>
 
 	<div id="input"><div class="wrapper">
-		<?php if (@$_REQUEST["ta"] == "0") { ?>
+		<?php if (@$_REQUEST["ta"] != "1") { ?>
 		<input disabled="true" rows="1" id="input-prompt"
 			onkeypress="return send(this, event)"/>
 		<?php } else { ?>
