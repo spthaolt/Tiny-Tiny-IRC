@@ -196,6 +196,7 @@ table.loginForm2 .innerLoginCell {
 	font-size : 14px;
 	text-indent : 5px;
 	padding-top : 2px;
+	resize : none;
 }
 
 #toolbar {
