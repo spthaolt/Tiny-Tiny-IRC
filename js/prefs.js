@@ -28,7 +28,7 @@ function save_prefs(callback) {
 	} catch (e) {
 		exception_error("save_prefs", e);
 	}
-	
+
 	return false;
 }
 
@@ -79,7 +79,7 @@ function select_row(elem) {
 	} catch (e) {
 		exception_error("select_row", e);
 	}
-}	
+}
 
 function get_selected_rows(elem) {
 	try {
@@ -123,7 +123,7 @@ function delete_connection() {
 				show_spinner();
 
 				new Ajax.Request("backend.php", {
-				parameters: query, 
+				parameters: query,
 				onComplete: function (transport) {
 					$("connections-list").innerHTML = transport.responseText;
 					hide_spinner();
@@ -149,7 +149,7 @@ function create_connection() {
 			show_spinner();
 
 			new Ajax.Request("backend.php", {
-			parameters: "?op=create-connection&title=" + 
+			parameters: "?op=create-connection&title=" +
 				param_escape(title),
 			onComplete: function (transport) {
 				$("connections-list").innerHTML = transport.responseText;
@@ -208,7 +208,7 @@ function delete_server() {
 					ids.push(rows[i].getAttribute("server_id"));
 				}
 
-				var query = "?op=delete-server&ids=" + param_escape(ids.toString()) + 
+				var query = "?op=delete-server&ids=" + param_escape(ids.toString()) +
 					"&connection_id=" + param_escape(connection_id);
 
 				console.log(query);
@@ -216,7 +216,7 @@ function delete_server() {
 				show_spinner();
 
 				new Ajax.Request("backend.php", {
-				parameters: query, 
+				parameters: query,
 				onComplete: function (transport) {
 					$("servers-list").innerHTML = transport.responseText;
 					hide_spinner();
@@ -241,7 +241,7 @@ function create_server() {
 
 			var connection_id = document.forms['prefs_conn_form'].connection_id.value;
 
-			var query = "?op=create-server&data=" + param_escape(data) + 			
+			var query = "?op=create-server&data=" + param_escape(data) +
 				"&connection_id=" + param_escape(connection_id);
 
 			console.log(query);
@@ -249,7 +249,7 @@ function create_server() {
 			show_spinner();
 
 			new Ajax.Request("backend.php", {
-			parameters: query, 
+			parameters: query,
 			onComplete: function (transport) {
 
 				var obj = _eval(transport.responseText, true);
@@ -329,22 +329,6 @@ function configure_notifications() {
 		} else {
 			alert(__("Your browser doesn't seem to support desktop notifications."));
 		}
-
-	} catch (e) {
-		exception_error("configure_notifications", e);
-	}
-}
-
-function configure_twitter() {
-	try {
-
-		save_prefs(function (obj) {
-			new Ajax.Request("backend.php", {
-			parameters: "?op=prefs-edit-twitter",
-			onComplete: function (transport) {
-				infobox_callback2(transport);
-			} });
-		});
 
 	} catch (e) {
 		exception_error("configure_notifications", e);

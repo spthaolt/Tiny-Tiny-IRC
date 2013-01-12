@@ -514,28 +514,6 @@
 
 		break;
 
-	case "prefs-edit-twitter":
-		twitter_editor($link);
-		break;
-
-	case "tweet-dlg":
-		$text = $_REQUEST['text'];
-
-		twitter_dialog($link, $text);
-		break;
-
-	case "send-tweet":
-		$text = $_REQUEST['text'];
-
-		print json_encode(array("status" => (int) twitter_send_update($link, $text)));
-		break;
-
-	case "twitter-update":
-		$connection_id = db_escape_string($_REQUEST["connection"]);
-
-		print json_encode(array("status" => get_twitter_lines($link, $connection_id)));
-		break;
-
 	case "emoticons":
 		global $emoticons_map;
 		if ($emoticons_map) {

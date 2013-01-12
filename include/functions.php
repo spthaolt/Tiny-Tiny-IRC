@@ -13,7 +13,6 @@
 	require_once "db-prefs.php";
 
 	require_once "lib/ShortUrl.php";
-	require_once "lib/twitteroauth/twitteroauth.php";
 
 	require_once "emoticons/map.php";
 
@@ -174,8 +173,7 @@
 				/* bump login timestamp */
 
 				if (get_schema_version($link) >= 3) {
-					db_query($link, "UPDATE ttirc_users SET last_login = NOW(),
-				  		twitter_last_id = NULL WHERE id = " .
+					db_query($link, "UPDATE ttirc_users SET last_login = NOW() WHERE id = " .
 						$_SESSION["uid"]);
 				}
 
@@ -1029,152 +1027,12 @@
 
 	}
 
-	function twitter_dialog($link, $text) {
-
-		if (mb_strlen($text, 'utf-8') > 140) {
-			$key = create_snippet($link, $text);
-			$shorturl = new ShortUrl();
-			$snippet_url = $shorturl->create(get_self_url_prefix() . '/snippet.php?key=' . $key, 'isgd');
-			$tweet = truncate_string($text, 90) . " $snippet_url";
-		} else {
-			$tweet = $text;
-		}
-
-		$counter = 140 - mb_strlen($tweet, 'utf-8');
-
-		?>
-		<div id="infoBoxTitle"><?php echo __("Send Tweet") ?></div>
-		<div class="infoBoxContents">
-			<div id="mini-notice" style='display : none'>&nbsp;</div>
-
-			<form id="new_tweet_form" onsubmit="return false;">
-
-			<input type="hidden" name="op" value="send-tweet"/>
-
-			<div class="dlgSec"><?php echo __("Your tweet:") ?></div>
-
-			<textarea onkeyup="tweet_update_counter(this)" name="text" class="tweet-text"><?php echo $tweet ?></textarea><p>
-
-			<?php if ($snippet_url) { ?>
-
-			<div class="dlgSec"><?php echo __("Full IRC snippet:") ?></div>
-			<textarea disabled="1" class="tweet-snippet"><?php echo $text ?></textarea><p>
-
-			<?php } ?>
-
-			<div class="dlgButtons">
-				<div style='float : left'>
-					<input id="tweet-dlg-counter" disabled="1" name="counter" value="<?php echo $counter ?>">
-				</div>
-				<button type="submit" onclick="tweet_selection_do()"><?php echo __('Tweet this!') ?></button>
-				<button type="submit" onclick="close_infobox()"><?php echo __('Cancel') ?></button></div>
-			</div>
-
-			</form>
-
-		</div>
-
-		<?php
-
-	}
-
 	function truncate_string($str, $max_len) {
 		if (mb_strlen($str, "utf-8") > $max_len - 3) {
 			return trim(mb_substr($str, 0, $max_len, "utf-8")) . "...";
 		} else {
 			return $str;
 		}
-	}
-
-	function twitter_send_update($link, $text) {
-
-		$result = db_query($link, "SELECT twitter_oauth FROM ttirc_users
-			WHERE id = ".$_SESSION['uid']);
-
-		$access_token = json_decode(db_fetch_result($result, 0, 'twitter_oauth'), true);
-
-		if ($access_token) {
-
-			/* Create a TwitterOauth object with consumer/user tokens. */
-			$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
-
-			$connection->post('statuses/update', array('status' => $text));
-
-			return true;
-		}
-
-		return false;
-	}
-
-	function twitter_configured($link) {
-		$result = db_query($link, "SELECT COUNT(*) AS cid FROM ttirc_users
-			WHERE twitter_oauth IS NOT NULL AND twitter_oauth != '' AND
-			id = " . $_SESSION['uid']);
-
-		return db_fetch_result($result, 0, "cid") != 0;
-	}
-
-	function get_twitter_lines($link, $connection_id) {
-
-		$result = db_query($link, "SELECT twitter_oauth FROM ttirc_users
-			WHERE id = ".$_SESSION['uid']);
-
-		$access_token = json_decode(db_fetch_result($result, 0, 'twitter_oauth'), true);
-
-		if ($access_token && CONSUMER_KEY != '') {
-
-			/* Create a TwitterOauth object with consumer/user tokens. */
-			$connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
-
-			$connection->decode_json = false;
-
-			$params = array("count" => 10, 'trim_user' => 0);
-
-#			if ($_SESSION['twitter_last_id'])
-#				$params['since_id'] = $_SESSION['twitter_last_id'];
-#			else
-#				$params['count'] = 1;
-
-			$result = db_query($link, "SELECT twitter_last_id FROM ttirc_users
-				WHERE id = " . $_SESSION['uid']);
-
-			$since_id = db_fetch_result($result, 0, 'twitter_last_id');
-
-			if ($since_id) {
-				$params['since_id'] = $since_id;
-			} else {
-				$params['count'] = 1;
-			}
-
-			$result = $connection->get('statuses/friends_timeline', $params);
-
-			$lines = 0;
-
-			if ($result) {
-				$result = array_reverse(json_decode($result, true));
-
-				foreach ($result as $line) {
-					if ($since_id && is_array($line['user'])) {
-						$message = 'TWITTER_MSG:' . $line['id_str'] .
-							':' . $line['user']['screen_name'] . ':' . $line['text'];
-
-						push_message($link, $connection_id, '---', $message,
-							true, MSGT_EVENT, $line['user']['screen_name']);
-
-						++$lines;
-					}
-
-					$id_str = db_escape_string($line['id_str']);
-
-					db_query($link, "UPDATE ttirc_users
-						SET twitter_last_id = '$id_str' WHERE id = " . $_SESSION['uid']);
-				}
-			}
-
-			return $lines;
-		}
-
-		return -1;
 	}
 
 	function get_random_bytes($length) {
