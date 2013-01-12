@@ -861,10 +861,6 @@ function toggle_connection(elem) {
 
 function format_message(row_class, param, connection_id) {
 	try {
-		if (emoticons_map && param.message) {
-			param.message = rewrite_emoticons(param.message);
-		}
-
 		var is_hl = param.sender != conndata_last[connection_id].active_nick &&
 			is_highlight(connection_id, param);
 
@@ -1574,6 +1570,10 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 			toggle_li_class(channel);
 
 			var tmp_html = format_message(li_classes[channel], message, connection_id);
+
+			if (emoticons_map) {
+				tmp_html[1] = rewrite_emoticons(tmp_html[1]);
+			}
 
 			tmp_html.push(message.force_display);
 
