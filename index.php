@@ -144,9 +144,11 @@
 
 <div id="content">
 	<div id="topic"><div class="wrapper">
-		<div id="topic-input" onclick="change_topic(this,event)"></div>
-		<!-- <input disabled onkeypress="change_topic(this, event)"
-			id="topic-input" value=""> --></div>
+		<div id="topic-input" onclick="prepare_change_topic(this)"></div>
+
+		<input onkeypress="change_topic_real(this, event)" onblur="hide_topic_input()"
+			id="topic-input-real" value="" style="display : none">
+		</div>
 	</div>
 	<div id="log"><ul id="log-list"></ul></div>
 

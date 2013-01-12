@@ -670,41 +670,72 @@ function update_buffer(force_redraw) {
 	}
 }
 
-function change_topic(elem, evt) {
+function hide_topic_input() {
 	try {
-		//if (key == 13) {
+		Element.hide("topic-input-real");
+		Element.show("topic-input");
+
+	} catch (e) {
+		exception_error("hide_topic_input", e);
+	}
+}
+
+function prepare_change_topic(elem) {
+	try {
+		var tab = get_selected_tab();
+		if (!tab || elem.disabled) return;
+
+		Element.hide("topic-input");
+		Element.show("topic-input-real");
+
+		$("topic-input-real").value = $("topic-input").title;
+		$("topic-input-real").focus();
+
+	} catch (e) {
+		exception_error("change_topic", e);
+	}
+}
+
+function change_topic_real(elem, evt) {
+	try {
+      var key;
+
+		if (window.event)
+			key = window.event.keyCode;     //IE
+		else
+			key = evt.which;     //firefox
+
+		if (key == 13) {
 			var tab = get_selected_tab();
 
 			if (!tab || elem.disabled) return;
 
-			var topic = prompt(__("Topic for %c:").replace("%c", tab.getAttribute("channel")),
-				elem.title);
+			var topic = elem.value;
 
-			if (topic) {
+			var channel = tab.getAttribute("channel");
+			var connection_id = tab.getAttribute("connection_id")
 
-				var channel = tab.getAttribute("channel");
-				var connection_id = tab.getAttribute("connection_id")
+			if (tab.getAttribute("tab_type") == "S") channel = "---";
 
-				if (tab.getAttribute("tab_type") == "S") channel = "---";
+			topics[connection_id][channel] = topic;
 
-				topics[connection_id][channel] = topic;
+			var query = "?op=set-topic&topic=" + param_escape(topic) +
+				"&chan=" + param_escape(channel) +
+				"&connection=" + param_escape(connection_id) +
+				"&last_id=" + last_id;
 
-				var query = "?op=set-topic&topic=" + param_escape(topic) +
-					"&chan=" + param_escape(channel) +
-					"&connection=" + param_escape(connection_id) +
-					"&last_id=" + last_id;
+			console.log(query);
 
-				console.log(query);
+			show_spinner();
 
-				show_spinner();
-
-				new Ajax.Request("backend.php", {
-				parameters: query,
-				onComplete: function (transport) {
-					hide_spinner();
-					handle_update(transport);
-				} });
-			}
+			new Ajax.Request("backend.php", {
+			parameters: query,
+			onComplete: function (transport) {
+				hide_spinner();
+				handle_update(transport);
+				elem.blur();
+			} });
+		}
 
 	} catch (e) {
 		exception_error("change_topic", e);
