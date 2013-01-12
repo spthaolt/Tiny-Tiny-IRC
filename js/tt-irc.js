@@ -787,6 +787,11 @@ function send(elem, evt) {
 
 			set_window_active(true);
 
+			window.setTimeout(function() {
+				elem.value = '';
+			}, 5);
+
+			return false;
 		}
 
 	} catch (e) {
