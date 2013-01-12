@@ -2271,7 +2271,7 @@ function inject_text(str) {
 
 function rewrite_emoticons(str) {
 	try {
-		if (emoticons_map) {
+		if (emoticons_map && getURLParam('e') != "0") {
 			for (key in emoticons_map) {
 				str = str.replace(
 						new RegExp(RegExp.escape(key), "g"),
