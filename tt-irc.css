@@ -780,6 +780,10 @@ div.dlgSecCont label.fixed {
 	padding-right : 10px;
 }
 
+div.dlgSecCont input {
+	margin-bottom : 2px;
+}
+
 div#mini-notice {
 	font-size : 11px;
 	color : black;

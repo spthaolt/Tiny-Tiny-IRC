@@ -179,7 +179,7 @@
 
 		<div class="dlgSecCont">
 			<label class='fixed'><?php echo __('Title:') ?></label>
-			<input name="title" size="30" value="<?php echo $line['title'] ?>">
+			<input name="title" required="1" size="30" value="<?php echo $line['title'] ?>">
 			<br clear='left'/>
 
 			<label class='fixed'><?php echo __('Server password:') ?></label>
@@ -323,15 +323,15 @@
 
 		<div class="dlgSecCont">
 			<label class="fixed"><?php echo __('Real name:') ?></label>
-			<input name="realname" size="30" value="<?php echo $realname ?>">
+			<input name="realname" required="1" size="30" value="<?php echo $realname ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Nickname:') ?></label>
-			<input name="nick" size="30" value="<?php echo $nick ?>">
+			<input name="nick" required="1" size="30" value="<?php echo $nick ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('E-mail:') ?></label>
-			<input name="email" size="30" value="<?php echo $email ?>">
+			<input name="email" required="1" size="30" value="<?php echo $email ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Quit message:') ?></label>
