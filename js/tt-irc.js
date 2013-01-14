@@ -240,7 +240,10 @@ function handle_update(transport) {
 
 		if (!rv) {
 			console.log("received null object from server, will try again.");
+			Element.show("net-alert");
 			return true;
+		} else {
+			Element.hide("net-alert");
 		}
 
 		if (!handle_error(rv, transport)) return false;

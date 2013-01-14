@@ -113,6 +113,10 @@
 		alt="spinner" title="Loading..."
 		src="<?php echo theme_image($link, 'images/indicator_tiny.gif') ?>"/>
 
+	<img id="net-alert" style="display : none"
+		title="<?php echo __("Connection problem") ?>"
+		src="<?php echo theme_image($link, 'images/alert.png') ?>"/>
+
 	<?php if (!SINGLE_USER_MODE) { ?>
 			<span class="hello"><?php echo __('Hello,') ?> <b><?php echo $_SESSION["name"] ?></b></span> |
 	<?php } ?>
