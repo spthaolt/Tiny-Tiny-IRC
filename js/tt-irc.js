@@ -434,7 +434,7 @@ function update_buffer(force_redraw) {
 
 		if (nicklists[connection_id][channel]) {
 			for (var i = 0; i < nicklists[connection_id][channel].length; i++) {
-				autocomplete.push(nicklists[connection_id][channel][i]);
+				autocomplete.push(nicklists[connection_id][channel][i].replace(/^[\@\+]/, ""));
 			}
 		}
 
