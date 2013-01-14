@@ -859,4 +859,34 @@ span.italic {
 	font-style : italic;
 }
 
+div.autocomplete {
+	margin : 0px;  
+	padding : 0px;  
+	width : 100px;
+	background : #ffffff;
+	border : 1px solid #88b0f0;
+	bottom : 40px;
+	position : absolute;
+}
+
+div.autocomplete ul {
+	margin : 0px;
+	padding : 0px;
+	list-style-type : none;
+}
+
+div.autocomplete ul li.selected { 
+	background-color : #88b0f0;
+	color : white;
+}
+
+div.autocomplete ul li {
+	margin : 0;
+	padding : 2px;
+	height : 16px;
+	font-size : 9px;
+	display : block;
+	list-style-type : none;
+	cursor : pointer;
+}
 

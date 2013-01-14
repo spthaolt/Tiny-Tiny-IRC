@@ -175,14 +175,14 @@
 	<div id="input"><div class="wrapper">
 		<?php if (@$_REQUEST["ta"] != "1") { ?>
 		<input disabled="true" rows="1" id="input-prompt"
-			onkeypress="return send(this, event)"/>
+			_onkeypress="return send(this, event)"/>
 		<?php } else { ?>
 		<textarea disabled="true" rows="1" id="input-prompt"
 			onkeypress="send(this, event)"/></textarea>
 		<?php } ?>
-		<div class="autocomplete" id="input-suggest" style="display:none"></div>
 		<div onclick="Element.toggle('emoticons')" class="emoticon_prompt" id="emoticon-prompt">:)</div>
 		<div style="display : none" id="emoticons"><?php render_emoticons() ?></div>
+		<div class="autocomplete" id="input-suggest" style="display:none"></div>
 	</div></div>
 </div>
 

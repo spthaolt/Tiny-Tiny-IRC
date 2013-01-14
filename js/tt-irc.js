@@ -24,6 +24,8 @@ var startup_date;
 var id_history = [];
 var uniqid;
 var emoticons_map = false;
+var autocomplete = [];
+var autocompleter = false;
 
 var timeout_id = false;
 var update_id = false;
@@ -187,6 +189,12 @@ function init_second_stage(transport) {
 
 		$("input-prompt").value = "";
 		$("input-prompt").focus();
+
+		autocompleter = new Autocompleter.Local("input-prompt",
+				"input-suggest", autocomplete, {tokens: ' ',
+					choices : 5,
+					afterUpdateElement: function(element) { element.value += " " ; },
+					onShow: function(element, update) { Element.show(update); return true; } });
 
 		console.log("init_second_stage");
 
@@ -417,6 +425,20 @@ function update_buffer(force_redraw) {
 		var line_id = 0;
 
 		if (test_height - $("log").scrollTop < 50) scroll_buffer = true;
+
+		autocomplete = [];
+
+		for (key in emoticons_map) {
+			autocomplete.push(key);
+		}
+
+		if (nicklists[connection_id][channel]) {
+			for (var i = 0; i < nicklists[connection_id][channel].length; i++) {
+				autocomplete.push(nicklists[connection_id][channel][i]);
+			}
+		}
+
+		autocompleter.options.array = autocomplete;
 
 		if (buffers[connection_id]) {
 
@@ -743,7 +765,7 @@ function send(elem, evt) {
 		else
 			key = evt.which;     //firefox
 
-		if (key == 13) {
+		if (key == 13 && !Element.visible("input-suggest")) {
 
 			var tab = get_selected_tab();
 
@@ -1926,7 +1948,7 @@ function hotkey_handler(e) {
 		}
 
 		if (keycode == 9) {
-			var tab = get_selected_tab();
+			/* var tab = get_selected_tab();
 
 			var elem = $("input-prompt");
 			var str = elem.value;
@@ -1983,7 +2005,7 @@ function hotkey_handler(e) {
 					}
 				}
 
-			}
+			} */
 
 			return false;
 		}
