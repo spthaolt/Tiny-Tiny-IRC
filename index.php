@@ -91,8 +91,6 @@
 
 <div id="dialog_overlay" style="display : none"> </div>
 
-<ul id="debug_output" style='display : none'><li>&nbsp;</li></ul>
-
 <div id="infoBoxShadow" style="display : none"><div id="infoBox">&nbsp;</div></div>
 
 <div id="errorBoxShadow" style="display : none">
@@ -144,7 +142,9 @@
 		<div id="topic-input" onclick="prepare_change_topic(this)"></div>
 
 		<input onkeypress="change_topic_real(this, event)" onblur="hide_topic_input()"
-			id="topic-input-real" value="" style="display : none">
+			id="topic-input-real" value="" style="display : none"/>
+
+			<div class="autocomplete" id="topic-suggest" style="display:none"></div>
 		</div>
 	</div>
 	<div id="log"><ul id="log-list"></ul></div>

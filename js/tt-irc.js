@@ -26,6 +26,7 @@ var uniqid;
 var emoticons_map = false;
 var autocomplete = [];
 var autocompleter = false;
+var topic_autocompleter = false;
 
 var timeout_id = false;
 var update_id = false;
@@ -196,6 +197,13 @@ function init_second_stage(transport) {
 					choices : 5,
 					afterUpdateElement: function(element) { element.value += " " ; },
 					onShow: function(element, update) { Element.show(update); return true; } });
+
+			topic_autocompleter = new Autocompleter.Local("topic-input-real",
+				"topic-suggest", autocomplete, {tokens: ' ',
+					choices : 5,
+					afterUpdateElement: function(element) { element.value += " " ; },
+					onShow: function(element, update) { Element.show(update); return true; } });
+
 		}
 
 		console.log("init_second_stage");
@@ -442,6 +450,7 @@ function update_buffer(force_redraw) {
 			}
 
 			autocompleter.options.array = autocomplete;
+			topic_autocompleter.options.array = autocomplete;
 		}
 
 		if (buffers[connection_id]) {
@@ -722,7 +731,7 @@ function change_topic_real(elem, evt) {
 		else
 			key = evt.which;     //firefox
 
-		if (key == 13) {
+		if (key == 13 && !Element.visible("topic-suggest")) {
 			var tab = get_selected_tab();
 
 			if (!tab || elem.disabled) return;

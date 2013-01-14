@@ -859,13 +859,22 @@ span.italic {
 	font-style : italic;
 }
 
+#input-suggest {
+	bottom : 40px;
+}
+
+#topic-suggest {
+	top : 45px;
+	left : 15px;
+	z-index : 1;
+}
+
 div.autocomplete {
 	margin : 0px;  
 	padding : 0px;  
 	width : 100px;
 	background : #ffffff;
 	border : 1px solid #88b0f0;
-	bottom : 40px;
 	position : absolute;
 }
 
