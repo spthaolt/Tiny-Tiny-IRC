@@ -124,13 +124,6 @@
 
 	| <a href="#" onclick="join_channel()"><?php echo __('Join channel') ?></a>
 
-	<?php if (CONSUMER_KEY != '' && twitter_configured($link)) { ?>
-
-	| <a href="#" title="<?php echo __('Tweet selected text') ?>"
-				onclick="tweet_selection()"><?php echo __('Tweet') ?></a>
-
-	<?php } ?>
-
 	<?php if (!SINGLE_USER_MODE) { ?>
 			| <a href="backend.php?op=logout"><?php echo __('Logout') ?></a>
 	<?php } ?>
