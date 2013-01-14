@@ -114,7 +114,7 @@
 		src="<?php echo theme_image($link, 'images/indicator_tiny.gif') ?>"/>
 
 	<img id="net-alert" style="display : none"
-		title="<?php echo __("Connection problem") ?>"
+		title="<?php echo __("Communication problem with the server.") ?>"
 		src="<?php echo theme_image($link, 'images/alert.png') ?>"/>
 
 	<?php if (!SINGLE_USER_MODE) { ?>
