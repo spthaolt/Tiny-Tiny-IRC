@@ -165,7 +165,7 @@ try {
 function init_second_stage(transport) {
 	try {
 
-		var params = _eval(transport.responseText);
+		var params = JSON.parse(transport.responseText);
 
 		if (!handle_error(params, transport)) return false;
 
@@ -215,7 +215,7 @@ function init() {
 		show_spinner();
 
 		new Ajax.Request("backend.php", {
-		parameters: "?op=init",
+		parameters: "op=init",
 		onComplete: function (transport) {
 			init_second_stage(transport);
 		} });
@@ -225,18 +225,10 @@ function init() {
 	}
 }
 
-function _eval(data, silent) {
-	try {
-		return eval("(" + data + ")");
-	} catch (e) {
-		if (!silent) exception_error("_eval", e, data);
-	}
-}
-
 function handle_update(transport) {
 	try {
 
-		var rv = _eval(transport.responseText, true);
+		var rv = JSON.parse(transport.responseText);
 
 		if (!rv) {
 			console.log("received null object from server, will try again.");
@@ -339,7 +331,7 @@ function timeout() {
 
 function update(init) {
 	try {
-		var query = "?op=update&last_id=" + last_id + "&uniqid=" + uniqid;
+		var query = "op=update&last_id=" + last_id + "&uniqid=" + uniqid;
 
 		if (init) query += "&init=" + init;
 
@@ -718,7 +710,7 @@ function change_topic_real(elem, evt) {
 
 			topics[connection_id][channel] = topic;
 
-			var query = "?op=set-topic&topic=" + param_escape(topic) +
+			var query = "op=set-topic&topic=" + param_escape(topic) +
 				"&chan=" + param_escape(channel) +
 				"&connection=" + param_escape(connection_id) +
 				"&last_id=" + last_id;
@@ -765,7 +757,7 @@ function send(elem, evt) {
 				buffers[tab.getAttribute("connection_id")][channel] = [];
 				update_buffer(true);
 			} else {
-				var query = "?op=send&message=" + param_escape(elem.value) +
+				var query = "op=send&message=" + param_escape(elem.value) +
 					"&chan=" + param_escape(channel) +
 					"&connection=" + param_escape(tab.getAttribute("connection_id")) +
 					"&last_id=" + last_id + "&tab_type=" + tab.getAttribute("tab_type");
@@ -839,7 +831,7 @@ function toggle_connection(elem) {
 
 //		elem.disabled = true;
 
-		var query = "?op=toggle-connection&set_enabled=" +
+		var query = "op=toggle-connection&set_enabled=" +
 			param_escape(elem.getAttribute("set_enabled")) +
 			"&connection_id=" + param_escape(elem.getAttribute("connection_id"));
 
@@ -1142,7 +1134,7 @@ function send_command(command) {
 
 			if (tab.getAttribute("tab_type") == "S") channel = "---";
 
-			var query = "?op=send&message=" + param_escape(command) +
+			var query = "op=send&message=" + param_escape(command) +
 				"&channel=" + param_escape(channel) +
 				"&connection=" + param_escape(tab.getAttribute("connection_id")) +
 				"&last_id=" + last_id;
@@ -1245,7 +1237,7 @@ function close_tab(elem) {
 
 		if (tab && confirm(__("Close this tab?"))) {
 
-			var query = "?op=part-channel" +
+			var query = "op=part-channel" +
 				"&chan=" + param_escape(tab.getAttribute("channel")) +
 				"&connection=" + param_escape(tab.getAttribute("connection_id")) +
 				"&last_id=" + last_id;
@@ -1278,7 +1270,7 @@ function query_user(elem) {
 
 		if (tab && confirm(pr)) {
 
-			var query = "?op=query-user&nick=" + param_escape(nick) +
+			var query = "op=query-user&nick=" + param_escape(nick) +
 				"&connection=" + param_escape(tab.getAttribute("connection_id")) +
 				"&last_id=" + last_id;
 
@@ -2158,7 +2150,7 @@ function tweet_selection() {
 		show_spinner();
 
 		new Ajax.Request("backend.php", {
-		parameters: "?op=tweet-dlg&text=" + param_escape(sel),
+		parameters: "op=tweet-dlg&text=" + param_escape(sel),
 		onComplete: function (transport) {
 			infobox_callback2(transport);
 			hide_spinner();

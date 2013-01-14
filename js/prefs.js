@@ -8,7 +8,7 @@ function save_prefs(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = _eval(transport.responseText, true);
+			var obj = JSON.parse(transport.responseText);
 
 			if (obj) {
 				if (obj.error) {
@@ -37,7 +37,7 @@ function show_prefs() {
 		show_spinner();
 
 		new Ajax.Request("backend.php", {
-		parameters: "?op=prefs",
+		parameters: "op=prefs",
 		onComplete: function (transport) {
 			infobox_callback2(transport);
 			hide_spinner();
@@ -53,7 +53,7 @@ function edit_connection(id) {
 
 		save_prefs(function (obj) {
 			new Ajax.Request("backend.php", {
-			parameters: "?op=prefs-edit-con&id=" + id,
+			parameters: "op=prefs-edit-con&id=" + id,
 			onComplete: function (transport) {
 				infobox_callback2(transport);
 			} });
@@ -116,7 +116,7 @@ function delete_connection() {
 					ids.push(rows[i].getAttribute("connection_id"));
 				}
 
-				var query = "?op=delete-connection&ids=" + param_escape(ids.toString());
+				var query = "op=delete-connection&ids=" + param_escape(ids.toString());
 
 				console.log(query);
 
@@ -149,7 +149,7 @@ function create_connection() {
 			show_spinner();
 
 			new Ajax.Request("backend.php", {
-			parameters: "?op=create-connection&title=" +
+			parameters: "op=create-connection&title=" +
 				param_escape(title),
 			onComplete: function (transport) {
 				$("connections-list").innerHTML = transport.responseText;
@@ -173,7 +173,7 @@ function save_conn(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = _eval(transport.responseText, true);
+			var obj = JSON.parse(transport.responseText);
 
 			if (obj && obj.error) {
 				mini_error(obj.error);
@@ -208,7 +208,7 @@ function delete_server() {
 					ids.push(rows[i].getAttribute("server_id"));
 				}
 
-				var query = "?op=delete-server&ids=" + param_escape(ids.toString()) +
+				var query = "op=delete-server&ids=" + param_escape(ids.toString()) +
 					"&connection_id=" + param_escape(connection_id);
 
 				console.log(query);
@@ -241,7 +241,7 @@ function create_server() {
 
 			var connection_id = document.forms['prefs_conn_form'].connection_id.value;
 
-			var query = "?op=create-server&data=" + param_escape(data) +
+			var query = "op=create-server&data=" + param_escape(data) +
 				"&connection_id=" + param_escape(connection_id);
 
 			console.log(query);
@@ -252,7 +252,7 @@ function create_server() {
 			parameters: query,
 			onComplete: function (transport) {
 
-				var obj = _eval(transport.responseText, true);
+				var obj = JSON.parse(transport.responseText);
 
 				if (obj && obj.error) {
 					mini_error(obj.error);
@@ -275,7 +275,7 @@ function customize_css() {
 
 		save_prefs(function (obj) {
 			new Ajax.Request("backend.php", {
-			parameters: "?op=prefs-customize-css",
+			parameters: "op=prefs-customize-css",
 			onComplete: function (transport) {
 				infobox_callback2(transport);
 			} });
@@ -296,7 +296,7 @@ function save_css(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = _eval(transport.responseText, true);
+			var obj = JSON.parse(transport.responseText);
 
 			if (obj && obj.error) {
 				mini_error(obj.error);
@@ -321,7 +321,7 @@ function configure_notifications() {
 		if (window.webkitNotifications) {
 			save_prefs(function (obj) {
 				new Ajax.Request("backend.php", {
-				parameters: "?op=prefs-edit-notify",
+				parameters: "op=prefs-edit-notify",
 				onComplete: function (transport) {
 					infobox_callback2(transport);
 				} });
@@ -345,7 +345,7 @@ function save_notifications(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = _eval(transport.responseText, true);
+			var obj = JSON.parse(transport.responseText);
 
 			if (obj && obj.error) {
 				mini_error(obj.error);

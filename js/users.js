@@ -3,7 +3,7 @@ function show_users() {
 		show_spinner();
 
 		new Ajax.Request("backend.php", {
-		parameters: "?op=users",
+		parameters: "op=users",
 		onComplete: function (transport) {
 			infobox_callback2(transport);
 			hide_spinner();
@@ -23,10 +23,10 @@ function create_user() {
 			show_spinner();
 
 			new Ajax.Request("backend.php", {
-			parameters: "?op=create-user&login=" + 
+			parameters: "op=create-user&login=" + 
 				param_escape(login),
 			onComplete: function (transport) {
-				var obj = _eval(transport.responseText);
+				var obj = JSON.parse(transport.responseText);
 
 				var message = obj[0];
 				var data = obj[1];
@@ -57,7 +57,7 @@ function delete_user() {
 					ids.push(rows[i].getAttribute("user_id"));
 				}
 
-				var query = "?op=delete-user&ids=" + param_escape(ids.toString());
+				var query = "op=delete-user&ids=" + param_escape(ids.toString());
 
 				console.log(query);
 
@@ -90,7 +90,7 @@ function reset_user() {
 
 				var id = rows[0].getAttribute("user_id");
 
-				var query = "?op=reset-password&id=" + param_escape(id);
+				var query = "op=reset-password&id=" + param_escape(id);
 
 				console.log(query);
 
@@ -99,7 +99,7 @@ function reset_user() {
 				new Ajax.Request("backend.php", {
 				parameters: query, 
 				onComplete: function (transport) {
-					var obj = _eval(transport.responseText);
+					var obj = JSON.parse(transport.responseText);
 					mini_error(obj.message);
 					hide_spinner();
 				} });
