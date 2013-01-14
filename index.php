@@ -175,7 +175,7 @@
 	<div id="input"><div class="wrapper">
 		<?php if (@$_REQUEST["ta"] != "1") { ?>
 		<input disabled="true" rows="1" id="input-prompt"
-			_onkeypress="return send(this, event)"/>
+			onkeypress="return send(this, event)"/>
 		<?php } else { ?>
 		<textarea disabled="true" rows="1" id="input-prompt"
 			onkeypress="send(this, event)"/></textarea>

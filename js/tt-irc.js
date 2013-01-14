@@ -190,11 +190,13 @@ function init_second_stage(transport) {
 		$("input-prompt").value = "";
 		$("input-prompt").focus();
 
-		autocompleter = new Autocompleter.Local("input-prompt",
+		if (navigator.appName.indexOf("Microsoft Internet") == -1) {
+			autocompleter = new Autocompleter.Local("input-prompt",
 				"input-suggest", autocomplete, {tokens: ' ',
 					choices : 5,
 					afterUpdateElement: function(element) { element.value += " " ; },
 					onShow: function(element, update) { Element.show(update); return true; } });
+		}
 
 		console.log("init_second_stage");
 
@@ -426,19 +428,21 @@ function update_buffer(force_redraw) {
 
 		if (test_height - $("log").scrollTop < 50) scroll_buffer = true;
 
-		autocomplete = [];
+		if (autocompleter) {
+			autocomplete = [];
 
-		for (key in emoticons_map) {
-			autocomplete.push(key);
-		}
-
-		if (nicklists[connection_id][channel]) {
-			for (var i = 0; i < nicklists[connection_id][channel].length; i++) {
-				autocomplete.push(nicklists[connection_id][channel][i].replace(/^[\@\+]/, ""));
+			for (key in emoticons_map) {
+				autocomplete.push(key);
 			}
-		}
 
-		autocompleter.options.array = autocomplete;
+			if (nicklists[connection_id][channel]) {
+				for (var i = 0; i < nicklists[connection_id][channel].length; i++) {
+					autocomplete.push(nicklists[connection_id][channel][i].replace(/^[\@\+]/, ""));
+				}
+			}
+
+			autocompleter.options.array = autocomplete;
+		}
 
 		if (buffers[connection_id]) {
 
