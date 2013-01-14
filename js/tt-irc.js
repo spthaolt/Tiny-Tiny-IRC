@@ -245,8 +245,13 @@ function init() {
 
 function handle_update(transport) {
 	try {
+		var rv = false;
 
-		var rv = JSON.parse(transport.responseText);
+		try {
+			rv = JSON.parse(transport.responseText);
+		} catch (e) {
+			console.log(e);
+		}
 
 		if (!rv) {
 			console.log("received null object from server, will try again.");
