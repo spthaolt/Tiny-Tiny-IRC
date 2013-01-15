@@ -2269,6 +2269,8 @@ function rewrite_emoticons(str) {
 		}
 
 		str = str.replace(/\(тм\)|\(tm\)/, "&trade;");
+		str = str.replace(/\(р\)|\(r\)/, "&reg;");
+		str = str.replace(/\(ц\)|\(c\)/, "&copy;");
 
 		return str;
 
