@@ -2268,6 +2268,8 @@ function rewrite_emoticons(str) {
 			}
 		}
 
+		str = str.replace(/\(тм\)|\(tm\)/, "&trade;");
+
 		return str;
 
 	} catch (e) {
