@@ -936,6 +936,10 @@ function format_message(row_class, param, connection_id) {
 
 			if (is_hl) row_class += "HL";
 
+			if (emoticons_map && param.message) {
+				param.message = rewrite_emoticons(param.message);
+			}
+
 			message = "* " + param.sender + " " + param.message;
 
 			tmp = "<li id=\""+param.id+"\" class=\""+row_class+"\"><span class='timestamp'>" +
@@ -950,6 +954,10 @@ function format_message(row_class, param, connection_id) {
 				sender_class = 'pvt-sender';
 			} else {
 				sender_class = 'pvt-sender-out';
+			}
+
+			if (emoticons_map && param.message) {
+				param.message = rewrite_emoticons(param.message);
 			}
 
 			tmp = "<li cid=\""+param.id+"\" class=\""+row_class+"\">"+
@@ -971,6 +979,10 @@ function format_message(row_class, param, connection_id) {
 			param.message = param.message.replace(/(^| )_(.*?)_( |$)/g,
 					"$1<span class=\"underline\">$2</span>$3");
 
+			if (emoticons_map && param.message) {
+				param.message = rewrite_emoticons(param.message);
+			}
+
 //			param.message = param.message.replace(/(OO)/g,
 //					"<img src='images/piggie.png' alt='(oo)'>");
 
@@ -983,6 +995,11 @@ function format_message(row_class, param, connection_id) {
 				"<span class='message'>" +
 				param.message + "</span>";
 		} else {
+
+			if (emoticons_map && param.message) {
+				param.message = rewrite_emoticons(param.message);
+			}
+
 			tmp = "<li id=\""+param.id+"\" "+
 				"class=\""+row_class+"\"><span class='timestamp'>" +
 				make_timestamp(param.ts) + "</span> " +
@@ -1582,10 +1599,6 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 			toggle_li_class(channel);
 
 			var tmp_html = format_message(li_classes[channel], message, connection_id);
-
-			if (emoticons_map) {
-				tmp_html[1] = rewrite_emoticons(tmp_html[1]);
-			}
 
 			tmp_html.push(message.force_display);
 
