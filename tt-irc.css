@@ -899,3 +899,27 @@ div.autocomplete ul li {
 	cursor : pointer;
 }
 
+@-moz-keyframes lol {
+	0% { color : black; }
+	50% { color : gray; }
+	100% { color : black; }
+}
+
+@keyframes lol {
+	0% { color : black; }
+	50% { color : gray; }
+	100% { color : black; }
+}
+
+@-webkit-keyframes lol {
+	0% { color : black; }
+	50% { color : gray; }
+	100% { color : black; }
+}
+
+span.anim {
+	animation : lol 5s infinite;
+	-moz-animation : lol 5s infinite;
+	-webkit-animation : lol 5s infinite;
+}
+
