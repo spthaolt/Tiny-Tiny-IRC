@@ -259,6 +259,10 @@ table.loginForm2 .innerLoginCell {
 	position : relative;
 }
 
+ul#tabs-list li.offline { 
+	color : gray; 
+}
+
 #tabs-list li div {
 	overflow : hidden;
 	margin-right : 5px;

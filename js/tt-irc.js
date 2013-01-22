@@ -339,10 +339,11 @@ function handle_update(transport) {
 				if (conndata_last[cid] != undefined &&
 						conndata_last[cid]["userhosts"][chan] != undefined) {
 
-					if (!tabs[i].hasClassName("online")) {
-						tabs[i].addClassName("online");
-					}
+					tabs[i].addClassName("online");
+					tabs[i].removeClassName("offline");
+
 				} else {
+					tabs[i].addClassName("offline");
 					tabs[i].removeClassName("online");
 				}
 
@@ -407,7 +408,7 @@ function get_selected_tab() {
 		var tabs = $("tabs-list").getElementsByTagName("li");
 
 		for (var i = 0; i < tabs.length; i++) {
-			if (tabs[i].className == "selected") {
+			if (tabs[i].hasClassName("selected")) {
 				return tabs[i];
 			}
 		}
@@ -688,9 +689,9 @@ function update_buffer(force_redraw) {
 
 
 				if (conndata_last[connection_id]["userhosts"][nick][4] == true) {
-					$("nick").className = "away";
+					$("nick").addClassName("away");
 				} else {
-					$("nick").className = "";
+					$("nick").removeClassName("away");
 				}
 			}
 
@@ -871,10 +872,13 @@ function change_tab(elem) {
 		var tabs = get_all_tabs();
 
 		for (var i = 0; i < tabs.length; i++) {
-			if (tabs[i].className == "selected") tabs[i].className = "";
+			tabs[i].removeClassName("selected");
 		}
 
-		elem.className = "selected";
+		elem.addClassName("selected");
+
+		elem.removeClassName("attention");
+		elem.removeClassName("highlight");
 
 		console.log("changing tab to " + elem.id);
 
@@ -2173,12 +2177,12 @@ function highlight_tab_if_needed(connection_id, channel, message) {
 		  if (tab.getAttribute("tab_type") != "S" &&
 				  is_highlight(connection_id, message)) {
 
-				tab.className = "highlight";
+				tab.addClassName("highlight");
 
 				++new_highlights;
 
 			} else {
-				if (tab.className != "highlight") tab.className = "attention";
+				if (!tab.hasClassName("highlight")) tab.addClassName("attention");
 			}
 		}
 

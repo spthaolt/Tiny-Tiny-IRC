@@ -382,6 +382,7 @@
 
 		if ($new_password != $confirm_password) {
 			print json_encode(array("error" => "Passwords do not match."));
+			return;
 		}
 
 		if ($confirm_password == $new_password && $new_password) {
@@ -394,6 +395,7 @@
 
 		if ($theme_changed) {
 			print json_encode(array("message" => "THEME_CHANGED"));
+			return;
 		}
 
 		break;

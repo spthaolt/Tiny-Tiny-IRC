@@ -7,8 +7,13 @@ function save_prefs(callback) {
 		new Ajax.Request("backend.php", {
 		parameters: query,
 		onComplete: function (transport) {
+			var obj;
 
-			var obj = JSON.parse(transport.responseText);
+			try {
+				obj = JSON.parse(transport.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 
 			if (obj) {
 				if (obj.error) {
@@ -173,7 +178,12 @@ function save_conn(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = JSON.parse(transport.responseText);
+			var obj;
+			try {
+				obj = JSON.parse(transport.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 
 			if (obj && obj.error) {
 				mini_error(obj.error);
@@ -252,7 +262,12 @@ function create_server() {
 			parameters: query,
 			onComplete: function (transport) {
 
-				var obj = JSON.parse(transport.responseText);
+				var obj;
+				try {
+					obj = JSON.parse(transport.responseText);
+				} catch (e) {
+					console.log(e);
+				}
 
 				if (obj && obj.error) {
 					mini_error(obj.error);
@@ -296,7 +311,12 @@ function save_css(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = JSON.parse(transport.responseText);
+			var obj;
+			try {
+				obj = JSON.parse(transport.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 
 			if (obj && obj.error) {
 				mini_error(obj.error);
@@ -345,7 +365,12 @@ function save_notifications(callback) {
 		parameters: query,
 		onComplete: function (transport) {
 
-			var obj = JSON.parse(transport.responseText);
+			var obj;
+			try {
+				obj = JSON.parse(transport.responseText);
+			} catch (e) {
+				console.log(e);
+			}
 
 			if (obj && obj.error) {
 				mini_error(obj.error);
