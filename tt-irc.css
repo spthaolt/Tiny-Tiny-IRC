@@ -495,81 +495,34 @@ div#errorBox input {
 	text-shadow : #659a4c 0px 1px 0px;
 }
 
-
-/* shadow stuff from http://www.sixapart.com/pronet/articles/ydsf_-_robust_c.html */
-
 #infoBox {	
 	border-width : 1px 1px 1px 1px;
 	border-style : solid;
 	border-color : #659a4c;
 	background-color : #f8fcf5;
-	position: relative;
 	overflow : hidden;
-	left : -4px;
-	top : -4px;
+	left : 25%;
+	top : 50px;
+	width : 50%;
+	position : absolute;
+	min-width : 600px;
+	z-index : 5;
+	box-shadow : 2px 2px 4px #c0c0c0;
+
 }
 
 div#errorBox {
 	background-color : #ffcccc;
 	border : 1px solid #ff0000;
 	font-size : 12px;
-	position: relative;
 	overflow : hidden;
-	left : -4px;
-	top : -4px;
-}
-
-html>body #infoBox, html>body #errorBox {
-	left : -10px;
-	top : -10px;
-	margin : 0;
-}
-
-#infoBoxShadow:before, #infoBoxShadow:after, #preview-shadow:before, 
-#errorBoxShadow:before, #errorBoxShadow:after, #preview-shadow:after {
-	content : " ";
-	display : block;
-	background : inherit;
-	width : 10px;
-	height : 10px;
-}
-
-#infoBoxShadow:before, #errorBoxShadow:before, #preview-shadow:before {
-	position : absolute;
-	top : 0;
-	right : 0;
-	margin : -10px 0 0 auto;
-	background-position : right top;
-}
-
-#infoBoxShadow:after, #errorBoxShadow:after, #preview-shadow:after {
-	margin : -10px 0 0 -10px;
-	background-position : left bottom;
-}
-
-#preview-shadow {
-	background-image : url("images/shadow.png");
-	background-position : bottom right;
-	position : absolute;
-	z-index : 4;
-}
-
-#infoBoxShadow, #errorBoxShadow {
-	background-image : url("images/shadow.png");
-	background-position : bottom right;
 	left : 25%;
 	top : 50px;
 	width : 50%;
 	position : absolute;
 	min-width : 600px;
-} 
-
-#infoBoxShadow {
-	z-index : 5;
-}
-
-#errorBoxShadow {
-	z-index : 400;
+	z-index : 10;
+	box-shadow : 2px 2px 4px #c0c0c0;
 }
 
 div.infoBoxContents {
@@ -813,17 +766,9 @@ div#image-preview {
 	border-color : #e7d796;
 	font-size : 8px;
 	color : #9a8c59;
-
-	position: relative;
-	overflow : hidden;
-	left : -10px;
-	top : -10px;
-
-}
-
-div#preview-shadow {
 	position : absolute;
 	z-index : 4;
+	box-shadow : 2px 2px 4px #c0c0c0;
 }
 
 div#image-tooltip {
@@ -836,6 +781,7 @@ div#image-tooltip {
 	color : #9a8c59;
 	position : absolute;
 	z-index : 4;
+	box-shadow : 2px 2px 4px #c0c0c0;
 }
 
 div#image-tooltip img {

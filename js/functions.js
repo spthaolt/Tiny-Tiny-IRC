@@ -148,24 +148,6 @@ function closeErrorBox() {
 }
 
 
-function closeInfoBox(cleanup) {
-
-	try {
-		enable_hotkeys();
-
-		if (Element.visible("infoBoxShadow")) {
-			Element.hide("dialog_overlay");
-			Element.hide("infoBoxShadow");
-
-			if (cleanup) $("infoBoxShadow").innerHTML = "&nbsp;";
-		}
-	} catch (e) {
-		exception_error("closeInfoBox", e);
-	}
-
-	return false;
-}
-
 function fatal_error(code, msg, ext_info) {
 	try {
 
@@ -184,7 +166,7 @@ function fatal_error(code, msg, ext_info) {
 			if (ebc) {
 
 				Element.show("dialog_overlay");
-				Element.show("errorBoxShadow");
+				Element.show("errorBox");
 
 				if (ext_info) {
 					if (ext_info.responseText) {
@@ -213,7 +195,7 @@ function infobox_callback2(transport) {
 
 		if (box) {
 			box.innerHTML=transport.responseText;
-			Element.show("infoBoxShadow");
+			Element.show("infoBox");
 		}
 
 		disable_hotkeys();
@@ -227,14 +209,14 @@ function close_infobox(cleanup) {
 	try {
 		enable_hotkeys();
 
-		if (Element.visible("infoBoxShadow")) {
+		if (Element.visible("infoBox")) {
 			Element.hide("dialog_overlay");
-			Element.hide("infoBoxShadow");
+			Element.hide("infoBox");
 
-			if (cleanup) $("infoBoxShadow").innerHTML = "&nbsp;";
+			if (cleanup) $("infoBox").innerHTML = "&nbsp;";
 		}
 	} catch (e) {
-		exception_error("closeInfoBox", e);
+		exception_error("close_infobox", e);
 	}
 
 	return false;

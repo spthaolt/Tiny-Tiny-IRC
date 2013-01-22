@@ -69,9 +69,8 @@
 <div id="image-tooltip" onclick="Element.hide(this)"
 	title="<?php echo __("Click to close") ?>" style="display : none"></div>
 
-<div id="preview-shadow" style="display : none"  onclick="Element.hide(this)">
-<div id="image-preview"
-	title="<?php echo __("Click to close") ?>"></div></div>
+<div id="image-preview" onclick="Element.hide(this)" style="display : none"
+	title="<?php echo __("Click to close") ?>"></div>
 
 <div id="overlay" style="display : block">
 	<div id="overlay_inner">
@@ -91,16 +90,14 @@
 
 <div id="dialog_overlay" style="display : none"> </div>
 
-<div id="infoBoxShadow" style="display : none"><div id="infoBox">&nbsp;</div></div>
+<div style="display : none" id="infoBox">&nbsp;</div>
 
-<div id="errorBoxShadow" style="display : none">
-	<div id="errorBox">
-		<div id="xebTitle"><?php echo __('Fatal Exception') ?></div>
-		<div id="xebContent">&nbsp;</div>
-		<div id='xebBtn'>
-			<button onclick="window.location.reload()">
-				<?php echo __('Try again') ?></button>
-		</div>
+<div id="errorBox" style="display : none">
+	<div id="xebTitle"><?php echo __('Fatal Exception') ?></div>
+	<div id="xebContent">&nbsp;</div>
+	<div id='xebBtn'>
+		<button onclick="window.location.reload()">
+			<?php echo __('Try again') ?></button>
 	</div>
 </div>
 
