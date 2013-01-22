@@ -327,6 +327,28 @@ function handle_update(transport) {
 		if (prev_last_id != last_id)
 			update_buffer();
 
+		var tabs = get_all_tabs();
+
+		for (i = 0; i < tabs.length; i++) {
+			var tab_type = tabs[i].getAttribute("tab_type");
+
+			if (tab_type == "P") {
+				var cid = tabs[i].getAttribute("connection_id");
+				var chan = tabs[i].getAttribute("channel");
+
+				if (conndata_last[cid] != undefined &&
+						conndata_last[cid]["userhosts"][chan] != undefined) {
+
+					if (!tabs[i].hasClassName("online")) {
+						tabs[i].addClassName("online");
+					}
+				} else {
+					tabs[i].removeClassName("online");
+				}
+
+			}
+		}
+
 		if (prev_last_id == last_id && update_delay_max == 0) {
 			if (delay < 3000) delay += 500;
 		} else {
