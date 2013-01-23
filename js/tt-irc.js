@@ -471,11 +471,11 @@ function update_buffer(force_redraw) {
 				autocomplete.push(key);
 			}
 
-			if (nicklists[connection_id][channel]) {
+			/* if (nicklists[connection_id][channel]) {
 				for (var i = 0; i < nicklists[connection_id][channel].length; i++) {
 					autocomplete.push(nicklists[connection_id][channel][i].replace(/^[\@\+]/, ""));
 				}
-			}
+			} */
 
 			autocompleter.options.array = autocomplete;
 			topic_autocompleter.options.array = autocomplete;
