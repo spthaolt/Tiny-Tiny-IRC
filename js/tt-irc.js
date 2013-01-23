@@ -477,6 +477,10 @@ function update_buffer(force_redraw) {
 				}
 			} */
 
+			for (var i = 0; i < commands.length; i++) {
+				autocomplete.push(commands[i]);
+			}
+
 			autocompleter.options.array = autocomplete;
 			topic_autocompleter.options.array = autocomplete;
 		}
