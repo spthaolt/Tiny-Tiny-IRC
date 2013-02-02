@@ -358,6 +358,8 @@ ul.sub-tabs {
 
 #topic #topic-input img {
 	max-height : 16px;
+	height : auto;
+	width : auto;
 }
 
 #topic #topic-input.disabled {
