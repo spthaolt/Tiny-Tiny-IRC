@@ -462,7 +462,7 @@ function update_buffer(force_redraw) {
 		var scroll_buffer = false;
 		var line_id = 0;
 
-		if (test_height - $("log").scrollTop < 50) scroll_buffer = true;
+		if (test_height - $("log").scrollTop < 300) scroll_buffer = true;
 
 		if (autocompleter) {
 			autocomplete = [];
@@ -526,7 +526,11 @@ function update_buffer(force_redraw) {
 					$("log-list").innerHTML += tmp;
 
 				}
-				if (scroll_buffer) $("log").scrollTop = $("log").scrollHeight;
+
+				if (scroll_buffer) window.setTimeout(function() {
+					$("log").scrollTop = $("log").scrollHeight;
+				}, 100);
+
 			} else {
 				$("log-list").innerHTML = "";
 			}
@@ -1709,7 +1713,9 @@ function set_window_active(active) {
 				notifications.pop().cancel();
 			}
 
-			$("log").scrollTop = $("log").scrollHeight;
+			window.setTimeout(function() {
+				$("log").scrollTop = $("log").scrollHeight;
+			}, 100);
 
 			if (theme != "tablet")
 				$("input-prompt").focus();
