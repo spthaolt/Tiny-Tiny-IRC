@@ -157,6 +157,7 @@
 			}
 
 			if (!$_SESSION["uid"] || !validate_session($link)) {
+				header('Cache-Control: public');
 				render_login_form($link, $mobile);
 				//header("Location: login.php");
 				exit;
