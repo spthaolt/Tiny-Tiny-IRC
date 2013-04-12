@@ -30,8 +30,6 @@
 
 	$dt_add = get_script_dt_add();
 
-	no_cache_incantation();
-
 	header('Content-Type: text/json; charset=utf-8');
 
 	$op = $_REQUEST["op"];
