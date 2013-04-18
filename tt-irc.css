@@ -852,18 +852,15 @@ div.autocomplete ul li {
 }
 
 @-moz-keyframes lol {
-	0% { -moz-transform : rotate(0deg); }
-	100% { -moz-transform : rotate(360deg); }
-}
-
-@keyframes lol {
-	0% { transform : rotate(0); }
-	100% { transform : rotate(360deg); }
+	0% { -moz-transform : rotate(0deg); color : black; }
+	50% { color : red; }
+	100% { -moz-transform : rotate(360deg); color : black; }
 }
 
 @-webkit-keyframes lol {
-	0% { transform : rotate(0); }
-	100% { transform : rotate(360deg); }
+	0% { -webkit-transform : rotate(0); color : black; }
+	50% { color : red; }
+	100% { -webkit-transform : rotate(360deg); color : black; }
 }
 
 .anim {
@@ -871,7 +868,6 @@ div.autocomplete ul li {
 }
 
 .anim.applied {
-	animation : lol 5s;
 	-moz-animation : lol 5s;
 	-webkit-animation : lol 5s;
 }
