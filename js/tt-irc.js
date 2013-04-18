@@ -371,7 +371,11 @@ function apply_anim_classes() {
 
 		var elems = $$("span.anim");
 
-		if (elems && elems.size() > 0) {
+		if (elems.size() > 0) {
+
+			if (elems.size() > 3)
+				elems = elems.slice(elems.size()-3, elems.size());
+
 			var index = parseInt(Math.random()*elems.size());
 
 			var e = elems[index];
@@ -2336,7 +2340,7 @@ function rewrite_emoticons(str) {
 			for (key in emoticons_map) {
 				str = str.replace(
 						new RegExp(RegExp.escape(key), "g"),
-					"<img title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+					"<img title=\""+key+"\" class=\"anim\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
 					" height=\""+emoticons_map[key][1]+"\">");
 			}
 		}
@@ -2345,7 +2349,7 @@ function rewrite_emoticons(str) {
 		str = str.replace(/\(р\)|\(r\)/g, "&reg;");
 		str = str.replace(/\(ц\)|\(с\)|\(c\)/g, "&copy;");
 
-		str = str.replace(/(=\)|(=\()|8\)|8\()/g,
+		str = str.replace(/(=\)|(=\()|8\)|8\()|[-T]_[-T]/g,
 				"<span class='anim'>$&</span>");
 
 		return str;

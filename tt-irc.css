@@ -866,11 +866,11 @@ div.autocomplete ul li {
 	100% { transform : rotate(360deg); }
 }
 
-span.anim {
+.anim {
 	display : inline-block;
 }
 
-span.anim.applied {
+.anim.applied {
 	animation : lol 5s;
 	-moz-animation : lol 5s;
 	-webkit-animation : lol 5s;
