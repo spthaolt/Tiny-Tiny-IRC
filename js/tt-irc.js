@@ -290,13 +290,13 @@ function handle_update(transport) {
 		handle_chan_data(chandata);
 
 		if (initial) {
-			var c = hash_get("c");
+			var c = hash_get();
 
 			if (c) {
 				c = c.split(",");
 
 				if (c.size() == 2) {
-					var tab = find_tab(c[0], c[1].replace("*", "#"));
+					var tab = find_tab(c[0], c[1]);
 
 					if (tab) change_tab(tab);
 				}
@@ -937,8 +937,8 @@ function change_tab(elem) {
 		console.log("changing tab to " + elem.id);
 
 		if (!initial) {
-			hash_set('c', elem.getAttribute("connection_id") + "," +
-				elem.getAttribute("channel").replace("#", "*"));
+			hash_set(elem.getAttribute("connection_id") + "," +
+				elem.getAttribute("channel").replace("#", "#"));
 		}
 
 		update_buffer();
@@ -2383,19 +2383,16 @@ function rewrite_emoticons(str) {
 	}
 }
 
-function hash_get(key) {
+function hash_get() {
 	try {
-		kv = window.location.hash.substring(1).toQueryParams();
-		return kv[key];
+		return window.location.hash.substring(1);
 	} catch (e) {
 		exception_error("hash_get", e);
 	}
 }
-function hash_set(key, value) {
+function hash_set(value) {
 	try {
-		kv = window.location.hash.substring(1).toQueryParams();
-		kv[key] = value;
-		window.location.hash = $H(kv).toQueryString();
+		window.location.hash = param_escape(value);
 	} catch (e) {
 		exception_error("hash_set", e);
 	}
