@@ -48,6 +48,8 @@ var CS_CONNECTED = 2;
 var CT_CHANNEL = 0;
 var CT_PRIVATE = 1;
 
+var initial = true;
+
 var colormap = [ "#00CCCC", "#000000", "#0000CC", "#CC00CC", "#606060",
 	"green", "#00CC00", "maroon", "navy", "olive", "purple",
 	"red", "#909090", "teal", "#CCCC00" ]
@@ -286,6 +288,22 @@ function handle_update(transport) {
 
 		handle_conn_data(conn_data);
 		handle_chan_data(chandata);
+
+		if (initial) {
+			var c = hash_get("c");
+
+			if (c) {
+				c = c.split(",");
+
+				if (c.size() == 2) {
+					var tab = find_tab(c[0], c[1]);
+
+					if (tab) change_tab(tab);
+				}
+			}
+
+			initial = false;
+		}
 
 		var prev_last_id = last_id;
 
@@ -918,6 +936,11 @@ function change_tab(elem) {
 
 		console.log("changing tab to " + elem.id);
 
+		if (!initial) {
+			hash_set('c', elem.getAttribute("connection_id") + "," +
+					elem.getAttribute("channel"));
+		}
+
 		update_buffer();
 
 		if (theme != "tablet")
@@ -1101,6 +1124,7 @@ function handle_conn_data(conndata) {
 
 				}
 			}
+
 		} else {
 			conndata_last = [];
 		}
@@ -2356,5 +2380,23 @@ function rewrite_emoticons(str) {
 
 	} catch (e) {
 		exception_error("rewrite_emoticons", e);
+	}
+}
+
+function hash_get(key) {
+	try {
+		kv = window.location.hash.substring(1).toQueryParams();
+		return kv[key];
+	} catch (e) {
+		exception_error("hash_get", e);
+	}
+}
+function hash_set(key, value) {
+	try {
+		kv = window.location.hash.substring(1).toQueryParams();
+		kv[key] = value;
+		window.location.hash = $H(kv).toQueryString();
+	} catch (e) {
+		exception_error("hash_set", e);
 	}
 }
