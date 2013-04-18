@@ -2385,7 +2385,7 @@ function rewrite_emoticons(str) {
 
 function hash_get() {
 	try {
-		return window.location.hash.substring(1);
+		return decodeURIComponent(window.location.hash.substring(1));
 	} catch (e) {
 		exception_error("hash_get", e);
 	}
