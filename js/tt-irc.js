@@ -360,7 +360,31 @@ function handle_update(transport) {
 		exception_error("handle_update", e);
 	}
 
+	apply_anim_classes();
+
 	return true;
+}
+
+function apply_anim_classes() {
+	try {
+		if (Math.random() > 0.25) return;
+
+		var elems = $$("span.anim");
+
+		if (elems && elems.size() > 0) {
+			var index = parseInt(Math.random()*elems.size());
+
+			var e = elems[index];
+
+			if (e) {
+				e.removeClassName("applied");
+				e.addClassName("applied");
+			}
+		}
+
+	} catch (e) {
+		exception_error("apply_anim_classes", e);
+	}
 }
 
 function timeout() {

@@ -852,26 +852,27 @@ div.autocomplete ul li {
 }
 
 @-moz-keyframes lol {
-	0% { color : black; }
-	50% { color : gray; }
-	100% { color : black; }
+	0% { -moz-transform : rotate(0deg); }
+	100% { -moz-transform : rotate(360deg); }
 }
 
 @keyframes lol {
-	0% { color : black; }
-	50% { color : gray; }
-	100% { color : black; }
+	0% { transform : rotate(0); }
+	100% { transform : rotate(360deg); }
 }
 
 @-webkit-keyframes lol {
-	0% { color : black; }
-	50% { color : gray; }
-	100% { color : black; }
+	0% { transform : rotate(0); }
+	100% { transform : rotate(360deg); }
 }
 
 span.anim {
-	animation : lol 5s infinite;
-	-moz-animation : lol 5s infinite;
-	-webkit-animation : lol 5s infinite;
+	display : inline-block;
+}
+
+span.anim.applied {
+	animation : lol 5s;
+	-moz-animation : lol 5s;
+	-webkit-animation : lol 5s;
 }
 
