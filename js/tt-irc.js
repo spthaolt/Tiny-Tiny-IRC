@@ -398,9 +398,13 @@ function apply_anim_classes() {
 
 			var e = elems[index];
 
-			if (e) {
-				e.removeClassName("applied");
+			if (e && !e.hasClassName("applied")) {
 				e.addClassName("applied");
+
+				window.setTimeout(function() {
+					e.removeClassName("applied")
+				}, 6000);
+
 			}
 		}
 
