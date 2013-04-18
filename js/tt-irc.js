@@ -296,7 +296,7 @@ function handle_update(transport) {
 				c = c.split(",");
 
 				if (c.size() == 2) {
-					var tab = find_tab(c[0], c[1]);
+					var tab = find_tab(c[0], c[1].replace("*", "#"));
 
 					if (tab) change_tab(tab);
 				}
@@ -938,7 +938,7 @@ function change_tab(elem) {
 
 		if (!initial) {
 			hash_set('c', elem.getAttribute("connection_id") + "," +
-					elem.getAttribute("channel"));
+				elem.getAttribute("channel").replace("#", "*"));
 		}
 
 		update_buffer();
