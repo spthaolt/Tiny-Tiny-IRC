@@ -270,6 +270,14 @@ function handle_update(transport) {
 		var chandata = rv[2];
 		var params = rv[3];
 
+		var ts = new Date().getTime();
+
+		$$(".anim.applied").each(function(e) {
+			if (parseInt(e.getAttribute("applied_at")) < ts - 6000) {
+				e.removeClassName("applied");
+			}
+		});
+
 		if (params && !params.duplicate) {
 			highlight_on = params.highlight_on;
 
@@ -397,9 +405,11 @@ function apply_anim_classes() {
 			var index = parseInt(Math.random()*elems.size());
 
 			var e = elems[index];
+			var ts = new Date().getTime();
 
 			if (e && !e.hasClassName("applied")) {
 				e.addClassName("applied");
+				e.setAttribute("applied_at", ts);
 
 				window.setTimeout(function() {
 					e.removeClassName("applied")
