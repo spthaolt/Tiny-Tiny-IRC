@@ -851,16 +851,40 @@ div.autocomplete ul li {
 	cursor : pointer;
 }
 
-@-moz-keyframes lol {
+@-moz-keyframes rotate {
 	0% { -moz-transform : rotate(0deg); color : black; }
 	50% { color : red; }
 	100% { -moz-transform : rotate(360deg); color : black; }
 }
 
-@-webkit-keyframes lol {
+@-webkit-keyframes rotate {
 	0% { -webkit-transform : rotate(0); color : black; }
 	50% { color : red; }
 	100% { -webkit-transform : rotate(360deg); color : black; }
+}
+
+@keyframes rotate {
+	0% { transform : rotate(0); color : black; }
+	50% { color : red; }
+	100% { transform : rotate(360deg); color : black; }
+}
+
+@-webkit-keyframes hl {
+	0% { color : black; }
+	50% { color : red; }
+	100% { color : black; }
+}
+
+@-moz-keyframes hl {
+	0% { color : black; }
+	50% { color : red; }
+	100% { color : black; }
+}
+
+@keyframes hl {
+	0% { color : black; }
+	50% { color : red; }
+	100% { color : black; }
 }
 
 .anim {
@@ -868,7 +892,16 @@ div.autocomplete ul li {
 }
 
 .anim.applied {
-	-moz-animation : lol 5s;
-	-webkit-animation : lol 5s;
+	-moz-animation : rotate 5s;
+	-webkit-animation : rotate 5s;
+	animation : rotate 5s;
 }
+
+.ahl {
+	display : inline;
+	-moz-animation : hl 5s;
+	animation : hl 5s;
+	-webkit-animation : hl 5s;
+}
+
 
