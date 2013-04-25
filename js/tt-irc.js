@@ -2392,7 +2392,7 @@ function rewrite_emoticons(str) {
 
 		ts = new Date().getTime();
 
-		str = str.replace(/[АF]{3,}/g,
+		str = str.replace(/[АF!]{3,}/g,
 				"<span applied_at='"+ts+"' class='ahl applied'>$&</span>");
 
 		return str;
