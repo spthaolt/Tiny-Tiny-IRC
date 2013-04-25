@@ -897,8 +897,7 @@ div.autocomplete ul li {
 	animation : rotate 5s;
 }
 
-.ahl {
-	display : inline;
+.ahl.applied {
 	-moz-animation : hl 5s;
 	animation : hl 5s;
 	-webkit-animation : hl 5s;

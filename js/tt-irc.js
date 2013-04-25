@@ -272,7 +272,7 @@ function handle_update(transport) {
 
 		var ts = new Date().getTime();
 
-		$$(".anim.applied").each(function(e) {
+		$$(".applied").each(function(e) {
 			if (parseInt(e.getAttribute("applied_at")) < ts - 6000) {
 				e.removeClassName("applied");
 			}
@@ -2390,8 +2390,10 @@ function rewrite_emoticons(str) {
 		str = str.replace(/(=\)|(=\()|8\)|8\()|[-\\\\^T]_{1,5}[-\\\\^T]|lol|лол|kjk|кжк/g,
 				"<span class='anim'>$&</span>");
 
+		ts = new Date().getTime();
+
 		str = str.replace(/[АF]{3,}/g,
-				"<span class='ahl'>$&</span>");
+				"<span applied_at='"+ts+"' class='ahl applied'>$&</span>");
 
 		return str;
 
