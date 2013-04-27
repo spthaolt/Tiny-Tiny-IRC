@@ -393,9 +393,9 @@ function handle_update(transport) {
 
 function apply_anim_classes() {
 	try {
-		if (Math.random() > 0.25) return;
+		if (Math.random() > 0.10) return;
 
-		var elems = Math.random() > 0.1 ? $$("span.anim") : $$("img.anim");
+		var elems = Math.random() > 0.5 ? $$("span.anim") : $$("img.anim");
 
 		if (elems.size() > 0) {
 
