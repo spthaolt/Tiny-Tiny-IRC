@@ -2387,8 +2387,11 @@ function rewrite_emoticons(str) {
 		str = str.replace(/\(р\)|\(r\)/g, "&reg;");
 		str = str.replace(/\(ц\)|\(с\)|\(c\)/g, "&copy;");
 
-		str = str.replace(/(=\)|(=\()|8\)|8\(\)|8\()|[-\\\\^T]_{1,5}[-\\\\^T]|lol|лол|kjk|кжк/g,
+		str = str.replace(/(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк/g,
 				"<span class='anim'>$&</span>");
+
+		str = str.replace(/([=8:;]\(|[QT]_{1,5}[QT])/,
+				"<span class='anim blue'>$&</span>");
 
 		ts = new Date().getTime();
 
