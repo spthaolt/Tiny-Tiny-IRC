@@ -134,7 +134,6 @@ public class NickList {
 		if (!nicklist.containsKey(chan)) 
 			nicklist.put(chan, new Vector<Nick>());
 	
-		chan = chan.toLowerCase();
 		//Nick n = new Nick(nick);
 		Nick n = findNick(chan, nick);
 		
@@ -156,7 +155,6 @@ public class NickList {
 		if (!nicklist.containsKey(chan)) 
 			nicklist.put(chan, new Vector<Nick>());
 
-		chan = chan.toLowerCase();
 		Nick n = new Nick(nick); 
 		
 		nicklist.get(chan).remove(n);
@@ -286,7 +284,6 @@ public class NickList {
 	
 	@SuppressWarnings("unchecked")
 	public void Sync(String channel)  {
-		channel = channel.toLowerCase();
 		
 		Enumeration<Nick> en = this.nicklist.get(channel).elements();
 
