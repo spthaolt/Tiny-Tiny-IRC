@@ -159,6 +159,10 @@
 				handle_command($link, $connection_id, $chan, $message);
 			} else {
 
+				if (defined('KMVZ_APIKEY')) {
+					$message = shorten_urls($message);
+				}
+
 				$lines = explode("\n", $message);
 
 				if ($tab_type == "P") {
