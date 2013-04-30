@@ -536,6 +536,12 @@
 		logout_user();
 		header("Location: index.php");
 		break;
+	case "shorten":
 
+
+		break;
+	case "url":
+
+		break;
 	}
 ?>

@@ -1,3 +1,4 @@
+drop table ttirc_shorturls;
 drop table ttirc_snippets;
 drop table ttirc_user_prefs;
 drop table ttirc_settings_profiles;
@@ -13,6 +14,8 @@ drop table ttirc_sessions;
 drop table ttirc_version;
 drop table ttirc_system;
 drop function SUBSTRING_FOR_DATE(timestamp, int, int);
+
+begin;
 
 create table ttirc_system(id serial not null primary key,
 	key varchar(120) not null,
@@ -142,7 +145,12 @@ create table ttirc_snippets(id serial not null primary key,
 	created timestamp not null,
 	owner_uid integer not null references ttirc_users(id) on delete cascade);
 
+create table ttirc_shorturls(id serial not null primary key,
+	url text not null unique,
+	created timestamp not null default NOW());
+
 create table ttirc_version (schema_version int not null);
 
-insert into ttirc_version values (7);
+insert into ttirc_version values (8);
 
+commit;
