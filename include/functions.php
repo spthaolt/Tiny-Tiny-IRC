@@ -11,6 +11,7 @@
 	require_once "version.php";
 	require_once "message_types.php";
 	require_once "db-prefs.php";
+	require_once "kmvz.php";
 
 	require_once "lib/ShortUrl.php";
 
@@ -1063,6 +1064,24 @@
 
 #		print "</ul>";
 
+	}
+
+	function shorten_urls($line) {
+
+		$urls = null;
+
+		if (preg_match_all("/(([a-z]+):\/\/[^ ]+)/i", $line, $urls) > 0) {
+			foreach ($urls as $url) {
+				if (mb_strlen($url[0]) > 100) {
+					$shorturl = kmvz_shorten($url[0]);
+
+					if ($shorturl != $url[0] && $shorturl) {
+						$line = str_replace($url[0], $shorturl, $line);
+					}
+				}
+			}
+		}
+		return $line;
 	}
 
 ?>

@@ -159,6 +159,10 @@
 				handle_command($link, $connection_id, $chan, $message);
 			} else {
 
+				if (defined('KMVZ_APIKEY')) {
+					$message = shorten_urls($message);
+				}
+
 				$lines = explode("\n", $message);
 
 				if ($tab_type == "P") {
@@ -243,6 +247,11 @@
 		$connection_id = db_escape_string($_REQUEST["connection"]);
 
 		if ($topic) {
+
+			if (defined('KMVZ_APIKEY')) {
+				$topic = shorten_urls($topic);
+			}
+
 			handle_command($link, $connection_id, $chan, "/topic $topic");
 		}
 
