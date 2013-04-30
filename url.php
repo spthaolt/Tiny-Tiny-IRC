@@ -10,21 +10,16 @@
 
 	$link = db_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-	login_sequence($link);
+	$id = db_escape_string(shorten_key_to_id($_REQUEST['id']));
 
-	if ($_SESSION["uid"]) {
+	$result = db_query($link, "SELECT url FROM ttirc_shorturls
+		WHERE id = '$id'");
 
-		$id = db_escape_string(shorten_key_to_id($_REQUEST['id']));
-
-		$result = db_query($link, "SELECT url FROM ttirc_shorturls
-			WHERE id = '$id'");
-
-		if (db_num_rows($result) != 0) {
-			$url = db_fetch_result($result, 0, "url");
-			header("Location: $url");
-		}
-
-		db_query($link, "DELETE FROM ttirc_shorturls WHERE
-			created < NOW() - INTERVAL '30 days'");
+	if (db_num_rows($result) != 0) {
+		$url = db_fetch_result($result, 0, "url");
+		header("Location: $url");
 	}
+
+	db_query($link, "DELETE FROM ttirc_shorturls WHERE
+		created < NOW() - INTERVAL '30 days'");
 ?>
