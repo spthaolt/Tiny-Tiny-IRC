@@ -691,6 +691,7 @@ function update_buffer(force_redraw) {
 		}
 
 		$("topic-input").title = "";
+		$("topic-input").innerHTML = "";
 
 
 		if (topics[connection_id] && tab.getAttribute("tab_type") != "P") {
