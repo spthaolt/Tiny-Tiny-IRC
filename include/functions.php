@@ -1073,7 +1073,7 @@
 
 		if (preg_match_all("/(([a-z]+):\/\/[^ ]+)/i", $line, $urls) > 0) {
 			foreach ($urls as $url) {
-				if (mb_strlen($url[0]) > 100) {
+				if (mb_strlen($url[0]) > 150) {
 					$shorturl = shorten_url($link, $url[0], $prefix);
 
 					if ($shorturl != $url[0] && $shorturl) {
