@@ -159,9 +159,7 @@
 				handle_command($link, $connection_id, $chan, $message);
 			} else {
 
-				if (defined('KMVZ_APIKEY')) {
-					$message = shorten_urls($message);
-				}
+				$message = shorten_urls($link, $message);
 
 				$lines = explode("\n", $message);
 
@@ -248,9 +246,7 @@
 
 		if ($topic) {
 
-			if (defined('KMVZ_APIKEY')) {
-				$topic = shorten_urls($topic);
-			}
+			$topic = shorten_urls($link, $topic);
 
 			handle_command($link, $connection_id, $chan, "/topic $topic");
 		}
@@ -535,13 +531,6 @@
 	case "logout":
 		logout_user();
 		header("Location: index.php");
-		break;
-	case "shorten":
-
-
-		break;
-	case "url":
-
 		break;
 	}
 ?>
