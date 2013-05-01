@@ -1068,7 +1068,8 @@
 
 	function shorten_urls($link, $line, $prefix) {
 
-		$prefix = get_self_url_prefix() . "/url.php?id=";
+		$prefix = (defined('SHORTURL_PREFIX') ? SHORTURL_PREFIX :
+				get_self_url_prefix()) . "/url.php?id=";
 		$urls = null;
 
 		if (preg_match_all("/(([a-z]+):\/\/[^ ]+)/i", $line, $urls) > 0) {
