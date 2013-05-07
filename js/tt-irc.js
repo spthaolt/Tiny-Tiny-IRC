@@ -645,8 +645,6 @@ function update_buffer(force_redraw) {
 
 				for (var i = 0; i < nicklist.length; i++) {
 
-					var row_class = (i % 2) ? "even" : "odd";
-
 					var nick_image = "<img src=\""+theme_images['user_normal.png']+
 						"\" alt=\"\">";
 
@@ -687,7 +685,7 @@ function update_buffer(force_redraw) {
 						nick = "<strong>" + nick + "</strong>";
 					} */
 
-					var tmp_html = "<li class=\""+row_class+"\" " +
+					var tmp_html = "<li " +
 						"title=\"" + nick_ext_info + "\"" +
 					  	"nick=\"" + nick + "\" " +
 						"onclick=\"query_user(this)\">" +
