@@ -523,7 +523,7 @@ div#errorBox {
 	width : 50%;
 	position : absolute;
 	min-width : 600px;
-	z-index : 10;
+	z-index : 1000;
 	box-shadow : 2px 2px 4px #c0c0c0;
 }
 
