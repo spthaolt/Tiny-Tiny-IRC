@@ -6,7 +6,6 @@ var new_highlights = 0;
 var delay = 1500;
 var timeout_delay = 3000;
 var buffers = [];
-var nicklists = [];
 var topics = [];
 var last_update = false;
 var input_cache = [];
@@ -69,16 +68,49 @@ var Connection = function(data) {
 		this.status(data.status);
 	};
 
+	this.nickExists = function(nick) {
+		for (var i = 0; i < this.channels().length; i++) {
+			if (this.channels()[i].nicklist().nickIndexOf(nick) !== -1)
+				return true;
+		}
+	};
+
 	this.update(data);
 };
 
-var Channel = function(title, tab_type) {
+var Channel = function(connection_id, title, tab_type) {
 	this.title = ko.observable(title);
 	this.type = ko.observable(tab_type);
+	this.nicklist = ko.observableArray([]);
+	this.connection_id = ko.observable(connection_id);
 };
 
 var model = {
 	connections: ko.observableArray([]),
+	activeChannel: ko.observable(false),
+	getNickHost: function(connection_id, nick) {
+		var nick = this.stripNickPrefix(nick);
+		var conn = this.getConnection(connection_id);
+
+		if (conn && conn.userhosts()[nick]) {
+			return conn.userhosts()[nick][0] + '@' +
+				conn.userhosts()[nick][1] + " <" + conn.userhosts()[nick][3] + ">";
+		}
+
+	},
+	stripNickPrefix: function(nick) {
+		return nick.replace(/^[\@\+]/, "");
+	},
+	getNickImage: function(nick) {
+		switch (nick.substr(0,1)) {
+		case "@":
+			return theme_images['user_op.png'];
+		case "+":
+			return theme_images['user_voice.png'];
+		default:
+			return theme_images['user_normal.png'];
+		}
+	},
 	cleanupChannels: function(connection_id, titles) {
 		var conn = this.getConnection(connection_id);
 
@@ -612,7 +644,7 @@ function update_buffer(force_redraw) {
 
 		//show_nicklist(get_selected_buffer() != "---");
 
-		if (nicklists[connection_id]) {
+		/* if (nicklists[connection_id]) {
 			var nicklist;
 
 			if (tab.getAttribute("tab_type") == "P") {
@@ -690,7 +722,7 @@ function update_buffer(force_redraw) {
 			} else {
 				$("userlist-list").innerHTML = "";
 			}
-		}
+		} */
 
 		$("topic-input").title = "";
 		$("topic-input").innerHTML = "";
@@ -957,6 +989,9 @@ function change_tab(elem) {
 				elem.getAttribute("channel").replace("#", "#"));
 		}
 
+		model.activeChannel(model.getChannel(elem.getAttribute("connection_id"),
+					elem.getAttribute("channel")));
+
 		update_buffer();
 
 		if (theme != "tablet")
@@ -1154,7 +1189,6 @@ function handle_chan_data(chandata) {
 
 				if (!model.getConnection(connection_id)) continue;
 
-				if (!nicklists[connection_id]) nicklists[connection_id] = [];
 				if (!topics[connection_id]) topics[connection_id] = [];
 
 				var conn = model.getConnection(connection_id);
@@ -1181,17 +1215,29 @@ function handle_chan_data(chandata) {
 							channel.title(chan);
 							channel.type(tab_type);
 						} else {
-							conn.channels.push(new Channel(chan, tab_type));
+							channel = new Channel(connection_id, chan, tab_type);
+							conn.channels.push(channel);
 						}
 
 						conn.channels.sort(function(a, b) {
 							return a.title().localeCompare(b.title());
 						});
 
+						if (tab_type == "C") {
+							channel.nicklist(chandata[connection_id][chan]["users"]);
+						} else if (tab_type == "P") {
+							channel.nicklist(['@' + conn.active_nick()]);
+
+							if (conn.nickExists(chan))
+								channel.nicklist.push(chan);
+						}
+
 						valid_channels.push(chan);
+
 					}
 
-					nicklists[connection_id][chan] = chandata[connection_id][chan]["users"];
+
+					//nicklists[connection_id][chan] = chandata[connection_id][chan]["users"];
 
 					if ((!topics[connection_id][chan] ||
 							!topics[connection_id][chan][0]) &&
@@ -2140,7 +2186,7 @@ function push_cache(line) {
 	}
 }
 
-function get_nick_list(connection_id, channel) {
+/* function get_nick_list(connection_id, channel) {
 	try {
 		var rv = [];
 
@@ -2173,7 +2219,7 @@ function get_nick_list(connection_id, channel) {
 	} catch (e) {
 		exception_error("get_nick_list", e);
 	}
-}
+} */
 
 function is_highlight(connection_id, message) {
 	try {
@@ -2259,61 +2305,6 @@ function find_tab(connection_id, channel) {
 
 	} catch (e) {
 		exception_error("find_tab", e);
-	}
-}
-
-function tweet_selection() {
-	try {
-		var sel = window.getSelection();
-
-		show_spinner();
-
-		new Ajax.Request("backend.php", {
-		parameters: "op=tweet-dlg&text=" + param_escape(sel),
-		onComplete: function (transport) {
-			infobox_callback2(transport);
-			hide_spinner();
-		} });
-
-	} catch (e) {
-		exception_error("tweet_selection", e);
-	}
-}
-
-function tweet_update_counter(textarea) {
-	try {
-		$("tweet-dlg-counter").value = 140 - textarea.value.length;
-	} catch (e) {
-		exception_error("tweet_update_counter", e);
-	}
-}
-
-function tweet_selection_do() {
-	try {
-		var query = Form.serialize("new_tweet_form");
-		var text = document.forms['new_tweet_form'].text.value.strip();
-
-		if (text.length > 140) {
-			alert(__("Your message is too long."));
-			return;
-		}
-
-		if (text.length == 0) {
-			alert(__("Your message is too short."));
-			return;
-		}
-
-		show_spinner();
-
-		new Ajax.Request("backend.php", {
-		parameters: query,
-		onComplete: function (transport) {
-			close_infobox();
-			hide_spinner();
-		} });
-
-	} catch (e) {
-		exception_error("tweet_selection", e);
 	}
 }
 

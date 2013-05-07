@@ -174,10 +174,18 @@
 		</form>
 
 		<div id="userlist">
-			<div id="userlist-inner"><ul id="userlist-list"></ul></div>
+			<div data-bind="if: activeChannel" id="userlist-inner">
+				<ul id="userlist-list" data-bind="foreach: activeChannel().nicklist">
+					<li>
+						<img src="images/user_me.png" data-bind="attr: { src: $root.getNickImage($data) }" alt=""/>
+						<span onclick="query_user(this)"
+							data-bind="text: $root.stripNickPrefix($data), attr: { nick: $root.stripNickPrefix($data),
+								title: $root.getNickHost($root.activeChannel().connection_id(), $data) }"></span>
+					</li>
+				</ul>
+			</div>
 		</div>
-
-		</div>
+	</div>
 
 	</div>
 
