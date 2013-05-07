@@ -33,6 +33,8 @@
 	<script type="text/javascript" charset="utf-8" src="localized_js.php?<?php echo $dt_add ?>"></script>
 	<script type="text/javascript" src="lib/prototype.js"></script>
 	<script type="text/javascript" src="lib/scriptaculous/scriptaculous.js?load=effects,dragdrop,controls"></script>
+	<script type="text/javascript" src="lib/knockout.js"></script>
+
 		<script type="text/javascript" charset="utf-8" src="js/tt-irc.js?<?php echo $dt_add ?>"></script>
 		<script type="text/javascript" charset="utf-8" src="js/prefs.js?<?php echo $dt_add ?>"></script>
 	<script type="text/javascript" charset="utf-8" src="js/users.js?<?php echo $dt_add ?>"></script>
@@ -129,7 +131,19 @@
 </div>
 
 <div id="tabs">
-	<div id="tabs-inner"><ul id="tabs-list"></ul></div>
+	<div id="tabs-inner">
+		<ul id="tabs-list" data-bind="foreach: connections">
+			<li channel="---" tab_type="S" data-bind="attr: { id: 'tab-' + id(), connection_id: id() }" onclick="change_tab(this)">
+				<img alt="" class="conn-img" data-bind="attr: { id: 'cimg-' + id(), src: getConnImg() }">
+				<div data-bind="text: title"></div>
+			</li>
+			<ul class="sub-tabs" data-bind="foreach: channels, attr: { id: 'tabs-' + id() }">
+				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }">
+					<div class="indented" data-bind="text: title"></div>
+				</li>
+			</ul>
+		</ul>
+	</div>
 </div>
 
 <div id="content">

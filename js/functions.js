@@ -245,29 +245,6 @@ function hide_spinner() {
 	}
 }
 
-function sort_connection_tabs(node) {
-
-	try {
-		var list = node.getElementsByTagName("li");
-
-		for (i = 0; i < list.length; i++) {
-
-			for (j = i+1; j < list.length; j++) {
-
-				if (list[i].getAttribute("channel") > list[j].getAttribute("channel")) {
-					tempnode_i = list[i].cloneNode(true);
-					tempnode_j = list[j].cloneNode(true);
-					node.replaceChild(tempnode_i, list[j]);
-					node.replaceChild(tempnode_j, list[i]);
-				}
-			}
-		}
-
-	} catch (e) {
-		exception_error("sort_connection_tabs", e);
-	}
-}
-
 function mini_error(msg) {
 	try {
 

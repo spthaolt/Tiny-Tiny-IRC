@@ -50,6 +50,56 @@ var CT_PRIVATE = 1;
 
 var initial = true;
 
+var Connection = function(data) {
+	this.status = ko.observable(0);
+	this.getConnImg = function() {
+		return this.status() == 2 ? "images/srv_online.png" : "images/srv_offline.png";
+	};
+
+	this.id = ko.observable(0);
+	this.active_nick = ko.observable("");
+	this.active_server = ko.observable("");
+	this.title = ko.observable("");
+	this.userhosts = ko.observableArray([]);
+	this.channels = ko.observableArray([]);
+
+	this.update = function(data) {
+		this.id(data.id);
+		this.active_nick(data.active_nick);
+		this.active_server(data.active_server);
+		this.title(data.title);
+		this.userhosts(data.userhosts);
+		this.status(data.status);
+	};
+
+	this.update(data);
+};
+
+var Channel = function(title, tab_type) {
+	this.title = ko.observable(title);
+	this.type = ko.observable(tab_type);
+};
+
+var model = {
+	connections: ko.observableArray([]),
+	getConnection: function(id) {
+		for (var i = 0; i < this.connections().length; i++) {
+			if (this.connections()[i].id() == id)
+				return this.connections()[i];
+		}
+	},
+	getChannel: function(id, title) {
+		var conn = this.getConnection(id);
+		if (conn) {
+			for (var i = 0; i < conn.channels().length; i++) {
+				if (conn.channels()[i].title() == title)
+					return conn.channels()[i];
+			}
+		}
+	},
+
+};
+
 var colormap = [ "#00CCCC", "#000000", "#0000CC", "#CC00CC", "#606060",
 	"green", "#00CC00", "maroon", "navy", "olive", "purple",
 	"red", "#909090", "teal", "#CCCC00" ]
@@ -58,69 +108,6 @@ var commands = [ "/join", "/part", "/nick", "/query", "/quote", "/msg",
 	"/op", "/deop", "/voice", "/devoice", "/ping", "/notice", "/away",
 	"/ctcp", "/clear" ];
 
-function create_tab_if_needed(chan, connection_id, tab_type) {
-	try {
-		var caption = chan;
-
-		if (tab_type == "S") chan = "---";
-
-		var tab_id = "tab-" + chan + ":" + connection_id;
-
-		if (!tab_type) tab_type = "C";
-
-		var tab_caption_id = "tab-" + connection_id;
-		var tab_list_id = "tabs-" + connection_id;
-
-		if (!$(tab_caption_id)) {
-
-			var cimg = "<img class=\"conn-img\" "+
-				"src=\"" + theme_images['srv_offline.png'] + "\" alt=\"\" " +
-				"id=\"cimg-" + connection_id + "\">";
-
-			var tab = "<li id=\"" + tab_caption_id + "\" " +
-				"channel=\"" + chan + "\" " +
-				"tab_type=\"" + tab_type + "\" " +
-				"connection_id=\"" + connection_id + "\" " +
-		  		"onclick=\"change_tab(this)\">" + cimg +
-				"<div>" + caption + "</div></li>";
-
-			tab += "<ul class=\"sub-tabs\" id=\"" + tab_list_id + "\"></ul>";
-
-			console.log("creating tab+list: " + tab_id + " " + tab_type);
-
-			$("tabs-list").innerHTML += tab;
-		} else if (!$(tab_id) && tab_type != "S") {
-
-			var img = "<img class=\"conn-img\" "+
-				"src=\""+theme_images['close_tab.png']+"\" alt=\"[X]\" " +
-				"title=\"" + __("Close this tab") + "\"" +
-				"tab_id=\"" + tab_id + "\"" +
-				"onclick=\"close_tab(this)\">";
-
-			var tab = "<li id=\"" + tab_id + "\" " +
-				"channel=\"" + chan + "\" " +
-				"tab_type=\"" + tab_type + "\" " +
-				"connection_id=\"" + connection_id + "\" " +
-		  		"onclick=\"change_tab(this)\">" + img +
-				"<div class=\"indented\">" +  caption + "</div></li>";
-
-			console.log("creating tab: " + tab_id + " " + tab_type);
-
-			$(tab_list_id).innerHTML += tab;
-
-			sort_connection_tabs($(tab_list_id));
-
-			var tab = $(tab_id);
-
-			if (tab && tab_type == "C") change_tab(tab);
-		}
-
-		return tab_id;
-
-	} catch (e) {
-		exception_error("create_tab_if_needed", e);
-	}
-}
 
 function toggle_sidebar() {
 try {
@@ -233,6 +220,8 @@ function init() {
 		}
 
 		show_spinner();
+
+		ko.applyBindings(model);
 
 		new Ajax.Request("backend.php", {
 		parameters: "op=init",
@@ -1123,19 +1112,26 @@ function handle_conn_data(conndata) {
 
 			for (var i = 0; i < conndata.length; i++) {
 
-				create_tab_if_needed(conndata[i].title, conndata[i].id, "S");
+				var conn = model.getConnection(conndata[i].id);
+
+				if (conn) {
+					conn.update(conndata[i]);
+				} else {
+					model.connections.push(new Connection(conndata[i]));
+				}
+
 				conndata_last[conndata[i].id] = conndata[i];
 
 				if (conndata[i].status == "2") {
 					active_nicks[conndata[i].id] = conndata[i].active_nick;
 
-					$("cimg-" + conndata[i].id).src = $("cimg-" + conndata[i].id).src.replace("offline", "online");
+					//$("cimg-" + conndata[i].id).src = $("cimg-" + conndata[i].id).src.replace("offline", "online");
 
 				} else {
 					active_nicks[conndata[i].id] = [];
 					nicklists[conndata[i].id] = [];
 
-					$("cimg-" + conndata[i].id).src = $("cimg-" + conndata[i].id).src.replace("online", "offline");
+					//$("cimg-" + conndata[i].id).src = $("cimg-" + conndata[i].id).src.replace("online", "offline");
 
 				}
 			}
@@ -1160,6 +1156,12 @@ function handle_chan_data(chandata) {
 				if (!nicklists[connection_id]) nicklists[connection_id] = [];
 				if (!topics[connection_id]) topics[connection_id] = [];
 
+				var conn = model.getConnection(connection_id);
+
+				if (conn) {
+					conn.channels.removeAll();
+				}
+
 				for (var chan in chandata[connection_id]) {
 
 					var tab_type = "P";
@@ -1173,7 +1175,20 @@ function handle_chan_data(chandata) {
 						break;
 					}
 
-					create_tab_if_needed(chan, connection_id, tab_type);
+					if (conn) {
+						var channel = model.getChannel(connection_id, chan);
+
+						if (channel) {
+							channel.title(chan);
+							channel.type(tab_type);
+						} else {
+							conn.channels.push(new Channel(chan, tab_type));
+						}
+
+						conn.channels.sort(function(a, b) {
+							return a.title().localeCompare(b.title());
+						});
+					}
 
 					nicklists[connection_id][chan] = chandata[connection_id][chan]["users"];
 
@@ -1216,7 +1231,6 @@ function handle_chan_data(chandata) {
 			}
 		}
 
-		cleanup_tabs(chandata);
 		update_title(chandata);
 
 	} catch (e) {
@@ -1344,45 +1358,6 @@ function handle_action(elem) {
 	} catch (e) {
 		exception_error("handle_action", e);
 	}
-}
-
-function cleanup_tabs(chandata) {
-	try {
-		var tabs = get_all_tabs();
-
-		for (var i = 0; i < tabs.length; i++) {
-			var chan = tabs[i].getAttribute("channel");
-			var connection_id = tabs[i].getAttribute("connection_id");
-
-			if (tabs[i].getAttribute("tab_type") == "S") {
-				if (conndata_last && !conndata_last[connection_id]) {
-
-					console.log("removing unnecessary S-tab: " + tabs[i].id);
-
-					var tab_list = $("tabs-" + connection_id);
-
-					$("tabs-list").removeChild(tabs[i]);
-					$("tabs-list").removeChild(tab_list);
-				}
-			}
-
-			if (tabs[i].getAttribute("tab_type") != "S") {
-				if (!chandata[connection_id] ||
-						(chandata[connection_id] && !chandata[connection_id][chan])) {
-
-					console.log("removing unnecessary C/P-tab: " + tabs[i].id);
-
-					var tab_list = $("tabs-" + connection_id);
-
-					if (tab_list) tab_list.removeChild(tabs[i]);
-
-				}
-			}
-		}
-	} catch (e) {
-		exception_error("cleanup_tabs", e);
-	}
-
 }
 
 function close_tab(elem) {
