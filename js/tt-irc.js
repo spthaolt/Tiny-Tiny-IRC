@@ -70,7 +70,7 @@ var Connection = function(data) {
 
 	this.nickExists = function(nick) {
 		for (var i = 0; i < this.channels().length; i++) {
-			if (this.channels()[i].nicklist().nickIndexOf(nick) !== -1)
+			if (this.channels()[i].nicklist() && this.channels()[i].nicklist().nickIndexOf(nick) !== -1)
 				return true;
 		}
 	};
