@@ -1149,15 +1149,9 @@ function handle_conn_data(conndata) {
 
 				if (conndata[i].status == "2") {
 					active_nicks[conndata[i].id] = conndata[i].active_nick;
-
-					//$("cimg-" + conndata[i].id).src = $("cimg-" + conndata[i].id).src.replace("offline", "online");
-
 				} else {
 					active_nicks[conndata[i].id] = [];
 					nicklists[conndata[i].id] = [];
-
-					//$("cimg-" + conndata[i].id).src = $("cimg-" + conndata[i].id).src.replace("online", "offline");
-
 				}
 			}
 
