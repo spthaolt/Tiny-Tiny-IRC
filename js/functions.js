@@ -40,7 +40,7 @@ function exception_error(location, e, ext_info) {
 		if (ebc) {
 
 			Element.show("dialog_overlay");
-			Element.show("errorBoxShadow");
+			Element.show("errorBox");
 
 			if (ext_info) {
 				if (ext_info.responseText) {
