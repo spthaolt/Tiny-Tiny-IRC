@@ -139,6 +139,8 @@
 			</li>
 			<ul class="sub-tabs" data-bind="foreach: channels, attr: { id: 'tabs-' + id() }">
 				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }">
+					<img onclick="close_tab(this)" alt="[X]" title="Close this tab" class="conn-img"
+						src="images/close_tab.png" data-bind="attr: { tab_id: 'tab-' + title() + ':' + $parent.id() }">
 					<div class="indented" data-bind="text: title"></div>
 				</li>
 			</ul>

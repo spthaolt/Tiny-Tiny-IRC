@@ -82,6 +82,28 @@ var Channel = function(title, tab_type) {
 
 var model = {
 	connections: ko.observableArray([]),
+	cleanupChannels: function(connection_id, titles) {
+		var conn = this.getConnection(connection_id);
+
+		if (conn) {
+			var i = 0;
+			while (i < conn.channels().length) {
+				if (titles.indexOf(conn.channels()[i].title()) == -1)
+					conn.channels.remove(conn.channels()[i]);
+
+				i++;
+			}
+		}
+	},
+	cleanupConnections: function(ids) {
+		var i = 0;
+		while (i < this.connections().length) {
+			if (ids.indexOf(this.connections()[i].id()) == -1)
+				this.connections.remove(this.connections()[i]);
+
+			i++;
+		}
+	},
 	getConnection: function(id) {
 		for (var i = 0; i < this.connections().length; i++) {
 			if (this.connections()[i].id() == id)
@@ -1109,6 +1131,7 @@ function handle_conn_data(conndata) {
 			if (conndata.duplicate) return;
 
 			conndata_last = [];
+			valid_ids = [];
 
 			for (var i = 0; i < conndata.length; i++) {
 
@@ -1119,6 +1142,8 @@ function handle_conn_data(conndata) {
 				} else {
 					model.connections.push(new Connection(conndata[i]));
 				}
+
+				valid_ids.push(conndata[i].id);
 
 				conndata_last[conndata[i].id] = conndata[i];
 
@@ -1135,6 +1160,8 @@ function handle_conn_data(conndata) {
 
 				}
 			}
+
+			model.cleanupConnections(valid_ids);
 
 		} else {
 			conndata_last = [];
@@ -1158,9 +1185,7 @@ function handle_chan_data(chandata) {
 
 				var conn = model.getConnection(connection_id);
 
-				if (conn) {
-					conn.channels.removeAll();
-				}
+				var valid_channels = [];
 
 				for (var chan in chandata[connection_id]) {
 
@@ -1188,6 +1213,8 @@ function handle_chan_data(chandata) {
 						conn.channels.sort(function(a, b) {
 							return a.title().localeCompare(b.title());
 						});
+
+						valid_channels.push(chan);
 					}
 
 					nicklists[connection_id][chan] = chandata[connection_id][chan]["users"];
@@ -1228,6 +1255,8 @@ function handle_chan_data(chandata) {
 						topics[connection_id][chan] = chandata[connection_id][chan]["topic"];
 					}
 				}
+
+				model.cleanupChannels(connection_id, valid_channels);
 			}
 		}
 
