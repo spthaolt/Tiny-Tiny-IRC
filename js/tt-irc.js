@@ -8,8 +8,6 @@ var timeout_delay = 3000;
 var buffers = [];
 var nicklists = [];
 var topics = [];
-var active_nicks = [];
-var conndata_last = [];
 var last_update = false;
 var input_cache = [];
 var input_cache_offset = 0;
@@ -371,9 +369,9 @@ function handle_update(transport) {
 			if (tab_type == "P") {
 				var cid = tabs[i].getAttribute("connection_id");
 				var chan = tabs[i].getAttribute("channel");
+				var conn = model.getConnection(cid);
 
-				if (conndata_last[cid] != undefined &&
-						conndata_last[cid]["userhosts"][chan] != undefined) {
+				if (conn && conn.userhosts()[chan] != undefined) {
 
 					tabs[i].addClassName("online");
 					tabs[i].removeClassName("offline");
@@ -624,7 +622,7 @@ function update_buffer(force_redraw) {
 						if (tmp) {
 							if (tmp.nickIndexOf(tab.getAttribute("channel")) != -1) {
 								nicklist = [
-									'@' + active_nicks[connection_id],
+									'@' + model.getConnection(connection_id).active_nick(),
 									tab.getAttribute("channel") ].sort();
 								break;
 							}
@@ -632,8 +630,8 @@ function update_buffer(force_redraw) {
 					}
 				};
 
-				if (!nicklist && active_nicks[connection_id]) {
-					nicklist = [ '@' + active_nicks[connection_id] ];
+				if (!nicklist && model.getConnection(connection_id).active_nick()) {
+					nicklist = [ '@' + model.getConnection(connection_id).active_nick() ];
 				}
 			} else {
 				nicklist = nicklists[connection_id][channel];
@@ -661,7 +659,7 @@ function update_buffer(force_redraw) {
 						break;
 					}
 
-					var userhosts = conndata_last[connection_id]["userhosts"];
+					var userhosts = model.getConnection(connection_id).userhosts();
 					var nick_ext_info = "";
 
 					if (userhosts && userhosts[nick]) {
@@ -680,10 +678,6 @@ function update_buffer(force_redraw) {
 							}
 						}
 					}
-
-/*					if (nick == active_nicks[connection_id]) {
-						nick = "<strong>" + nick + "</strong>";
-					} */
 
 					var tmp_html = "<li " +
 						"title=\"" + nick_ext_info + "\"" +
@@ -711,7 +705,7 @@ function update_buffer(force_redraw) {
 					$("topic-input").title = topics[connection_id][channel][0];
 				}
 
-				$("topic-input").disabled = conndata_last[connection_id].status != "2";
+				$("topic-input").disabled = model.getConnection(connection_id).status() != CS_CONNECTED;
 			} else {
 
 				if (tab.getAttribute("tab_type") != "S") {
@@ -719,9 +713,9 @@ function update_buffer(force_redraw) {
 					$("topic-input").disabled = true;
 
 				} else {
-					if (conndata_last[connection_id].status == CS_CONNECTED) {
+					if (model.getConnection(connection_id).status() == CS_CONNECTED) {
 						$("topic-input").innerHTML = __("Connected to: ") +
-							conndata_last[connection_id]["active_server"];
+							model.getConnection(connection_id).active_server();
 						$("topic-input").disabled = true;
 					} else {
 						$("topic-input").innerHTML = __("Disconnected.");
@@ -735,7 +729,7 @@ function update_buffer(force_redraw) {
 		} else {
 
 			var nick = tab.getAttribute("channel");
-			var userhosts = conndata_last[connection_id]["userhosts"];
+			var userhosts = model.getConnection(connection_id).userhosts();
 			var nick_ext_info = "";
 
 			if (userhosts && userhosts[nick]) {
@@ -747,8 +741,8 @@ function update_buffer(force_redraw) {
 			$("topic-input").disabled = true;
 		}
 
-		if (conndata_last && conndata_last[connection_id]) {
-			$("input-prompt").disabled = conndata_last[connection_id].status != 2;
+		if (model.getConnection(connection_id)) {
+			$("input-prompt").disabled = model.getConnection(connection_id).status() != CS_CONNECTED;
 		}
 
 		if ($("topic-input").disabled) {
@@ -757,15 +751,14 @@ function update_buffer(force_redraw) {
 			$("topic-input").removeClassName("disabled");
 		}
 
-		$("nick").innerHTML = active_nicks[connection_id];
+		$("nick").innerHTML = model.getConnection(connection_id).active_nick();
 
-		if (conndata_last && conndata_last[connection_id]) {
-			var nick = active_nicks[connection_id];
+		if (model.getConnection(connection_id)) {
+			var nick = model.getConnection(connection_id).active_nick();
 
-			if (nick && conndata_last[connection_id]["userhosts"][nick]) {
+			if (nick && model.getConnection(connection_id).userhosts()[nick]) {
 
-
-				if (conndata_last[connection_id]["userhosts"][nick][4] == true) {
+				if (model.getConnection(connection_id).userhosts()[nick][4] == true) {
 					$("nick").addClassName("away");
 				} else {
 					$("nick").removeClassName("away");
@@ -774,7 +767,7 @@ function update_buffer(force_redraw) {
 
 		}
 
-		switch (conndata_last[connection_id].status) {
+		switch (model.getConnection(connection_id).status()) {
 			case "0":
 				$('connect-btn').innerHTML = __("Connect");
 				$('connect-btn').disabled = false;
@@ -1002,7 +995,7 @@ function format_message(param, connection_id) {
 	try {
 		var row_class = "row";
 
-		var is_hl = param.sender != conndata_last[connection_id].active_nick &&
+		var is_hl = param.sender != model.getConnection(connection_id).active_nick() &&
 			is_highlight(connection_id, param);
 
 		var tmp;
@@ -1014,7 +1007,7 @@ function format_message(param, connection_id) {
 		}
 
 		var nick_ext_info = "";
-		var userhosts = conndata_last[connection_id]["userhosts"];
+		var userhosts = model.getConnection(connection_id).userhosts();
 
 		if (userhosts && userhosts[param.sender]) {
 			nick_ext_info = userhosts[param.sender][0] + '@' +
@@ -1034,7 +1027,7 @@ function format_message(param, connection_id) {
 					msg = msg.replace("%s", param.message);
 
 					if (param.sender && param.channel &&
-							param.sender != active_nicks[connection_id]) {
+							param.sender != model.getConnection(connection_id).active_nick()) {
 
 						notify(msg);
 					}
@@ -1129,7 +1122,6 @@ function handle_conn_data(conndata) {
 		if (conndata != "") {
 			if (conndata.duplicate) return;
 
-			conndata_last = [];
 			valid_ids = [];
 
 			for (var i = 0; i < conndata.length; i++) {
@@ -1144,20 +1136,9 @@ function handle_conn_data(conndata) {
 
 				valid_ids.push(conndata[i].id);
 
-				conndata_last[conndata[i].id] = conndata[i];
-
-				if (conndata[i].status == "2") {
-					active_nicks[conndata[i].id] = conndata[i].active_nick;
-				} else {
-					active_nicks[conndata[i].id] = [];
-					nicklists[conndata[i].id] = [];
-				}
 			}
 
 			model.cleanupConnections(valid_ids);
-
-		} else {
-			conndata_last = [];
 		}
 	} catch (e) {
 		exception_error("handle_conn_data", e);
@@ -1171,7 +1152,7 @@ function handle_chan_data(chandata) {
 
 			for (var connection_id in chandata) {
 
-				if (!conndata_last[connection_id]) continue;
+				if (!model.getConnection(connection_id)) continue;
 
 				if (!nicklists[connection_id]) nicklists[connection_id] = [];
 				if (!topics[connection_id]) topics[connection_id] = [];
@@ -1299,9 +1280,9 @@ function update_title() {
 			}
 
 
-			if (conndata_last[connection_id]) {
-				title = title.replace("%a", active_nicks[connection_id]);
-				title = title.replace("%b", conndata_last[connection_id].title);
+			if (model.getConnection(connection_id)) {
+				title = title.replace("%a", model.getConnection(connection_id).active_nick());
+				title = title.replace("%b", model.getConnection(connection_id).title());
 				title = title.replace("%c", tab.getAttribute("channel"));
 				document.title = title;
 			} else {
@@ -1664,7 +1645,7 @@ function handle_event(connection_id, line) {
 
 function push_message(connection_id, channel, message, message_type, no_tab_hl) {
 	try {
-		if (!conndata_last[connection_id]) return;
+		if (!model.getConnection(connection_id)) return;
 
 		if (no_tab_hl == undefined) no_tab_hl = false;
 
@@ -1697,7 +1678,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					msg = msg.replace("%n", message.sender);
 					msg = msg.replace("%s", message.message);
 
-					if (message.sender && message.sender != active_nicks[connection_id]) {
+					if (message.sender && message.sender != model.getConnection(connection_id).active_nick()) {
 						notify(msg);
 					}
 
@@ -1711,7 +1692,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 					msg = msg.replace("%c", message.channel);
 
 					if (message.sender && message.channel &&
-							message.sender != active_nicks[connection_id]) {
+							message.sender != model.getConnection(connection_id).active_nick()) {
 
 						notify(msg);
 					}
@@ -2207,8 +2188,8 @@ function is_highlight(connection_id, message) {
 		if (message_text.match(":\/\/"))
 			return false;
 
-		if (typeof active_nicks[connection_id] == 'string' &&
-				message_text.match(active_nicks[connection_id].toUpperCase()))
+		if (model.getConnection(connection_id) &&
+				message_text.match(model.getConnection(connection_id).active_nick().toUpperCase()))
 			return true;
 
 		for (var i = 0; i < highlight_on.length; i++) {
