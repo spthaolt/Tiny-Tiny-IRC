@@ -629,45 +629,21 @@ ul#userlist-list li:hover {
 	color : #4684ff;
 }
 
-.even, .even td {
+.row, .row td {
 	border-width : 0px 0px 1px 0px;
 	border-style : solid;
 	border-color : #c0c0c0;
+	border-collapse : collapse;
+	padding : 2px 5px 2px 5px;
+}
+
+.row.HL {
+	background-color : #fff7d5;
+	border-color : #e7d796;
+}
+
+.row:nth-child(even), .row:nth-child(even) td {
 	background-color : #f0f0f0;
-	border-collapse : collapse;
-	padding : 2px 5px 2px 5px;
-}
-
-.odd, .odd td {
-	border-width : 0px 0px 1px 0px;
-	border-style : solid;
-	border-color : #c0c0c0;
-	border-collapse : collapse;
-	padding : 2px 5px 2px 5px;
-}
-
-.evenSelected, .evenSelected td, .evenHL {
-	background-color : #fff7d5;
-	border-style : solid;
-	border-color : #e7d796;
-	border-width : 0px 0px 1px 0px;
-	border-collapse : collapse;
-	padding : 2px 5px 2px 5px;
-}
-
-.oddSelected, .oddSelected td, .oddHL {
-	background-color : #fff7d5;
-	border-style : solid;
-	border-color : #e7d796;
-	border-width : 0px 0px 1px 0px;
-	border-collapse : collapse;
-	padding : 2px 5px 2px 5px;
-}
-
-#userlist-list li.odd, #userlist-list li.even, #userlist-list li.evenHL,
-	#userlist-list li.oddHL {
-	border-color : transparent;
-	background : transparent;
 }
 
 div.dlgSec {

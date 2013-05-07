@@ -13,7 +13,7 @@
 
 		while ($line = db_fetch_assoc($result)) {
 
-			$row_class = ($lnum % 2) ? "odd" : "even";
+			$row_class = "row";
 
 			$id = $line['id'];
 

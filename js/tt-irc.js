@@ -7,7 +7,6 @@ var delay = 1500;
 var timeout_delay = 3000;
 var buffers = [];
 var nicklists = [];
-var li_classes = [];
 var topics = [];
 var active_nicks = [];
 var conndata_last = [];
@@ -341,7 +340,7 @@ function handle_update(transport) {
 				lines[i].ts = new Date(Date.parse(lines[i].ts));
 
 				if (lines[i].message_type == MSGT_EVENT) {
-					handle_event(li_classes[chan], connection_id, lines[i]);
+					handle_event(connection_id, lines[i]);
 				} else {
 					push_message(connection_id, chan, lines[i], lines[i].message_type);
 					if (!window_active) ++new_messages;
@@ -1001,8 +1000,10 @@ function toggle_connection(elem) {
 	}
 }
 
-function format_message(row_class, param, connection_id) {
+function format_message(param, connection_id) {
 	try {
+		var row_class = "row";
+
 		var is_hl = param.sender != conndata_last[connection_id].active_nick &&
 			is_highlight(connection_id, param);
 
@@ -1045,7 +1046,7 @@ function format_message(row_class, param, connection_id) {
 
 		if (param.message_type == MSGT_ACTION) {
 
-			if (is_hl) row_class += "HL";
+			if (is_hl) row_class += " HL";
 
 			if (emoticons_map && param.message) {
 				param.message = rewrite_emoticons(param.message);
@@ -1082,7 +1083,7 @@ function format_message(row_class, param, connection_id) {
 
 		} else if (param.sender != "---" && param.message_type != MSGT_SYSTEM) {
 
-			if (is_hl) row_class += "HL";
+			if (is_hl) row_class += " HL";
 
 //			param.message = param.message.replace(/\(oo\)/g,
 //					"<img src='images/piggie_icon.png' height='16px' alt='(oo)'>");
@@ -1448,7 +1449,7 @@ function query_user(elem) {
 	}
 }
 
-function handle_event(li_class, connection_id, line) {
+function handle_event(connection_id, line) {
 	try {
 		if (!line.message) return;
 
@@ -1663,18 +1664,6 @@ function handle_event(li_class, connection_id, line) {
 	}
 }
 
-function toggle_li_class(channel) {
-	if (!li_classes[channel]) {
-		li_classes[channel] = "odd";
-	} else {
-		if (li_classes[channel] == "odd") {
-			li_classes[channel] = "even";
-		} else {
-			li_classes[channel] = "odd";
-		}
-	}
-}
-
 function push_message(connection_id, channel, message, message_type, no_tab_hl) {
 	try {
 		if (!conndata_last[connection_id]) return;
@@ -1695,9 +1684,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 			id_history.shift();
 
 		if (message_type != MSGT_BROADCAST) {
-			toggle_li_class(channel);
-
-			var tmp_html = format_message(li_classes[channel], message, connection_id);
+			var tmp_html = format_message(message, connection_id);
 
 			tmp_html.push(message.force_display);
 
@@ -1746,8 +1733,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 				if (!buffers[connection_id][chan]) buffers[connection_id][chan] = [];
 
 				if (tabs[i].getAttribute("tab_type") == "C") {
-					toggle_li_class(chan);
-					var tmp_html = format_message(li_classes[chan], message, connection_id);
+					var tmp_html = format_message(message, connection_id);
 
 					tmp_html.push(message.force_display);
 
