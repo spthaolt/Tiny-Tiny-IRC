@@ -90,8 +90,6 @@
 	</div>
 </div>
 
-<div id="dialog_overlay" style="display : none"> </div>
-
 <div id="errorBox" style="display : none">
 	<div id="xebTitle"><?php echo __('Fatal Exception') ?></div>
 	<div id="xebContent">&nbsp;</div>
@@ -101,9 +99,9 @@
 	</div>
 </div>
 
-<div id="container">
-
 <div style="display : none" class="modal" id="infoBox">&nbsp;</div>
+
+<div id="main">
 
 <div id="header">
 	<div class="topLinks" id="topLinks">
@@ -138,13 +136,13 @@
 	<div id="tabs-inner">
 		<ul id="tabs-list" data-bind="foreach: connections">
 			<li channel="---" tab_type="S" data-bind="attr: { id: 'tab-' + id(), connection_id: id() }, css: { selected: selected, attention: attention }" onclick="change_tab(this)">
-				<img alt="" class="conn-img" data-bind="attr: { id: 'cimg-' + id(), src: getConnImg() }">
+				<span data-bind="attr: { id: 'cimg-' + id() }, css: { 'conn-img': true, connected: connected }"> </span>
 				<div data-bind="text: title"></div>
 			</li>
 			<ul class="sub-tabs" data-bind="foreach: channels, attr: { id: 'tabs-' + id() }">
 				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }, css: { selected: selected, highlight: highlight, attention: attention, offline: offline }">
-					<img onclick="close_tab(this)" alt="[X]" title="Close this tab" class="conn-img"
-						src="images/close_tab.png" data-bind="attr: { tab_id: 'tab-' + title() + ':' + $parent.id() }">
+					<span onclick="close_tab(this)" title="Close this tab" class="close-img"
+						data-bind="attr: { tab_id: 'tab-' + title() + ':' + $parent.id() }">&times;</span>
 					<div class="indented" data-bind="text: title"></div>
 				</li>
 			</ul>
@@ -154,7 +152,7 @@
 
 <div id="content">
 	<div id="topic"><div class="wrapper">
-		<div data-bind="html: activeTopicFormatted, attr: { title: activeTopic }, css: { disabled: activeTopicDisabled }" id="topic-input" onclick="prepare_change_topic(this)"></div>
+		<div data-bind="html: activeTopicFormatted, attr: { title: activeTopic }, css: { 'uneditable-input': true, disabled: activeTopicDisabled }" id="topic-input" onclick="prepare_change_topic(this)"></div>
 
 		<input onkeypress="change_topic_real(this, event)" onblur="hide_topic_input()" type="text"
 			id="topic-input-real" style="display : none"/>
@@ -170,13 +168,10 @@
 
 	<div id="sidebar">
 
-		<div onclick="toggle_sidebar()" id="sidebar-grip"
-			title="<?php echo __("Toggle sidebar") ?>"></div>
-
 		<div id="sidebar-inner">
 
 		<!-- fuck you very much, MSIE team -->
-		<form action="javascript:void(null);" method="post">
+		<form action="javascript:void(null);" method="post" class="connect-form">
 		<div id="connect"><button class="btn"
 			id="connect-btn" data-bind="enable: toggleConnection, text: connectBtnLabel, click: toggleConnection"> </button>
 		</div>

@@ -252,13 +252,9 @@
 
 		<h5><?php echo __('Servers') ?></h5>
 
-		<div class="control-group">
-			<div class="controls">
-				<ul id="servers-list" class="unstyled">
-					<?php print_servers($link, $id); ?>
-				</ul>
-			</div>
-		</div>
+		<ul id="servers-list" class="unstyled scrollable">
+			<?php print_servers($link, $id); ?>
+		</ul>
 
 		</form>
 
@@ -383,7 +379,7 @@
 
 		<div class="control-group">
 			<div class="controls">
-				<a href="#" onclick="configure_notifications()"><?php echo __('Configure desktop notifications') ?></a>
+				<a class="btn" href="#" onclick="configure_notifications()"><?php echo __('Configure desktop notifications') ?></a>
 			</div>
 		</div>
 
@@ -393,6 +389,7 @@
 					<input name="hide_join_part" <?php echo $hide_join_part_checked ?>
 						id="pr_hide_join_part" type="checkbox" value="1">
 					<?php echo __('Do not highlight tabs on auxiliary messages') ?></label>
+
 			</div>
 		</div>
 
@@ -414,11 +411,7 @@
 
 		<h5><?php echo __('Connections') ?></h5>
 
-		<div class="control-group">
-			<div class="controls">
-				<ul class="unstyled" id="connections-list"><?php print_connections($link) ?></ul>
-			</div>
-		</div>
+		<ul class="scrollable unstyled" id="connections-list"><?php print_connections($link) ?></ul>
 
 	</form>
 

@@ -39,7 +39,7 @@ function exception_error(location, e, ext_info) {
 
 		if (ebc) {
 
-			Element.show("dialog_overlay");
+			$("main").addClassName("fade");
 			Element.show("errorBox");
 
 			if (ext_info) {
@@ -138,7 +138,7 @@ function leading_zero(p) {
 function closeErrorBox() {
 
 	if (Element.visible("errorBoxShadow")) {
-		Element.hide("dialog_overlay");
+		$("main").addClassName("fade");
 		Element.hide("errorBoxShadow");
 
 		enable_hotkeys();
@@ -165,7 +165,7 @@ function fatal_error(code, msg, ext_info) {
 
 			if (ebc) {
 
-				Element.show("dialog_overlay");
+				$("#main").addClassName("fade");
 				Element.show("errorBox");
 
 				if (ext_info) {
@@ -191,7 +191,7 @@ function infobox_callback2(transport) {
 	try {
 		var box = $('infoBox');
 
-		Element.show("dialog_overlay");
+		$("main").addClassName("fade");
 
 		if (box) {
 			box.innerHTML=transport.responseText;
@@ -210,7 +210,7 @@ function close_infobox(cleanup) {
 		enable_hotkeys();
 
 		if (Element.visible("infoBox")) {
-			Element.hide("dialog_overlay");
+			$("main").removeClassName("fade");
 			Element.hide("infoBox");
 
 			if (cleanup) $("infoBox").innerHTML = "&nbsp;";

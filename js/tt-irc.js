@@ -49,9 +49,6 @@ var Connection = function(data) {
 	var self = this;
 
 	self.status = ko.observable(0);
-	self.getConnImg = function() {
-		return self.status() == 2 ? "images/srv_online.png" : "images/srv_offline.png";
-	};
 
 	self.id = ko.observable(0);
 	self.connection_id = ko.observable(0);

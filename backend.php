@@ -301,8 +301,7 @@
 
 		$rv["status"] = 1;
 
-		foreach (array("srv_offline.png", "srv_online.png", "close_tab.png",
-				"user_normal.png", "user_voice.png", "user_op.png") as $img) {
+		foreach (array("user_normal.png", "user_voice.png", "user_op.png") as $img) {
 
 			$rv["images"][$img] = theme_image($link, "images/$img");
 		}

@@ -35,6 +35,7 @@
 	width : 155px;
 	height : 250px;
 	overflow : auto;
+	border : 1px solid #88b0f0;
 }
 
 #emoticons img {
@@ -51,18 +52,8 @@
 	bottom : 0px;
 }
 
-#sidebar-grip {
-	float : left;
-	height : 100%;
-	width : 5px;
-}
-
 #sidebar-inner { 
 	margin : 5px;
-}
-
-#sidebar-grip:hover {
-	background : white;
 }
 
 #connect {
@@ -70,7 +61,7 @@
 }
 
 #connect-btn {
-	width : 90%;
+	width : 100%;
 }
 
 
@@ -114,24 +105,48 @@
 	font-size : 12px;
 }
 
-#toolbar a {
-	color : #88b0f0;
-}
-
 #tabs {
 	position : absolute;
-	top : 25px;
-	width : 156px;
-	left : 0px;
+	top : 45px;
+	width : 155px;
+	left : 5px;
 	bottom : 5px;
 	overflow : auto;
 }
 
-#tabs-list img.conn-img {
+#tabs-list span.conn-img.connected {
+	background : #B8F2B8;
+}
+
+#tabs-list span.conn-img {
+	display : block;
 	vertical-align : middle;
 	margin-right : 5px;
-	margin-top : 2px;
+	font-size : 13px;
 	float : right;
+	text-align : center;
+	width : 11px;
+	height : 11px;
+	border : 1px solid #ccc;
+	border-radius : 20px;
+	margin-top : 4px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+#tabs-list li.selected span.close-img {
+	color : gray;
+}
+
+#tabs-list span.close-img {
+	display : block;
+	vertical-align : middle;
+	margin-right : 6px;
+	font-size : 16px;
+	float : right;
+	font-weight : bold;
+	color : #e0e0e0;
+	position : relative;
+	top : -2px;
 }
 
 #tabs-list {
@@ -142,8 +157,9 @@
 }
 
 #tabs-list li {
+	font-family : "Segoe UI", Tahoma, sans-serif;
 	text-align : left;
-	text-indent : 1em;
+	text-indent : 10px;
 	padding : 5px 0px 5px 0px;
 	cursor : pointer;
 	z-index : 3;
@@ -172,8 +188,19 @@ ul#tabs-list li.offline {
 }
 
 #tabs-list li.selected {
-	color : black;
-	text-shadow : #ffffff 0 1px;
+	color : black ! important;
+	font-weight : bold;
+	background : #f0f0f0;
+	text-shadow : 0px 0px 4px #fff;
+	border-color : #ccc;
+	border-radius : 4px 0px 0px 4px;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#tabs-list li {
+	border-color : transparent;
+	border-style : solid;
+	border-width : 1px 0px 1px 1px;
 }
 
 ul.sub-tabs {
@@ -183,12 +210,19 @@ ul.sub-tabs {
 } 
 
 #content {
-	top : 25px;
+	top : 30px;
 	right : 5px;
-	left : 155px;
+	left : 160px;
 	position : absolute;
 	bottom : 5px;
 	word-wrap : break-word;
+	margin : 0px;
+	background : #c0d8ff;
+	border-color : #88b0f0;
+	border-width : 1px;
+	border-style : solid;
+	border-radius : 4px;
+   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 #topic {
@@ -207,7 +241,6 @@ ul.sub-tabs {
 	height : 20px;
 	margin : 0px;
 	padding-top : 2px;
-	font-size : 14px;
 	text-indent : 5px;
 	text-align : left;
 	cursor : pointer;
@@ -232,7 +265,6 @@ ul.sub-tabs {
 }
 
 #topic #topic-input.disabled {
-	background : #f0f0f0;
 	color : gray;
 }
 
@@ -247,18 +279,16 @@ ul.sub-tabs {
 	left : 5px;
 	bottom : 35px;
 	overflow : auto;
+	background : white;
+	border : 1px solid #88b0f0;
 }
 
-#log a {
-	color : #4684ff;
-}
-
-#log a:hover {
-	color : black;
+form.connect-form {
+	margin : 0px;
+	display : inline;
 }
 
 #userlist {
-	margin-top : 5px;
 	font-size : 12px;
 }
 
@@ -273,14 +303,20 @@ ul.sub-tabs {
 #userlist-inner {
 }
 
+div#main.fade {
+	opacity : 0.3;
+}
+
+
 #dialog_overlay {
+	background : white;
+	opacity: 0.8;
 	left : 0;
 	top : 0;
 	height : 100%;
 	width : 100%;
 	z-index : 4;
 	position : absolute;
-	background-image : url("images/shadow_white.png");
 }
 
 #overlay {
@@ -326,70 +362,6 @@ div#errorBox textarea {
 div#errorBox input {
 	margin-bottom : 10px;
 }
-
-/* #infoBoxTitle {
-	border-width : 0px 0px 1px 0px;
-	border-style : solid;
-	border-color : #659a4c;
-	background-color : #99d67a;
-	padding : 4px 2px 4px 10px;
-	color : white;
-	font-weight : bold;
-	font-size : 16px;
-	text-shadow : #659a4c 0px 1px 0px;
-}
-
-#infoBox {	
-	border-width : 1px 1px 1px 1px;
-	border-style : solid;
-	border-color : #659a4c;
-	border-radius : 4px;
-	background-color : #f8fcf5;
-	overflow : hidden;
-	left : 25%;
-	top : 50px;
-	width : 50%;
-	position : absolute;
-	min-width : 600px;
-	z-index : 5;
-	box-shadow : 0px 0px 4px #999;
-} 
-
-div#errorBox {
-	background-color : #ffcccc;
-	border : 1px solid #ff0000;
-	font-size : 12px;
-	overflow : hidden;
-	left : 25%;
-	top : 50px;
-	width : 50%;
-	position : absolute;
-	min-width : 600px;
-	z-index : 1000;
-	box-shadow : 0px 0px 4px #999;
-} */
-
-/* div.infoBoxContents {
-	padding : 10px;
-	margin-bottom : 5px;
-	font-size : 12px;
-}
-
-div.infoBoxContents td {
-	font-size : 12px;
-}
-
-div.infoBoxContents a {
-	color : #527040;
-}
-
-div.infoBoxContents a:hover {
-	color : black;
-} 
-
-pre {
-	margin : 5px;
-} */
 
 #log ul#log-list {
   list-style-type : none;
@@ -442,7 +414,8 @@ ul#userlist-list li:hover {
 	color : #4684ff;
 }
 
-/* body.main .row, .row td {
+body.main .row {
+	margin : 0px;
 	border-width : 0px 0px 1px 0px;
 	border-style : solid;
 	border-color : #c0c0c0;
@@ -457,55 +430,7 @@ body.main .row.HL, body.main .row.HL:nth-child(even) {
 
 body.main .row:nth-child(even), .row:nth-child(even) td {
 	background-color : #f0f0f0;
-} */
-
-/* div.dlgSec {
-	font-size : 12px;
-	color : gray;
-	font-weight : bold;
-	clear : both;
-	height : 20px;
-}
-
-div.dlgSecCont {
-	position : relative;
-	left : 150px;
-	top : -20px;
-	float : left;
-	font-size : 12px;
-	font-weight : normal;
-	line-height : 200%;
-}
-
-div.dlgButtons {
-	text-align : right;
-	clear : both;
 } 
-
-textarea.user-css {
-	width : 100%;
-	height : 100px;
-	border : 1px solid #99d67a;
-	background-color : white;
-	margin : 0px 0px 5px 0px;
-	padding : 0px;
-}
-
-textarea.tweet-text {
-	width : 100%;
-	height : 50px;
-	border : 1px solid #99d67a;
-	background-color : white;
-	padding : 0px;
-}
-
-textarea.tweet-snippet {
-	width : 100%;
-	height : 100px;
-	border : 1px solid #99d67a;
-	background-color : white;
-	padding : 0px;
-} */
 
 textarea.user-css {
 	display : block;
@@ -513,46 +438,6 @@ textarea.user-css {
 	height : 200px;
 	overflow : auto;
 }
-
-ul.container {
-	height : 100px;
-	overflow : auto;
-	list-style-type : none;
-	margin : 0px 0px 5px 0px;
-	padding : 0px;
-}
-
-ul.container li input {
-	vertical-align : middle;
-}
-
-/* div.dlgSecCont label.fixed {
-	width : 120px;
-	float : left;
-	text-align : right;
-	padding-right : 10px;
-}
-
-div.dlgSecCont input {
-	margin-bottom : 2px;
-} 
-
-div#mini-notice {
-	font-size : 11px;
-	color : black;
-	background-color : white;
-	border : 1px solid #659a4c;
-	margin-bottom : 5px;
-	padding : 2px;
-}
-
-div.error {
-	border : 1px solid #ff0000;
-	background : #ffcccc;
-	padding : 5px;
-	margin : 0px 0px 5px 0px;
-	font-size : 12px;
-} */
 
 div#image-preview {
 	background-color : white; 
@@ -564,10 +449,6 @@ div#image-preview {
 	z-index : 4;
 	box-shadow : 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-
-/* button, input, select {
-	font-family : "Segoe UI", sans-serif;
-} */
 
 .invisible {
 	display : none;
@@ -593,6 +474,32 @@ span.italic {
 	top : 45px;
 	left : 15px;
 	z-index : 1;
+}
+
+ul.scrollable {
+	background-color: #ffffff;	
+	border: 1px solid #cccccc;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	height : 120px;
+	overflow : auto;
+	border-radius: 3px;
+}
+
+ul.scrollable li.Selected {
+	font-weight : bold;
+}
+
+ul.scrollable li {
+	margin : 4px;
+}
+
+ul.scrollable li > input[type="checkbox"] {
+	margin-top : 0px;
+	margin-left : 4px;
+}
+
+ul.scrollable li > a {
+	vertical-align : middle;
 }
 
 div.autocomplete {
