@@ -65,6 +65,7 @@ var Connection = function(data) {
 	self.nicklist = ko.observableArray([]);
 	self.highlight = ko.observable(false);
 	self.attention = ko.observable(false);
+	self.type = ko.observable("S");
 
 	self.update = function(data) {
 		self.id(data.id);
