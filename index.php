@@ -130,12 +130,12 @@
 <div id="tabs">
 	<div id="tabs-inner">
 		<ul id="tabs-list" data-bind="foreach: connections">
-			<li channel="---" tab_type="S" data-bind="attr: { id: 'tab-' + id(), connection_id: id() }" onclick="change_tab(this)">
+			<li channel="---" tab_type="S" data-bind="attr: { id: 'tab-' + id(), connection_id: id() }, css: { selected: selected, attention: attention }" onclick="change_tab(this)">
 				<img alt="" class="conn-img" data-bind="attr: { id: 'cimg-' + id(), src: getConnImg() }">
 				<div data-bind="text: title"></div>
 			</li>
 			<ul class="sub-tabs" data-bind="foreach: channels, attr: { id: 'tabs-' + id() }">
-				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }, css: { offline: offline }">
+				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }, css: { selected: selected, highlight: highlight, attention: attention, offline: offline }">
 					<img onclick="close_tab(this)" alt="[X]" title="Close this tab" class="conn-img"
 						src="images/close_tab.png" data-bind="attr: { tab_id: 'tab-' + title() + ':' + $parent.id() }">
 					<div class="indented" data-bind="text: title"></div>

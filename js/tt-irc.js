@@ -63,6 +63,8 @@ var Connection = function(data) {
 	self.lines = ko.observableArray([]);
 	self.status = ko.observable(0);
 	self.nicklist = ko.observableArray([]);
+	self.highlight = ko.observable(false);
+	self.attention = ko.observable(false);
 
 	self.update = function(data) {
 		self.id(data.id);
@@ -77,6 +79,10 @@ var Connection = function(data) {
 	self.connected = ko.computed(function() {
 		return self.status() == CS_CONNECTED;
 	}, self);
+
+	self.selected = ko.computed(function() {
+		return model.activeChannel() == self;
+	});
 
 	self.nickExists = function(nick) {
 		for (var i = 0; i < self.channels().length; i++) {
@@ -194,6 +200,8 @@ var Channel = function(connection_id, title, tab_type) {
 	self.lines = ko.observableArray([]);
 	self._topic = ko.observableArray([]);
 	self.topicEventSynthesized = ko.observable(false);
+	self.highlight = ko.observable(false);
+	self.attention = ko.observable(false);
 
 	self.topicDisabled = ko.computed(function() {
 		return self.type() != "C";
@@ -246,6 +254,10 @@ var Channel = function(connection_id, title, tab_type) {
 			self._topic(topic);
 		},
 		owner: self
+	});
+
+	self.selected = ko.computed(function() {
+		return model.activeChannel() == self;
 	});
 
 	self.offline = ko.computed(function() {
@@ -366,6 +378,13 @@ function Model() {
 		write: function(connection_id, channel) {
 			self._activeConnectionId(connection_id);
 			self._activeChannel(channel);
+
+			var chan = self.getChannel(connection_id, channel);
+
+			if (chan) {
+				chan.highlight(false);
+				chan.attention(false);
+			}
 		},
 		owner: self});
 
@@ -986,25 +1005,12 @@ function change_tab(elem) {
 
 		if (!elem) return;
 
-		var tabs = get_all_tabs();
-
-		for (var i = 0; i < tabs.length; i++) {
-			tabs[i].removeClassName("selected");
-		}
-
-		elem.addClassName("selected");
-
-		elem.removeClassName("attention");
-		elem.removeClassName("highlight");
-
 		console.log("changing tab to " + elem.id);
 
 		if (!initial) {
 			hash_set(elem.getAttribute("connection_id") + "," +
 				elem.getAttribute("channel").replace("#", "#"));
 		}
-
-		console.log(elem.getAttribute("channel"));
 
 		model.activeChannel(elem.getAttribute("connection_id"), elem.getAttribute("channel"));
 
@@ -1954,23 +1960,16 @@ function is_highlight(connection_id, message) {
 
 function highlight_tab_if_needed(connection_id, channel, message) {
 	try {
-		var tab = find_tab(connection_id, channel);
-
 		console.log("highlight_tab_if_needed " + connection_id + " " + channel);
 
-		//if (message.id <= last_old_id) return;
+		var chan = model.getChannel(connection_id, channel);
 
-		if (tab && tab != get_selected_tab()) {
-
-		  if (tab.getAttribute("tab_type") != "S" &&
-				  is_highlight(connection_id, message)) {
-
-				tab.addClassName("highlight");
-
+		if (chan && chan != model.activeChannel()) {
+			if (chan.type() != "S" && is_highlight(connection_id, message)) {
+				chan.highlight(true);
 				++new_highlights;
-
 			} else {
-				if (!tab.hasClassName("highlight")) tab.addClassName("attention");
+				chan.attention(true);
 			}
 		}
 
