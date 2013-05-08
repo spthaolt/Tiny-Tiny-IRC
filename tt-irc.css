@@ -219,8 +219,8 @@ ul.sub-tabs {
 	bottom : 5px;
 	word-wrap : break-word;
 	margin : 0px;
-	background : #c0d8ff;
-	border-color : #88b0f0;
+	background : #C4E0FF;
+	border-color : #0088cc;
 	border-width : 1px;
 	border-style : solid;
 	border-radius : 4px;
@@ -282,7 +282,7 @@ ul.sub-tabs {
 	bottom : 35px;
 	overflow : auto;
 	background : white;
-	border : 1px solid #88b0f0;
+	border : 1px solid #ccc;
 }
 
 form.connect-form {
