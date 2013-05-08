@@ -62,6 +62,7 @@ var Connection = function(data) {
 	self.channels = ko.observableArray([]);
 	self.lines = ko.observableArray([]);
 	self.status = ko.observable(0);
+	self.nicklist = ko.observableArray([]);
 
 	self.update = function(data) {
 		self.id(data.id);
@@ -83,6 +84,34 @@ var Connection = function(data) {
 				return true;
 		}
 	};
+
+	self.topic = ko.computed({
+		read: function() {
+			var topic = "";
+
+			switch (self.status()) {
+			case CS_CONNECTING:
+				topic = __("Connecting...");
+				break;
+			case CS_CONNECTED:
+				var topic = __("Connected to: ") + self.active_server();
+				break;
+			case CS_DISCONNECTED:
+				topic = __("Disconnected.");
+				break;
+			}
+
+			return [topic];
+		},
+		write: function(topic) {
+			//
+		},
+		owner: self
+	});
+
+	self.topicDisabled = ko.computed(function() {
+		return true;
+	}, self);
 
 	self.update(data);
 };
@@ -106,7 +135,7 @@ var Message = function(data) {
 	}
 
 	self.format = ko.computed(function() {
-		var nick_ext_info = "";
+		var nick_ext_info = model.getNickHost(self.connection_id(), self.sender());
 
 		switch (self.message_type()) {
 		case MSGT_ACTION:
@@ -163,6 +192,61 @@ var Channel = function(connection_id, title, tab_type) {
 	self.nicklist = ko.observableArray([]);
 	self.connection_id = ko.observable(connection_id);
 	self.lines = ko.observableArray([]);
+	self._topic = ko.observableArray([]);
+	self.topicEventSynthesized = ko.observable(false);
+
+	self.topicDisabled = ko.computed(function() {
+		return self.type() != "C";
+	}, self);
+
+	self.topic = ko.computed({
+		read: function() {
+			switch (self.type()) {
+			case "P":
+				var nick_ext_info = model.getNickHost(self.connection_id(), self.title());
+				var topic = __("Conversation with") + " " +
+					self.title();
+
+				if (nick_ext_info)
+					topic = topic + " (" + nick_ext_info + ")";
+
+				return [topic];
+			default:
+				return self._topic();
+			}
+		},
+		write: function(topic) {
+			if (topic[0] != "" && !self.topicEventSynthesized()) {
+				self.topicEventSynthesized(true);
+
+				var line = new Object();
+
+				line.message = __("Topic for %c is: %s").replace("%c", self.title()).
+					replace("%s", topic[0])
+
+				line.message_type = MSGT_SYSTEM;
+				line.ts = new Date();
+				line.id = last_id;
+				line.force_display = 1;
+
+				push_message(self.connection_id(), self.title(), line, MSGT_PRIVMSG);
+
+				line.message = __("Topic for %c set by %n at %d").replace("%c", self.title()).
+					replace("%n", topic[1]).
+					replace("%d", rewrite_urls(topic[2]));
+
+				line.message_type = MSGT_SYSTEM;
+				line.ts = new Date();
+				line.id = last_id;
+				line.force_display = 1;
+
+				push_message(self.connection_id(), self.title(), line, MSGT_PRIVMSG);
+			}
+
+			self._topic(topic);
+		},
+		owner: self
+	});
 
 	self.offline = ko.computed(function() {
 		if (self.type() == "P") {
@@ -193,7 +277,10 @@ function Model() {
 	};
 
 	self.stripNickPrefix = function(nick) {
-		return nick.replace(/^[\@\+]/, "");
+		if (nick)
+			return nick.replace(/^[\@\+]/, "");
+		else
+			return "";
 	};
 
 	self.getNickImage = function(nick) {
@@ -276,14 +363,9 @@ function Model() {
 		read: function() {
 			return self.getChannel(self._activeConnectionId(), self._activeChannel());
 		},
-		write: function(value) {
-			if (value) {
-				self._activeChannel(value.title());
-				self._activeConnectionId(value.connection_id());
-			} else {
-				self._activeChannel("");
-				self._activeConnectionId(0);
-			}
+		write: function(connection_id, channel) {
+			self._activeConnectionId(connection_id);
+			self._activeChannel(channel);
 		},
 		owner: self});
 
@@ -318,6 +400,32 @@ function Model() {
 		},
 		owner: self
 	});
+
+	self.activeTopicFormatted = ko.computed(function() {
+		var chan = self.activeChannel();
+
+		if (chan)
+			return rewrite_emoticons(chan.topic()[0]);
+
+	}, self);
+
+	self.activeTopic = ko.computed(function() {
+		var chan = self.activeChannel();
+
+		if (chan)
+			return chan.topic()[0];
+
+	}, self);
+
+	self.activeTopicDisabled = ko.computed(function() {
+		var chan = self.activeChannel();
+
+		if (chan)
+			return chan.topicDisabled();
+		else
+			return true;
+
+	}, self);
 
 	self.activeStatus = ko.computed(function() {
 		return self.activeConnection() && self.activeConnection().status() || CS_DISCONNECTED;
@@ -721,60 +829,6 @@ function update_buffer(force_redraw) {
 			$("log").scrollTop = $("log").scrollHeight;
 		}, 100);
 
-		$("topic-input").title = "";
-		$("topic-input").innerHTML = "";
-
-		if (topics[connection_id] && tab.getAttribute("tab_type") != "P") {
-			var topic = topics[connection_id][channel];
-
-			if (topic) {
-				if ($("topic-input").title != topics[connection_id][channel][0]) {
-					$("topic-input").innerHTML = rewrite_emoticons(topics[connection_id][channel][0]);
-					$("topic-input").title = topics[connection_id][channel][0];
-				}
-
-				$("topic-input").disabled = model.getConnection(connection_id).status() != CS_CONNECTED;
-			} else {
-
-				if (tab.getAttribute("tab_type") != "S") {
-					$("topic-input").innerHTML = "";
-					$("topic-input").disabled = true;
-
-				} else {
-					if (model.getConnection(connection_id).status() == CS_CONNECTED) {
-						$("topic-input").innerHTML = __("Connected to: ") +
-							model.getConnection(connection_id).active_server();
-						$("topic-input").disabled = true;
-					} else {
-						$("topic-input").innerHTML = __("Disconnected.");
-						$("topic-input").disabled = true;
-					}
-				}
-			}
-		} else if (tab.getAttribute("tab_type") == "S") {
-			$("topic-input").innerHTML = __("Disconnected.");
-			$("topic-input").disabled = true;
-		} else {
-
-			var nick = tab.getAttribute("channel");
-			var userhosts = model.getConnection(connection_id).userhosts();
-			var nick_ext_info = "";
-
-			if (userhosts && userhosts[nick]) {
-				nick_ext_info = userhosts[nick][0] + '@' + userhosts[nick][1];
-			}
-
-			$("topic-input").innerHTML = __("Conversation with") + " " +
-				tab.getAttribute("channel") + " (" + nick_ext_info + ")";
-			$("topic-input").disabled = true;
-		}
-
-		if ($("topic-input").disabled) {
-			$("topic-input").addClassName("disabled");
-		} else {
-			$("topic-input").removeClassName("disabled");
-		}
-
 		update_title();
 
 	} catch (e) {
@@ -795,7 +849,7 @@ function hide_topic_input() {
 function prepare_change_topic(elem) {
 	try {
 		var tab = get_selected_tab();
-		if (!tab || elem.disabled) return;
+		if (!tab || elem.hasClassName("disabled")) return;
 
 		Element.hide("topic-input");
 		Element.show("topic-input-real");
@@ -829,7 +883,12 @@ function change_topic_real(elem, evt) {
 
 			if (tab.getAttribute("tab_type") == "S") channel = "---";
 
-			topics[connection_id][channel] = topic;
+			var chan = model.getChannel(connection_id, channel);
+
+			if (chan)
+				chan.topic(topic);
+
+			//topics[connection_id][channel] = topic;
 
 			var query = "op=set-topic&topic=" + param_escape(topic) +
 				"&chan=" + param_escape(channel) +
@@ -945,8 +1004,9 @@ function change_tab(elem) {
 				elem.getAttribute("channel").replace("#", "#"));
 		}
 
-		model.activeChannel(model.getChannel(
-			elem.getAttribute("connection_id"), elem.getAttribute("channel")));
+		console.log(elem.getAttribute("channel"));
+
+		model.activeChannel(elem.getAttribute("connection_id"), elem.getAttribute("channel"));
 
 		update_buffer();
 
@@ -1018,7 +1078,7 @@ function handle_chan_data(chandata) {
 
 				if (!model.getConnection(connection_id)) continue;
 
-				if (!topics[connection_id]) topics[connection_id] = [];
+//				if (!topics[connection_id]) topics[connection_id] = [];
 
 				var conn = model.getConnection(connection_id);
 
@@ -1048,6 +1108,8 @@ function handle_chan_data(chandata) {
 							conn.channels.push(channel);
 						}
 
+						channel.topic(chandata[connection_id][chan]["topic"]);
+
 						conn.channels.sort(function(a, b) {
 							return a.title().localeCompare(b.title());
 						});
@@ -1062,46 +1124,6 @@ function handle_chan_data(chandata) {
 						}
 
 						valid_channels.push(chan);
-
-					}
-
-
-					//nicklists[connection_id][chan] = chandata[connection_id][chan]["users"];
-
-					if ((!topics[connection_id][chan] ||
-							!topics[connection_id][chan][0]) &&
-							chandata[connection_id][chan]["topic"][0] && tab_type == "C") {
-
-						var line = new Object();
-
-						line.message = __("Topic for %c is: %s").replace("%c", chan);
-						line.message = line.message.replace("%s",
-								rewrite_urls(chandata[connection_id][chan]["topic"][0]));
-						line.message_type = MSGT_SYSTEM;
-						line.ts = new Date();
-						line.id = last_id;
-						line.force_display = 1;
-
-						push_message(connection_id, chan, line, MSGT_PRIVMSG);
-
-						line.message = __("Topic for %c set by %n at %d").replace("%c", chan);
-						line.message = line.message.replace("%n",
-								rewrite_urls(chandata[connection_id][chan]["topic"][1]));
-						line.message = line.message.replace("%d",
-								rewrite_urls(chandata[connection_id][chan]["topic"][2]));
-						line.message_type = MSGT_SYSTEM;
-						line.ts = new Date();
-						line.id = last_id;
-						line.force_display = 1;
-
-						push_message(connection_id, chan, line, MSGT_PRIVMSG);
-
-						topics[connection_id][chan] = chandata[connection_id][chan]["topic"];
-
-						update_buffer();
-
-					} else {
-						topics[connection_id][chan] = chandata[connection_id][chan]["topic"];
 					}
 				}
 
@@ -2009,6 +2031,8 @@ function inject_text(str) {
 
 function rewrite_emoticons(str) {
 	try {
+		if (!str) return "";
+
 		if (emoticons_map && get_cookie('ttirc_emoticons') != "false") {
 			for (key in emoticons_map) {
 				str = str.replace(
