@@ -891,7 +891,8 @@ function send(elem, evt) {
 			if (tab.getAttribute("tab_type") == "S") channel = "---";
 
 			if (elem.value.trim() == "/clear") {
-				update_buffer(true);
+				model.activeChannel().lines.removeAll();
+
 			} else {
 				var query = "op=send&message=" + param_escape(elem.value) +
 					"&chan=" + param_escape(channel) +
@@ -1838,20 +1839,12 @@ function hotkey_handler(e) {
 
 		}
 
-		/* if (keycode == 76 && e.ctrlKey) {
+		if (keycode == 76 && e.ctrlKey) {
+			if (model.activeChannel())
+				model.activeChannel().lines.removeAll();
 
-			var tab = get_selected_tab();
-
-			if (tab) {
-				var channel = tab.getAttribute("channel");
-				if (tab.getAttribute("tab_type") == "S") channel = "---";
-
-				buffers[tab.getAttribute("connection_id")][channel] = [];
-				update_buffer(true);
-
-				return false;
-			}
-		} */
+			return false;
+		}
 
 		if (keycode == 9) {
 			/* var tab = get_selected_tab();
