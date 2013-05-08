@@ -998,132 +998,6 @@ function toggle_connection(elem) {
 	}
 }
 
-function format_message(param, connection_id) {
-	try {
-		var row_class = "row";
-
-		var is_hl = param.sender != model.getConnection(connection_id).active_nick() &&
-			is_highlight(connection_id, param);
-
-		var tmp;
-
-		var color = "";
-
-		if (param.sender_color) {
-			color = "style=\"color : " + colormap[param.sender_color] + "\"";
-		}
-
-		var nick_ext_info = "";
-		var userhosts = model.getConnection(connection_id).userhosts();
-
-		if (userhosts && userhosts[param.sender]) {
-			nick_ext_info = userhosts[param.sender][0] + '@' +
-				userhosts[param.sender][1] + " <" + userhosts[param.sender][3] + ">";
-		}
-
-		if (is_hl) {
-			if (param.channel != "---" && param.id > last_old_id) {
-				++new_highlights;
-				var tab = find_tab(connection_id, param.channel);
-
-				if (notify_events[1] && (tab != get_selected_tab() || !window_active)) {
-					var msg = __("(%c) %n: %s");
-
-					msg = msg.replace("%c", param.channel);
-					msg = msg.replace("%n", param.sender);
-					msg = msg.replace("%s", param.message);
-
-					if (param.sender && param.channel &&
-							param.sender != model.getConnection(connection_id).active_nick()) {
-
-						notify(msg);
-					}
-				}
-			}
-		}
-
-		if (param.message_type == MSGT_ACTION) {
-
-			if (is_hl) row_class += " HL";
-
-			if (emoticons_map && param.message) {
-				param.message = rewrite_emoticons(param.message);
-			}
-
-			message = "* " + param.sender + " " + param.message;
-
-			tmp = "<li id=\""+param.id+"\" class=\""+row_class+"\"><span class='timestamp'>" +
-				make_timestamp(param.ts) + "</span> " +
-				"<span class='action'>" + message + "</span>";
-
-		} else if (param.message_type == MSGT_NOTICE) {
-
-			var sender_class = '';
-
-			if (param.incoming == true) {
-				sender_class = 'pvt-sender';
-			} else {
-				sender_class = 'pvt-sender-out';
-			}
-
-			if (emoticons_map && param.message) {
-				param.message = rewrite_emoticons(param.message);
-			}
-
-			tmp = "<li cid=\""+param.id+"\" class=\""+row_class+"\">"+
-				"<span class='timestamp'>" +
-				make_timestamp(param.ts) +
-				"</span> <span class='lt'>-</span><span title=\""+nick_ext_info+"\" " +
-				"class='"+sender_class+"' "+color+">" +
-				param.sender + "</span><span class='gt'>-</span> " +
-				"<span class='message'>" +
-				param.message + "</span>";
-
-		} else if (param.sender != "---" && param.message_type != MSGT_SYSTEM) {
-
-			if (is_hl) row_class += " HL";
-
-//			param.message = param.message.replace(/\(oo\)/g,
-//					"<img src='images/piggie_icon.png' height='16px' alt='(oo)'>");
-
-			param.message = param.message.replace(/(^| )_(.*?)_( |$)/g,
-					"$1<span class=\"underline\">$2</span>$3");
-
-			if (emoticons_map && param.message) {
-				param.message = rewrite_emoticons(param.message);
-			}
-
-//			param.message = param.message.replace(/(OO)/g,
-//					"<img src='images/piggie.png' alt='(oo)'>");
-
-			tmp = "<li id=\""+param.id+"\" "+
-				"class=\""+row_class+"\"><span class='timestamp'>" +
-				make_timestamp(param.ts) +
-				"</span> <span class='lt'>&lt;</span><span title=\""+nick_ext_info+"\" " +
-				"class='sender' "+color+">" +
-				param.sender + "</span><span class='gt'>&gt;</span> " +
-				"<span class='message'>" +
-				param.message + "</span>";
-		} else {
-
-			if (emoticons_map && param.message) {
-				param.message = rewrite_emoticons(param.message);
-			}
-
-			tmp = "<li id=\""+param.id+"\" "+
-				"class=\""+row_class+"\"><span class='timestamp'>" +
-				make_timestamp(param.ts) + "</span> " +
-				"<span class='sys-message'>" +
-				param.message + "</span>";
-		}
-
-		return [param.id, tmp];
-
-	} catch (e) {
-		exception_error("format_message", e);
-	}
-}
-
 function handle_conn_data(conndata) {
 	try {
 		if (conndata != "") {
@@ -1691,6 +1565,21 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 			var tab = find_tab(connection_id, channel);
 
 			if (!no_tab_hl && tab && (get_selected_tab() != tab || !window_active)) {
+
+				if (notify_events[1]) {
+					var msg = __("(%c) %n: %s");
+
+					msg = msg.replace("%c", message.channel);
+					msg = msg.replace("%n", message.sender);
+					msg = msg.replace("%s", message.message);
+
+					if (message.sender && message.channel &&
+							message.sender != model.getConnection(connection_id).active_nick()) {
+
+						notify(msg);
+					}
+				}
+
 				if (notify_events[2] && tab.getAttribute("tab_type") == "P" && message.id > last_old_id) {
 					var msg = __("%n: %s");
 
