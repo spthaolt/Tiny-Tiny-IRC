@@ -1864,71 +1864,9 @@ function hotkey_handler(e) {
 		}
 
 		if (keycode == 9) {
-			/* var tab = get_selected_tab();
-
-			var elem = $("input-prompt");
-			var str = elem.value;
-			var comp_str = str;
-
-			elem.focus();
-
-			if (str.length == 0) return false;
-
-			if (str.lastIndexOf(" ") != -1) {
-				comp_str = str.substring(str.lastIndexOf(" ")+1);
-			}
-
-//			console.log("COMP STR [" + comp_str + "]");
-
-			if (tab) {
-
-				var nicks = get_nick_list(tab.getAttribute("connection_id"),
-							tab.getAttribute("channel"));
-
-				var r = new RegExp(comp_str + "$");
-
-				for (var i = 0; i < nicks.length; i++) {
-					if (nicks[i].toLowerCase().match("^" + comp_str.toLowerCase())) {
-
-						if (str == comp_str) {
-							str = str.replace(r, nicks[i] + ": ");
-						} else {
-							str = str.replace(r, nicks[i]);
-						}
-
-						elem.value = str;
-						return false;
-					}
-				}
-
-				for (var k in emoticons_map) {
-					if (k.match("^" + comp_str)) {
-
-						str = str.replace(r, k) + " ";
-						elem.value = str;
-						return false;
-
-					}
-				}
-
-				for (var i = 0; i < commands.length; i++) {
-					if (commands[i].match("^" + comp_str.toLowerCase())) {
-
-						str = str.replace(r, commands[i] + " ");
-						elem.value = str;
-
-						return false;
-					}
-				}
-
-			} */
-
+			$("input-prompt").focus();
 			return false;
 		}
-
-		//console.log(keychar + " " + keycode + " " + e.ctrlKey);
-
-		//if (!e.ctrlKey) $("input-prompt").focus();
 
 		return true;
 
