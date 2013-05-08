@@ -1151,13 +1151,15 @@
 			return (parseInt(n) > 1) ? msg2 : msg1;
 		}';
 
-		$l10n = _get_reader();
+		if (ENABLE_TRANSLATIONS == true) { // If translations are enabled.
+			$l10n = _get_reader();
 
-		for ($i = 0; $i < $l10n->total; $i++) {
-			$orig = $l10n->get_original_string($i);
-			$translation = __($orig);
+			for ($i = 0; $i < $l10n->total; $i++) {
+				$orig = $l10n->get_original_string($i);
+				$translation = __($orig);
 
-			print T_js_decl($orig, $translation);
+				print T_js_decl($orig, $translation);
+			}
 		}
 	}
 
