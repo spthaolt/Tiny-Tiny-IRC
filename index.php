@@ -13,13 +13,13 @@
 	login_sequence($link);
 
 	header('Content-Type: text/html; charset=utf-8');
-
 ?>
 <!DOCTYPE html>
 <head>
 	<title>Tiny Tiny IRC</title>
 
 	<?php stylesheet_tag("tt-irc.css") ?>
+	<?php stylesheet_tag("lib/bootstrap/bootstrap.min.css") ?>
 
 	<link id="favicon" rel="shortcut icon" type="image/png" href="images/favicon.png" />
 
@@ -98,7 +98,7 @@
 	<div id="xebTitle"><?php echo __('Fatal Exception') ?></div>
 	<div id="xebContent">&nbsp;</div>
 	<div id='xebBtn'>
-		<button onclick="window.location.reload()">
+		<button class="btn" onclick="window.location.reload()">
 			<?php echo __('Try again') ?></button>
 	</div>
 </div>
@@ -175,7 +175,7 @@
 
 		<!-- fuck you very much, MSIE team -->
 		<form action="javascript:void(null);" method="post">
-		<div id="connect"><button
+		<div id="connect"><button class="btn"
 			id="connect-btn" data-bind="enable: toggleConnection, text: connectBtnLabel, click: toggleConnection"> </button>
 		</div>
 		</form>

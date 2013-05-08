@@ -22,8 +22,8 @@
 		<p><textarea name="user_css" class="user-css"><?php echo $user_css ?></textarea>
 
 		<div class="dlgButtons">
-			<button type="submit" onclick="save_css()"><?php echo __('Save & Reload') ?></button>
-			<button type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
+			<button class="btn" type="submit" onclick="save_css()"><?php echo __('Save & Reload') ?></button>
+			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
 		</div>
 
 		</form>
@@ -122,10 +122,10 @@
 
 		<div class="dlgButtons">
 			<div style='float : left'>
-				<button type="submit" onclick="notify_enable()"><?php echo __('Enable notifications') ?></button></div>
+				<button class="btn" type="submit" onclick="notify_enable()"><?php echo __('Enable notifications') ?></button></div>
 
-			<button type="submit" onclick="save_notifications()"><?php echo __('Save') ?></button>
-			<button type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
+			<button class="btn" type="submit" onclick="save_notifications()"><?php echo __('Save') ?></button>
+			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
 		</div>
 
 		</form>
@@ -179,24 +179,24 @@
 
 		<div class="dlgSecCont">
 			<label class='fixed'><?php echo __('Title:') ?></label>
-			<input name="title" required="1" size="30" value="<?php echo $line['title'] ?>">
+			<input type="text" name="title" required="1" size="30" value="<?php echo $line['title'] ?>">
 			<br clear='left'/>
 
 			<label class='fixed'><?php echo __('Server password:') ?></label>
-			<input name="server_password" size="30" type="password"
+			<input type="text" name="server_password" size="30" type="password"
 				value="<?php echo $line['server_password'] ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Nickname:') ?></label>
-			<input name="nick" size="30" value="<?php echo $line['nick'] ?>">
+			<input type="text" name="nick" size="30" value="<?php echo $line['nick'] ?>">
 			<br clear='left'/>
 
 			<label class='fixed'><?php echo __('Favorite channels:') ?></label>
-			<input name="autojoin" size="30" value="<?php echo $line['autojoin'] ?>">
+			<input type="text" name="autojoin" size="30" value="<?php echo $line['autojoin'] ?>">
 			<br clear='left'/>
 
 			<label class='fixed'><?php echo __('Connect command:') ?></label>
-			<input name="connect_cmd" size="30" value="<?php echo $line['connect_cmd'] ?>">
+			<input type="text" name="connect_cmd" size="30" value="<?php echo $line['connect_cmd'] ?>">
 			<br clear='left'/>
 
 			<label class='fixed'><?php echo __('Character set:') ?></label>
@@ -236,7 +236,7 @@
 
 		</div>
 
-		<button type="submit" style="display : none" onclick="save_conn()"></button>
+		<button class="btn" type="submit" style="display : none" onclick="save_conn()"></button>
 
 		</form>
 
@@ -248,11 +248,11 @@
 
 		<div class="dlgButtons">
 			<div style='float : left'>
-			<button onclick="create_server()"><?php echo __('Add server') ?></button>
-			<button onclick="delete_server()"><?php echo __('Delete') ?></button>
+			<button class="btn" onclick="create_server()"><?php echo __('Add server') ?></button>
+			<button class="btn" onclick="delete_server()"><?php echo __('Delete') ?></button>
 			</div>
-			<button type="submit" onclick="save_conn()"><?php echo __('Save') ?></button>
-			<button type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
+			<button class="btn" type="submit" onclick="save_conn()"><?php echo __('Save') ?></button>
+			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
 		</div>
 	</div>
 
@@ -323,23 +323,23 @@
 
 		<div class="dlgSecCont">
 			<label class="fixed"><?php echo __('Real name:') ?></label>
-			<input name="realname" required="1" size="30" value="<?php echo $realname ?>">
+			<input type="text" name="realname" required="1" size="30" value="<?php echo $realname ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Nickname:') ?></label>
-			<input name="nick" required="1" size="30" value="<?php echo $nick ?>">
+			<input type="text" name="nick" required="1" size="30" value="<?php echo $nick ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('E-mail:') ?></label>
-			<input name="email" required="1" size="30" value="<?php echo $email ?>">
+			<input type="text" name="email" required="1" size="30" value="<?php echo $email ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Quit message:') ?></label>
-			<input name="quit_message" size="30" value="<?php echo $quit_message ?>">
+			<input type="text" name="quit_message" size="30" value="<?php echo $quit_message ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Highlight on:') ?></label>
-			<input name="highlight_on" size="30" value="<?php echo $highlight_on ?>">
+			<input type="text" name="highlight_on" size="30" value="<?php echo $highlight_on ?>">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Theme:') ?></label>
@@ -367,11 +367,11 @@
 
 		<div class="dlgSecCont">
 			<label class="fixed"><?php echo __('New password:') ?></label>
-			<input name="new_password" type="password" size="30" value="">
+			<input type="text" name="new_password" type="password" size="30" value="">
 			<br clear='left'/>
 
 			<label class="fixed"><?php echo __('Confirm:') ?></label>
-			<input name="confirm_password" type="password" size="30" value="">
+			<input type="text" name="confirm_password" type="password" size="30" value="">
 		</div>
 
 		</form>
@@ -384,14 +384,14 @@
 
 		<div class="dlgButtons">
 			<div style='float : left'>
-				<button onclick="create_connection()">
-					<?php echo __('Create connection') ?></button>
-				<button onclick="delete_connection()">
-					<?php echo __('Delete') ?></button>
+				<button class="btn" onclick="create_connection()">
+					<?php echo __('Create connection') ?></button class="btn">
+				<button class="btn" onclick="delete_connection()">
+					<?php echo __('Delete') ?></button class="btn">
 			</div>
-			<button type="submit" onclick="save_prefs()">
-				<?php echo __('Save') ?></button>
-			<button onclick="close_infobox()"><?php echo __('Close') ?></button>
+			<button class="btn" type="submit" onclick="save_prefs()">
+				<?php echo __('Save') ?></button class="btn">
+			<button class="btn" onclick="close_infobox()"><?php echo __('Close') ?></button>
 		</div>
 	</div>
 

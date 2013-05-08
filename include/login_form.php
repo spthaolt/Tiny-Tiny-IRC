@@ -1,16 +1,15 @@
 <html>
 <head>
 	<title>Tiny Tiny IRC : Login</title>
-	<link rel="stylesheet" type="text/css" href="tt-irc.css">
 	<link rel="shortcut icon" type="image/png" href="images/favicon.png">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<?php stylesheet_tag("lib/bootstrap/bootstrap.min.css") ?>
 	<script type="text/javascript" src="lib/prototype.js"></script>
 	<script type="text/javascript" src="lib/scriptaculous/scriptaculous.js"></script>
 	<script type="text/javascript" src="js/functions.js"></script>
 	<style type="text/css">
 	body {
 		padding : 2em;
-		font-size : 14px;
 	}
 
 	fieldset {
@@ -21,13 +20,13 @@
 		border-width : 0px;
 	}
 
-	input.input {
+	/* input.input {
 		font-family : sans-serif;
 		font-size : medium;
 		border-spacing : 2px;
 		border : 1px solid #b5bcc7;
 		padding : 2px;
-	}
+	} */
 
 	label {
 		width : 120px;
@@ -150,7 +149,7 @@ Event.observe(window, 'load', function() {
 <form action="" method="POST" id="loginForm" name="loginForm" onsubmit="return validateLoginForm(this)">
 <input type="hidden" name="login_action" value="do_login">
 
-<div class='form'>
+<div>
 
 	<fieldset>
 		<?php if ($_SESSION["login_error_msg"]) { ?>
@@ -161,7 +160,7 @@ Event.observe(window, 'load', function() {
 		<?php } ?>
 		<div class="row">
 			<label><?php echo __("Login:") ?></label>
-			<input name="login" class="input"
+			<input name="login" type="text"
 				style="width : 220px"
 				required="1"
 				value="<?php echo $_SESSION["fake_login"] ?>" />
@@ -170,7 +169,7 @@ Event.observe(window, 'load', function() {
 		<div class="row">
 			<label><?php echo __("Password:") ?></label>
 			<input type="password" name="password" required="1"
-					style="width : 220px" class="input"
+					style="width : 220px"
 					value="<?php echo $_SESSION["fake_password"] ?>"/>
 		</div>
 
@@ -191,7 +190,7 @@ Event.observe(window, 'load', function() {
 		</div>
 
 		<div class="row" style='text-align : right'>
-			<button type="submit"><?php echo __('Log in') ?></button>
+			<button class="btn btn-primary" type="submit"><?php echo __('Log in') ?></button>
 			<!-- <?php if (defined('ENABLE_REGISTRATION') && ENABLE_REGISTRATION) { ?>
 				<button onclick="return gotoRegForm()" dojoType="dijit.form.Button">
 					<?php echo __("Create new account") ?></button>
