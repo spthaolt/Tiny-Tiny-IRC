@@ -10,7 +10,7 @@ import java.util.prefs.Preferences;
 
 public class Master {
 	
-	private final String m_version = "0.7.1";
+	private final String m_version = "0.8";
 	private final int m_configVersion = 4;
 	private final String m_lockFileName = "master.lock";
 	
