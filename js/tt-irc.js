@@ -1043,7 +1043,7 @@ function toggle_connection(connection_id, set_enabled) {
 		} });
 
 	} catch (e) {
-		exception_error("change_tab", e);
+		exception_error("toggle_connection", e);
 	}
 }
 
@@ -1294,7 +1294,7 @@ function close_tab(elem) {
 		}
 
 	} catch (e) {
-		exception_error("change_tab", e);
+		exception_error("close_tab", e);
 	}
 }
 
