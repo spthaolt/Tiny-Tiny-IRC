@@ -331,8 +331,6 @@ function init_second_stage(transport) {
 		uniqid = params.uniqid;
 		emoticons_map = params.emoticons;
 
-		startup_date = new Date();
-
 		Element.hide("overlay");
 
 		$("input-prompt").value = "";
@@ -456,6 +454,8 @@ function handle_update(transport) {
 					if (tab) change_tab(tab);
 				}
 			}
+
+			startup_date = new Date();
 
 			initial = false;
 		}
