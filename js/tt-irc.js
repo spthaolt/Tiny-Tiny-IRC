@@ -163,6 +163,16 @@ var Channel = function(connection_id, title, tab_type) {
 	self.nicklist = ko.observableArray([]);
 	self.connection_id = ko.observable(connection_id);
 	self.lines = ko.observableArray([]);
+
+	self.offline = ko.computed(function() {
+		if (self.type() == "P") {
+			var conn = model.getConnection(self.connection_id());
+			if (conn)
+				return !conn.nickExists(self.title());
+		} else {
+			return false;
+		}
+	}, self);
 };
 
 function Model() {
@@ -407,6 +417,18 @@ function init_second_stage(transport) {
 					afterUpdateElement: function(element) { element.value += " " ; },
 					onShow: function(element, update) { Element.show(update); return true; } });
 
+			autocomplete = [];
+
+			for (key in emoticons_map) {
+				autocomplete.push(key);
+			}
+
+			for (var i = 0; i < commands.length; i++) {
+				autocomplete.push(commands[i]);
+			}
+
+			autocompleter.options.array = autocomplete;
+			topic_autocompleter.options.array = autocomplete;
 		}
 
 		console.log("init_second_stage");
@@ -553,29 +575,6 @@ function handle_update(transport) {
 		if (prev_last_id != last_id)
 			update_buffer();
 
-		var tabs = get_all_tabs();
-
-		for (i = 0; i < tabs.length; i++) {
-			var tab_type = tabs[i].getAttribute("tab_type");
-
-			if (tab_type == "P") {
-				var cid = tabs[i].getAttribute("connection_id");
-				var chan = tabs[i].getAttribute("channel");
-				var conn = model.getConnection(cid);
-
-				if (conn && conn.userhosts()[chan] != undefined) {
-
-					tabs[i].addClassName("online");
-					tabs[i].removeClassName("offline");
-
-				} else {
-					tabs[i].addClassName("offline");
-					tabs[i].removeClassName("online");
-				}
-
-			}
-		}
-
 		if (prev_last_id == last_id && update_delay_max == 0) {
 			if (delay < 3000) delay += 500;
 		} else {
@@ -718,42 +717,9 @@ function update_buffer(force_redraw) {
 
 		var connection_id = tab.getAttribute("connection_id");
 
-		/* var test_height = $("log").scrollHeight - $("log").offsetHeight;
-		var scroll_buffer = false; */
-		var line_id = 0;
-
-		/* if (test_height - $("log").scrollTop < 300) scroll_buffer = true; */
-
-		if (autocompleter) {
-			autocomplete = [];
-
-			for (key in emoticons_map) {
-				autocomplete.push(key);
-			}
-
-			/* if (nicklists[connection_id][channel]) {
-				for (var i = 0; i < nicklists[connection_id][channel].length; i++) {
-					autocomplete.push(nicklists[connection_id][channel][i].replace(/^[\@\+]/, ""));
-				}
-			} */
-
-			for (var i = 0; i < commands.length; i++) {
-				autocomplete.push(commands[i]);
-			}
-
-			autocompleter.options.array = autocomplete;
-			topic_autocompleter.options.array = autocomplete;
-		}
-
 		window.setTimeout(function() {
 			$("log").scrollTop = $("log").scrollHeight;
 		}, 100);
-
-		if ($("log-list")) {
-			$("log-list").setAttribute("last_id", line_id);
-			$("log-list").setAttribute("channel", channel);
-			$("log-list").setAttribute("connection_id", connection_id);
-		}
 
 		$("topic-input").title = "";
 		$("topic-input").innerHTML = "";
