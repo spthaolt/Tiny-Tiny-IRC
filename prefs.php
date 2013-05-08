@@ -7,26 +7,29 @@
 	function css_editor($link) {
 		$user_css = get_pref($link, "USER_STYLESHEET");
 	?>
-	<div id="infoBoxTitle"><?php echo __("Customize Theme") ?></div>
-	<div class="infoBoxContents">
-		<div id="mini-notice" style='display : none'>&nbsp;</div>
+	<div class="modal-header">
+		<button type="button" onclick="close_infobox()" class="close">&times;</button>
+		<h3><?php echo __("Customize Theme") ?></h3>
+	</div>
+	<div class="modal-body">
+		<div class="alert" id="mini-notice" style='display : none'>&nbsp;</div>
 
-		<div class="dlgSec"><?php echo __('Custom CSS declarations') ?></div>
-
-		<form id="prefs_css_form" onsubmit="return false;">
+		<form class="form" id="prefs_css_form" onsubmit="return false;">
 
 		<input type="hidden" name="op" value="prefs-save-css"/>
 
-		<?php echo T_sprintf("You can override colors, fonts and layout of your currently selected theme with custom CSS declarations here. <a target=\"_blank\" href=\"%s\">This file</a> can be used as a baseline.", "tt-irc.css") ?>
+		<span class="muted"><?php echo T_sprintf("You can override colors, fonts and layout of your currently selected theme with custom CSS declarations here. <a target=\"_blank\" href=\"%s\">This file</a> can be used as a baseline.", "tt-irc.css") ?></span>
 
-		<p><textarea name="user_css" class="user-css"><?php echo $user_css ?></textarea>
-
-		<div class="dlgButtons">
-			<button class="btn" type="submit" onclick="save_css()"><?php echo __('Save & Reload') ?></button>
-			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
-		</div>
+		<textarea name="user_css" class="user-css"><?php echo $user_css ?></textarea>
 
 		</form>
+
+	</div>
+
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="submit" onclick="save_css()"><?php echo __('Save & Reload') ?></button>
+		<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
+	</div>
 
 	</div>
 	<?php
@@ -45,8 +48,6 @@
 
 		while ($line = db_fetch_assoc($result)) {
 
-			$row_class = "row";
-
 			$id = $line['id'];
 
 			if ($line['status'] != CS_DISCONNECTED &&
@@ -56,9 +57,9 @@
 				$connected = '';
 			}
 
-			print "<li id='S-$id' class='$row_class' server_id='$id'>";
-			print "<input type='checkbox' onchange='select_row(this)'
-				row_id='S-$id'>&nbsp;";
+			print "<li id='S-$id' server_id='$id'>";
+			print "<input style='margin-right : 1em' type='checkbox' onchange='select_row(this)'
+				row_id='S-$id'>";
 			print $line['server'] . ":" . $line['port'] . " $connected";
 			print "</li>";
 
@@ -79,56 +80,57 @@
 		}
 	?>
 
-	<div id="infoBoxTitle"><?php echo __("Configure Notifications") ?></div>
-	<div class="infoBoxContents">
-		<div id="mini-notice" style='display : none'>&nbsp;</div>
+	<div class="modal-header">
+		<button type="button" onclick="close_infobox()" class="close">&times;</button>
+		<h3><?php echo __("Notifications") ?></h3>
+	</div>
 
-		<?php echo T_sprintf("Desktop notifications are only shown for events happening in background channels or when your Tiny Tiny IRC window is unfocused.") ?>
+	<div class="modal-body">
+		<div id="mini-notice" class="alert" style='display : none'>&nbsp;</div>
 
-		<p><div class="dlgSec"><?php echo __('Show notifications on:') ?></div>
+		<span class="muted"><?php echo T_sprintf("Desktop notifications are only shown for events happening in background channels or when your Tiny Tiny IRC window is unfocused.") ?></span>
 
-		<form id="prefs_notify_form" onsubmit="return false;">
+
+		<form class="form form-horizontal" id="prefs_notify_form" onsubmit="return false;">
 
 		<input type="hidden" name="op" value="prefs-save-notify"/>
 
-		<div class="dlgSecCont">
-			<input name="notify_event[]" <?php echo $nev_checked[1] ?>
-				id="n_highlight" type="checkbox" value="1">
-				<label for="n_highlight"><?php echo __('Channel highlight') ?>
-					</label>
-			<br clear='left'/>
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Notify events') ?></label>
+			<div class="controls">
 
-			<input name="notify_event[]" <?php echo $nev_checked[2] ?>
-				id="n_privmsg" type="checkbox" value="2">
-				<label for="n_privmsg"><?php echo __('Private message') ?>
-					</label>
-			<br clear='left'/>
+				<label class="checkbox" for="n_highlight"><?php echo __('Channel highlight') ?>
+					<input name="notify_event[]" <?php echo $nev_checked[1] ?>
+						id="n_highlight" type="checkbox" value="1">
+				</label>
 
-			<input name="notify_event[]" <?php echo $nev_checked[3] ?>
-				id="n_connstat" type="checkbox" value="3">
-				<label for="n_connstat"><?php echo __('Connection status change') ?>
+				<label class="checkbox" for="n_privmsg"><?php echo __('Private message') ?>
+					<input name="notify_event[]" <?php echo $nev_checked[2] ?>
+						id="n_privmsg" type="checkbox" value="2">
 					</label>
-			<br clear='left'/>
 
-			<input name="notify_event[]" <?php echo $nev_checked[4] ?>
-				id="n_chanmsg" type="checkbox" value="4">
-				<label for="n_chanmsg"><?php echo __('Channel message') ?>
-					</label>
-			<br clear='left'/>
+				<label class="checkbox" for="n_connstat"><?php echo __('Connection status change') ?>
+					<input name="notify_event[]" <?php echo $nev_checked[3] ?>
+						id="n_connstat" type="checkbox" value="3">
+				</label>
 
+				<label class="checkbox" for="n_chanmsg"><?php echo __('Channel message') ?>
+					<input name="notify_event[]" <?php echo $nev_checked[4] ?>
+						id="n_chanmsg" type="checkbox" value="4">
+				</label>
+			</div>
 		</div>
 
 		</form>
+	</div>
 
-		<div class="dlgButtons">
-			<div style='float : left'>
-				<button class="btn" type="submit" onclick="notify_enable()"><?php echo __('Enable notifications') ?></button></div>
+	<div class="modal-footer">
+		<div style='float : left'>
+			<button class="btn btn-success" type="submit" onclick="notify_enable()"><?php echo __('Enable notifications') ?></button></div>
 
-			<button class="btn" type="submit" onclick="save_notifications()"><?php echo __('Save') ?></button>
+			<button class="btn btn-primary" type="submit" onclick="save_notifications()"><?php echo __('Save') ?></button>
 			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
 		</div>
-
-		</form>
 
 	</div>
 	<?php
@@ -166,92 +168,108 @@
 		}
 
 	?>
-	<div id="infoBoxTitle"><?php echo __("Edit Connection") ?></div>
-	<div class="infoBoxContents">
-		<div id="mini-notice" style='display : none'>&nbsp;</div>
+	<div class="modal-header">
+		<button type="button" onclick="close_infobox()" class="close">&times;</button>
+		<h3><?php echo __("Edit Connection") ?></h3>
+	</div>
+	<div class="modal-body">
+		<div class="alert" id="mini-notice" style='display : none'>&nbsp;</div>
 
-		<div class="dlgSec"><?php echo __('Connection') ?></div>
-
-		<form id="prefs_conn_form" onsubmit="return false;">
+		<form class="form form-horizontal" id="prefs_conn_form" onsubmit="return false;">
 
 		<input type="hidden" name="connection_id" value="<?php echo $id ?>"/>
 		<input type="hidden" name="op" value="prefs-conn-save"/>
 
-		<div class="dlgSecCont">
-			<label class='fixed'><?php echo __('Title:') ?></label>
-			<input type="text" name="title" required="1" size="30" value="<?php echo $line['title'] ?>">
-			<br clear='left'/>
-
-			<label class='fixed'><?php echo __('Server password:') ?></label>
-			<input type="text" name="server_password" size="30" type="password"
-				value="<?php echo $line['server_password'] ?>">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Nickname:') ?></label>
-			<input type="text" name="nick" size="30" value="<?php echo $line['nick'] ?>">
-			<br clear='left'/>
-
-			<label class='fixed'><?php echo __('Favorite channels:') ?></label>
-			<input type="text" name="autojoin" size="30" value="<?php echo $line['autojoin'] ?>">
-			<br clear='left'/>
-
-			<label class='fixed'><?php echo __('Connect command:') ?></label>
-			<input type="text" name="connect_cmd" size="30" value="<?php echo $line['connect_cmd'] ?>">
-			<br clear='left'/>
-
-			<label class='fixed'><?php echo __('Character set:') ?></label>
-
-			<?php print_select('encoding', $line['encoding'], get_iconv_encodings()) ?>
-
-			<br clear='left'/>
-
+ 		<div class="control-group">
+			<label class='control-label'><?php echo __('Title:') ?></label>
+			<div class="controls">
+				<input type="text" name="title" required="1" size="30" value="<?php echo $line['title'] ?>">
+			</div>
 		</div>
 
-		<div class="dlgSec">Options</div>
-
-		<div class="dlgSecCont">
-			<input name="visible" <?php echo $visible_checked ?>
-				id="pr_visible" type="checkbox" value="1">
-				<label for="pr_visible"><?php echo __('Enable connection') ?>
-					</label>
-			<br clear='left'/>
-
-			<input name="auto_connect" <?php echo $auto_connect_checked ?>
-				id="pr_auto_connect" type="checkbox" value="1">
-				<label for="pr_auto_connect"><?php echo __('Automatically connect') ?>
-					</label>
-			<br clear='left'/>
-
-			<input name="permanent" <?php echo $permanent_checked ?>
-				id="pr_permanent" type="checkbox" value="1">
-				<label for="pr_permanent"><?php echo __('Stay connected permanently') ?>
-					</label>
-			<br clear='left'/>
-
-			<input name="use_ssl" <?php echo $use_ssl_checked ?>
-				id="pr_use_ssl" type="checkbox" value="1">
-				<label for="pr_use_ssl"><?php echo __('Connect using SSL') ?>
-					</label>
-			<br clear='left'/>
-
+		<div class="control-group">
+			<label class='control-label'><?php echo __('Server password:') ?></label>
+			<div class="controls">
+				<input type="text" name="server_password" size="30" type="password"
+					value="<?php echo $line['server_password'] ?>">
+			</div>
 		</div>
 
-		<button class="btn" type="submit" style="display : none" onclick="save_conn()"></button>
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Nickname:') ?></label>
+			<div class="controls">
+				<input type="text" name="nick" size="30" value="<?php echo $line['nick'] ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class='control-label'><?php echo __('Favorite channels:') ?></label>
+			<div class="controls">
+				<input type="text" name="autojoin" size="30" value="<?php echo $line['autojoin'] ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class='control-label'><?php echo __('Connect command:') ?></label>
+			<div class="controls">
+				<input type="text" name="connect_cmd" size="30" value="<?php echo $line['connect_cmd'] ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class='control-label'><?php echo __('Character set:') ?></label>
+			<div class="controls">
+				<?php print_select('encoding', $line['encoding'], get_iconv_encodings()) ?>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+
+				<label class="checkbox" for="pr_visible"><?php echo __('Enable connection') ?>
+					<input name="visible" <?php echo $visible_checked ?>
+						id="pr_visible" type="checkbox" value="1">
+				</label>
+
+				<label class="checkbox" for="pr_auto_connect"><?php echo __('Automatically connect') ?>
+					<input name="auto_connect" <?php echo $auto_connect_checked ?>
+						id="pr_auto_connect" type="checkbox" value="1">
+				</label>
+
+				<label class="checkbox" for="pr_permanent"><?php echo __('Stay connected permanently') ?>
+					<input name="permanent" <?php echo $permanent_checked ?>
+						id="pr_permanent" type="checkbox" value="1">
+				</label>
+
+				<label class="checkbox" for="pr_use_ssl"><?php echo __('Connect using SSL') ?>
+					<input name="use_ssl" <?php echo $use_ssl_checked ?>
+						id="pr_use_ssl" type="checkbox" value="1">
+				</label>
+			</div>
+		</div>
+
+		<button type="submit" style="display : none" onclick="save_conn()"></button>
+
+		<h5><?php echo __('Servers') ?></h5>
+
+		<div class="control-group">
+			<div class="controls">
+				<ul id="servers-list" class="unstyled">
+					<?php print_servers($link, $id); ?>
+				</ul>
+			</div>
+		</div>
 
 		</form>
 
-		<div class="dlgSec"><?php echo __('Servers') ?></div>
+	</div>
 
-		<ul class="container" id="servers-list">
-			<?php print_servers($link, $id); ?>
-		</ul>
-
-		<div class="dlgButtons">
+	<div class="modal-footer">
 			<div style='float : left'>
-			<button class="btn" onclick="create_server()"><?php echo __('Add server') ?></button>
-			<button class="btn" onclick="delete_server()"><?php echo __('Delete') ?></button>
+			<button class="btn btn-success" onclick="create_server()"><?php echo __('Add server') ?></button>
+			<button class="btn btn-danger" onclick="delete_server()"><?php echo __('Delete') ?></button>
 			</div>
-			<button class="btn" type="submit" onclick="save_conn()"><?php echo __('Save') ?></button>
+			<button class="btn btn-primary" type="submit" onclick="save_conn()"><?php echo __('Save') ?></button>
 			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
 		</div>
 	</div>
@@ -267,8 +285,6 @@
 
 		while ($line = db_fetch_assoc($result)) {
 
-			$row_class = "row";
-
 			$id = $line['id'];
 
 			if ($line["status"] != "0") {
@@ -277,10 +293,10 @@
 				$connected = "";
 			}
 
-			print "<li id='C-$id' class='$row_class' connection_id='$id'>";
-			print "<input type='checkbox' onchange='select_row(this)'
+			print "<li id='C-$id' connection_id='$id'>";
+			print "<input style=\"margin-right : 1em\" type='checkbox' onchange='select_row(this)'
 				row_id='C-$id'>";
-			print "&nbsp;<a href=\"#\" title=\"".__('Click to edit connection')."\"
+			print "<a href=\"#\" title=\"".__('Click to edit connection')."\"
 				onclick=\"edit_connection($id)\">".
 				$line['title']." $connected</a>";
 			print "</li>";
@@ -310,89 +326,114 @@
 	$highlight_on = get_pref($link, "HIGHLIGHT_ON");
 ?>
 
-	<div id="infoBoxTitle"><?php echo __("Preferences") ?></div>
-	<div class="infoBoxContents">
+	<div class="modal-header">
+		<button type="button" onclick="close_infobox()" class="close">&times;</button>
+		<h3><?php echo __("Preferences") ?></h3></div>
+	<div class="modal-body">
 
-		<form id="prefs_form" onsubmit="return false;">
+		<form class="form form-horizontal" id="prefs_form" onsubmit="return false;">
 
-		<div id="mini-notice" style='display : none'>&nbsp;</div>
+		<div id="mini-notice" class="alert" style='display : none'>&nbsp;</div>
 
 		<input type="hidden" name="op" value="prefs-save"/>
 
-		<div class="dlgSec"><?php echo __('Personal data') ?></div>
-
-		<div class="dlgSecCont">
-			<label class="fixed"><?php echo __('Real name:') ?></label>
-			<input type="text" name="realname" required="1" size="30" value="<?php echo $realname ?>">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Nickname:') ?></label>
-			<input type="text" name="nick" required="1" size="30" value="<?php echo $nick ?>">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('E-mail:') ?></label>
-			<input type="text" name="email" required="1" size="30" value="<?php echo $email ?>">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Quit message:') ?></label>
-			<input type="text" name="quit_message" size="30" value="<?php echo $quit_message ?>">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Highlight on:') ?></label>
-			<input type="text" name="highlight_on" size="30" value="<?php echo $highlight_on ?>">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Theme:') ?></label>
-			<?php print_theme_select($link); ?>
-			&nbsp;
-			<a href="#" onclick="customize_css()">
-				<?php echo __("Customize") ?></a>
-
-			<br clear='left'/>
-
-			<label class="fixed">&nbsp;</label>
-			<a href="#" onclick="configure_notifications()"><?php echo __('Configure desktop notifications') ?></a>
-
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Other options') ?></label>
-			<input name="hide_join_part" <?php echo $hide_join_part_checked ?>
-				id="pr_hide_join_part" type="checkbox" value="1">
-				<label for="pr_hide_join_part"><?php echo __('Do not highlight tabs on auxiliary messages') ?>
-					</label>
-
-		</div>
-
-		<div class="dlgSec"><?php echo __('Authentication') ?></div>
-
-		<div class="dlgSecCont">
-			<label class="fixed"><?php echo __('New password:') ?></label>
-			<input type="text" name="new_password" type="password" size="30" value="">
-			<br clear='left'/>
-
-			<label class="fixed"><?php echo __('Confirm:') ?></label>
-			<input type="text" name="confirm_password" type="password" size="30" value="">
-		</div>
-
-		</form>
-
-		<div class="dlgSec"><?php echo __('Connections') ?></div>
-
-		<ul class="container" id="connections-list">
-			<?php print_connections($link) ?>
-		</ul>
-
-		<div class="dlgButtons">
-			<div style='float : left'>
-				<button class="btn" onclick="create_connection()">
-					<?php echo __('Create connection') ?></button class="btn">
-				<button class="btn" onclick="delete_connection()">
-					<?php echo __('Delete') ?></button class="btn">
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Real name:') ?></label>
+			<div class="controls">
+				<input type="text" name="realname" required="1" size="30" value="<?php echo $realname ?>">
 			</div>
-			<button class="btn" type="submit" onclick="save_prefs()">
-				<?php echo __('Save') ?></button class="btn">
-			<button class="btn" onclick="close_infobox()"><?php echo __('Close') ?></button>
 		</div>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Nickname:') ?></label>
+			<div class="controls">
+				<input type="text" name="nick" required="1" size="30" value="<?php echo $nick ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('E-mail:') ?></label>
+			<div class="controls">
+				<input type="text" name="email" required="1" size="30" value="<?php echo $email ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Quit message:') ?></label>
+			<div class="controls">
+				<input type="text" name="quit_message" size="30" value="<?php echo $quit_message ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Highlight on:') ?></label>
+			<div class="controls">
+				<input type="text" name="highlight_on" size="30" value="<?php echo $highlight_on ?>">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Theme:') ?></label>
+			<div class="controls">
+				<?php print_theme_select($link); ?>
+				<a class="btn btn-info" href="#" onclick="customize_css()">
+					<?php echo __("Customize") ?></a>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<a href="#" onclick="configure_notifications()"><?php echo __('Configure desktop notifications') ?></a>
+			</div>
+		</div>
+
+		<div class="control-group">
+			<div class="controls">
+				<label class="checkbox">
+					<input name="hide_join_part" <?php echo $hide_join_part_checked ?>
+						id="pr_hide_join_part" type="checkbox" value="1">
+					<?php echo __('Do not highlight tabs on auxiliary messages') ?></label>
+			</div>
+		</div>
+
+		<h5><?php echo __('Authentication') ?></h5>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('New password:') ?></label>
+			<div class="controls">
+				<input type="text" name="new_password" type="password" size="30" value="">
+			</div>
+		</div>
+
+		<div class="control-group">
+			<label class="control-label"><?php echo __('Confirm:') ?></label>
+			<div class="controls">
+				<input type="text" name="confirm_password" type="password" size="30" value="">
+			</div>
+		</div>
+
+		<h5><?php echo __('Connections') ?></h5>
+
+		<div class="control-group">
+			<div class="controls">
+				<ul class="unstyled" id="connections-list"><?php print_connections($link) ?></ul>
+			</div>
+		</div>
+
+	</form>
+
+	</div>
+
+	<div class="modal-footer">
+		<div style='float : left'>
+			<button class="btn btn-success" onclick="create_connection()">
+				<?php echo __('Create connection') ?></button class="btn">
+			<button class="btn btn-danger" onclick="delete_connection()">
+				<?php echo __('Delete') ?></button class="btn">
+		</div>
+		<button class="btn btn-primary" type="submit" onclick="save_prefs()">
+			<?php echo __('Save') ?></button class="btn">
+		<button class="btn" onclick="close_infobox()"><?php echo __('Close') ?></button>
 	</div>
 
 <?php } ?>

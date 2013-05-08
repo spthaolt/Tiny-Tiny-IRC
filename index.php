@@ -92,8 +92,6 @@
 
 <div id="dialog_overlay" style="display : none"> </div>
 
-<div style="display : none" id="infoBox">&nbsp;</div>
-
 <div id="errorBox" style="display : none">
 	<div id="xebTitle"><?php echo __('Fatal Exception') ?></div>
 	<div id="xebContent">&nbsp;</div>
@@ -102,6 +100,10 @@
 			<?php echo __('Try again') ?></button>
 	</div>
 </div>
+
+<div id="container">
+
+<div style="display : none" class="modal" id="infoBox">&nbsp;</div>
 
 <div id="header">
 	<div class="topLinks" id="topLinks">
@@ -154,7 +156,7 @@
 	<div id="topic"><div class="wrapper">
 		<div data-bind="html: activeTopicFormatted, attr: { title: activeTopic }, css: { disabled: activeTopicDisabled }" id="topic-input" onclick="prepare_change_topic(this)"></div>
 
-		<input onkeypress="change_topic_real(this, event)" onblur="hide_topic_input()"
+		<input onkeypress="change_topic_real(this, event)" onblur="hide_topic_input()" type="text"
 			id="topic-input-real" style="display : none"/>
 
 			<div class="autocomplete" id="topic-suggest" style="display:none"></div>
@@ -200,7 +202,7 @@
 
 	<div id="input"><div class="wrapper">
 		<?php if (@$_REQUEST["ta"] != "1") { ?>
-		<input data-bind="enable: activeStatus() == 2" rows="1" id="input-prompt"
+		<input type="text" data-bind="enable: activeStatus() == 2" rows="1" id="input-prompt"
 			onkeypress="return send(this, event)"/>
 		<?php } else { ?>
 		<textarea data-bind="enable: activeStatus() == 2" disabled="true" rows="1" id="input-prompt"
@@ -212,7 +214,7 @@
 	</div></div>
 </div>
 
-<?php db_close($link); ?>
+</div>
 
 </body>
 </html>

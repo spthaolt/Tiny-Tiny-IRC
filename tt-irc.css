@@ -1,21 +1,16 @@
 
 #header {
-	color : #4684ff;
-	font-size : 12px;
 	margin : 5px;
 	height : 15px;
+	text-align : right;
 }
 
 #input {
-	border-width : 0px 0px 0px 0px;
-	border-style : solid;
-	border-color : #88b0f0;
 	bottom : 5px;
 	height : 25px;
 	left : 100px;
 	right : 155px;
 	position : absolute;
-	border-collapse : collapse;
 	text-align : center;
 }
 
@@ -40,8 +35,6 @@
 	width : 155px;
 	height : 250px;
 	overflow : auto;
-	border : 1px solid #88b0f0;
-	background : #c0d8ff;
 }
 
 #emoticons img {
@@ -69,17 +62,7 @@
 }
 
 #sidebar-grip:hover {
-	background-image: linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
-	background-image: -o-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
-	background-image: -moz-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
-	background-image: -webkit-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
-	background-image: -ms-linear-gradient(top, #C0D8FF 0%, #FFFFFF 50%, #C0D8FF 100%);
-
-	background-image: -webkit-gradient(
-		linear, left top, left bottom,
-		color-stop(0, #C0D8FF),
-		color-stop(0.5, #FFFFFF),
-		color-stop(1, #C0D8FF) );
+	background : white;
 }
 
 #connect {
@@ -103,11 +86,10 @@
 }
 
 #input div.wrapper {
-	border : 1px solid #88b0f0;
+
 }
 
 #input input, #input textarea {
-	border-width : 0px;
 	padding : 0px;
 	width : 100%;
 	height : 20px;
@@ -120,10 +102,6 @@
 }
 
 #toolbar {
-	border-width : 1px 0px 0px 0px;
-	border-style : solid;
-	background : #f8fbff;
-	border-color : #88b0f0;
 	top : 40px;
 	right : 200px;
 	left : 0px;
@@ -166,13 +144,7 @@
 #tabs-list li {
 	text-align : left;
 	text-indent : 1em;
-	border-width : 1px 0px 1px 0px;
-	border-style : solid;
-	border-color : transparent;
-	border-collapse : collapse;
 	padding : 5px 0px 5px 0px;
-	font-size : 12px;
-	font-family : "Segoe UI", sans-serif;
 	cursor : pointer;
 	z-index : 3;
 	position : relative;
@@ -200,37 +172,17 @@ ul#tabs-list li.offline {
 }
 
 #tabs-list li.selected {
-	border-width : 1px 0px 1px 0px;
-	border-style : solid;
-	border-color : #88b0f0;
-	background : #c0d8ff;
 	color : black;
 	text-shadow : #ffffff 0 1px;
-	font-weight : bold;
-
-	background-image: linear-gradient(left , #FFFFFF 0%, #c0d8ff 89%);
-	background-image: -o-linear-gradient(left , #FFFFFF 0%, #c0d8ff 89%);
-	background-image: -moz-linear-gradient(left , #FFFFFF 0%, #c0d8ff 89%);
-	background-image: -webkit-linear-gradient(left , #FFFFFF 0%, #c0d8ff 89%);
-	background-image: -ms-linear-gradient(left , #FFFFFF 0%, #c0d8ff 89%);
-
-	background-image: -webkit-gradient(
-		linear, left top, right top, color-stop(0, #FFFFFF),
-		color-stop(0.89, #c0d8ff) );
-
 }
 
 ul.sub-tabs {
 	list-style-type : none;
 	margin : 0px;
 	padding : 0px;
-}
+} 
 
 #content {
-	background : #c0d8ff;
-	border-width : 1px;
-	border-style : solid;
-	border-color : #88b0f0;
 	top : 25px;
 	right : 5px;
 	left : 155px;
@@ -250,7 +202,6 @@ ul.sub-tabs {
 }
 
 #topic #topic-input {
-	border-width : 0px;
 	padding : 0px;
 	width : 100%;
 	height : 20px;
@@ -265,7 +216,6 @@ ul.sub-tabs {
 }
 
 #topic #topic-input-real {
-	border-width : 0px;
 	padding : 0px;
 	width : 100%;
 	height : 20px;
@@ -287,16 +237,10 @@ ul.sub-tabs {
 }
 
 #topic div.wrapper {
-	border : 1px solid #88b0f0;
 	padding-right : 1px;
-	background : white;
 }
 
 #log {	
-	border-width : 1px;
-	border-color : #88b0f0;
-	border-style : solid;
-	background : white;
 	position : absolute;
 	top : 35px;
 	right : 155px;
@@ -383,7 +327,7 @@ div#errorBox input {
 	margin-bottom : 10px;
 }
 
-#infoBoxTitle {
+/* #infoBoxTitle {
 	border-width : 0px 0px 1px 0px;
 	border-style : solid;
 	border-color : #659a4c;
@@ -409,7 +353,7 @@ div#errorBox input {
 	min-width : 600px;
 	z-index : 5;
 	box-shadow : 0px 0px 4px #999;
-}
+} 
 
 div#errorBox {
 	background-color : #ffcccc;
@@ -423,7 +367,7 @@ div#errorBox {
 	min-width : 600px;
 	z-index : 1000;
 	box-shadow : 0px 0px 4px #999;
-}
+} */
 
 /* div.infoBoxContents {
 	padding : 10px;
@@ -563,12 +507,17 @@ textarea.tweet-snippet {
 	padding : 0px;
 } */
 
+textarea.user-css {
+	display : block;
+	width : 510px;
+	height : 200px;
+	overflow : auto;
+}
+
 ul.container {
 	height : 100px;
 	overflow : auto;
 	list-style-type : none;
-	border : 1px solid #99d67a;
-	background-color : white;
 	margin : 0px 0px 5px 0px;
 	padding : 0px;
 }
