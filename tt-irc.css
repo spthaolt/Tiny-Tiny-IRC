@@ -609,7 +609,7 @@ ul#userlist-list li:hover {
 	color : #4684ff;
 }
 
-.row, .row td {
+body.main .row, .row td {
 	border-width : 0px 0px 1px 0px;
 	border-style : solid;
 	border-color : #c0c0c0;
@@ -617,12 +617,12 @@ ul#userlist-list li:hover {
 	padding : 2px 5px 2px 5px;
 }
 
-.row.HL {
+body.main .row.HL {
 	background-color : #fff7d5;
 	border-color : #e7d796;
 }
 
-.row:nth-child(even), .row:nth-child(even) td {
+body.main .row:nth-child(even), .row:nth-child(even) td {
 	background-color : #f0f0f0;
 }
 
