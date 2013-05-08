@@ -410,27 +410,6 @@ ul.sub-tabs {
 #userlist-inner {
 }
 
-#debug_output {
-	position : absolute;
-	width : 400px;
-	height : 200px;
-	right : 20px;
-	bottom : 20px;
-	z-index : 999;
-	background-color : white;
-	border : 1px solid #c0c0c0;
-	overflow : auto;
-	margin : 0px;
-	padding : 0px;
-	list-style-type : none;
-}
-
-#debug_output li {
-	margin : 0px;
-	padding : 0px;
-	font-size : 11px;
-}
-
 #dialog_overlay {
 	left : 0;
 	top : 0;
@@ -623,6 +602,7 @@ ul#userlist-list {
 
 ul#userlist-list li {
 	cursor : pointer;
+	margin-bottom : 2px;
 }
 
 ul#userlist-list li:hover {
