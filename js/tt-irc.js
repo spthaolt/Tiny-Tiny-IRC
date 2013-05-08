@@ -5,7 +5,6 @@ var new_messages = 0;
 var new_highlights = 0;
 var delay = 1500;
 var timeout_delay = 3000;
-var buffers = [];
 var topics = [];
 var last_update = false;
 var input_cache = [];
@@ -47,61 +46,143 @@ var CT_PRIVATE = 1;
 var initial = true;
 
 var Connection = function(data) {
-	this.status = ko.observable(0);
-	this.getConnImg = function() {
-		return this.status() == 2 ? "images/srv_online.png" : "images/srv_offline.png";
+	var self = this;
+
+	self.status = ko.observable(0);
+	self.getConnImg = function() {
+		return self.status() == 2 ? "images/srv_online.png" : "images/srv_offline.png";
 	};
 
-	this.id = ko.observable(0);
-	this.active_nick = ko.observable("");
-	this.active_server = ko.observable("");
-	this.title = ko.observable("");
-	this.userhosts = ko.observableArray([]);
-	this.channels = ko.observableArray([]);
+	self.id = ko.observable(0);
+	self.connection_id = ko.observable(0);
+	self.active_nick = ko.observable("");
+	self.active_server = ko.observable("");
+	self.title = ko.observable("");
+	self.userhosts = ko.observableArray([]);
+	self.channels = ko.observableArray([]);
+	self.lines = ko.observableArray([]);
 
-	this.update = function(data) {
-		this.id(data.id);
-		this.active_nick(data.active_nick);
-		this.active_server(data.active_server);
-		this.title(data.title);
-		this.userhosts(data.userhosts);
-		this.status(data.status);
+	self.update = function(data) {
+		self.id(data.id);
+		self.connection_id(data.id);
+		self.active_nick(data.active_nick);
+		self.active_server(data.active_server);
+		self.title(data.title);
+		self.userhosts(data.userhosts);
+		self.status(data.status);
 	};
 
-	this.nickExists = function(nick) {
-		for (var i = 0; i < this.channels().length; i++) {
-			if (this.channels()[i].nicklist() && this.channels()[i].nicklist().nickIndexOf(nick) !== -1)
+	self.nickExists = function(nick) {
+		for (var i = 0; i < self.channels().length; i++) {
+			if (self.channels()[i].nicklist() && this.channels()[i].nicklist().nickIndexOf(nick) !== -1)
 				return true;
 		}
 	};
 
-	this.update(data);
+	self.update(data);
 };
+
+var Message = function(data) {
+	var self = this;
+
+	self.id = ko.observable(data.id);
+	self.message_type = ko.observable(data.message_type);
+	self.sender = ko.observable(data.sender);
+	self.channel = ko.observable(data.channel);
+	self.connection_id = ko.observable(data.connection_id);
+	self.incoming = ko.observable(data.incoming);
+	self.message = ko.observable(data.message);
+	self.ts = ko.observable(data.ts);
+	self.sender_color = ko.observable(data.sender_color);
+	self.data = data;
+	self.is_hl = ko.observable(is_highlight(data.connection_id, data));
+
+	if (emoticons_map && self.message()) {
+		self.message(rewrite_emoticons(self.message()));
+	}
+
+	self.format = ko.computed(function() {
+		var nick_ext_info = "";
+
+		switch (parseInt(self.message_type())) {
+		case MSGT_ACTION:
+			return "<span class='timestamp'>" +
+				make_timestamp(self.ts()) + "</span> " +
+				"<span class='action'> * " + self.sender() + " " + self.message() + "</span>";
+			break;
+		case MSGT_NOTICE:
+
+			var sender_class = self.incoming() == true ? 'pvt-sender' : 'pvt-sender-out';
+
+			return "<span class='timestamp'>" +
+				make_timestamp(self.ts()) +
+				"</span> <span class='lt'>-</span><span title=\""+nick_ext_info+"\" " +
+				"class='"+sender_class+"' style=\"color : "+colormap[self.sender_color()]+"\">" +
+				self.sender() + "</span><span class='gt'>-</span> " +
+				"<span class='message'>" +
+				self.message() + "</span>";
+
+			break;
+		case MSGT_SYSTEM:
+
+			return "<span class='timestamp'>" +
+				make_timestamp(self.ts()) + "</span> " +
+				"<span class='sys-message'>" +
+				self.message() + "</span>";
+
+			break;
+		default:
+			if (self.sender() != "---") {
+				return "<span class='timestamp'>" +
+					make_timestamp(self.ts()) +
+					"</span> <span class='lt'>&lt;</span><span title=\""+nick_ext_info+"\" " +
+					"class='sender' style=\"color : "+colormap[self.sender_color()]+"\">" +
+					self.sender() + "</span><span class='gt'>&gt;</span> " +
+					"<span class='message'>" +
+					self.message() + "</span>";
+			} else {
+				return "<span class='timestamp'>" +
+					make_timestamp(self.ts()) + "</span> " +
+					"<span class='sys-message'>" +
+					self.message() + "</span>";
+			}
+		}
+
+	});
+}
 
 var Channel = function(connection_id, title, tab_type) {
-	this.title = ko.observable(title);
-	this.type = ko.observable(tab_type);
-	this.nicklist = ko.observableArray([]);
-	this.connection_id = ko.observable(connection_id);
+	var self = this;
+
+	self.title = ko.observable(title);
+	self.type = ko.observable(tab_type);
+	self.nicklist = ko.observableArray([]);
+	self.connection_id = ko.observable(connection_id);
+	self.lines = ko.observableArray([]);
 };
 
-var model = {
-	connections: ko.observableArray([]),
-	activeChannel: ko.observable(false),
-	getNickHost: function(connection_id, nick) {
-		var nick = this.stripNickPrefix(nick);
-		var conn = this.getConnection(connection_id);
+function Model() {
+	var self = this;
+
+	self.connections = ko.observableArray([]);
+	self._activeChannel = ko.observable("");
+	self._activeConnectionId = ko.observable(0);
+
+	self.getNickHost = function(connection_id, nick) {
+		var nick = self.stripNickPrefix(nick);
+		var conn = self.getConnection(connection_id);
 
 		if (conn && conn.userhosts()[nick]) {
 			return conn.userhosts()[nick][0] + '@' +
 				conn.userhosts()[nick][1] + " <" + conn.userhosts()[nick][3] + ">";
 		}
+	};
 
-	},
-	stripNickPrefix: function(nick) {
+	self.stripNickPrefix = function(nick) {
 		return nick.replace(/^[\@\+]/, "");
-	},
-	getNickImage: function(nick) {
+	};
+
+	self.getNickImage = function(nick) {
 		switch (nick.substr(0,1)) {
 		case "@":
 			return theme_images['user_op.png'];
@@ -110,9 +191,10 @@ var model = {
 		default:
 			return theme_images['user_normal.png'];
 		}
-	},
-	cleanupChannels: function(connection_id, titles) {
-		var conn = this.getConnection(connection_id);
+	};
+
+	self.cleanupChannels = function(connection_id, titles) {
+		var conn = self.getConnection(connection_id);
 
 		if (conn) {
 			var i = 0;
@@ -123,33 +205,59 @@ var model = {
 				i++;
 			}
 		}
-	},
-	cleanupConnections: function(ids) {
+	};
+
+	self.cleanupConnections = function(ids) {
 		var i = 0;
-		while (i < this.connections().length) {
-			if (ids.indexOf(this.connections()[i].id()) == -1)
-				this.connections.remove(this.connections()[i]);
+		while (i < self.connections().length) {
+			if (ids.indexOf(self.connections()[i].id()) == -1)
+				self.connections.remove(self.connections()[i]);
 
 			i++;
 		}
-	},
-	getConnection: function(id) {
-		for (var i = 0; i < this.connections().length; i++) {
-			if (this.connections()[i].id() == id)
-				return this.connections()[i];
+	};
+
+	self.getConnection = function(id) {
+		for (var i = 0; i < self.connections().length; i++) {
+			if (self.connections()[i].id() == id)
+				return self.connections()[i];
 		}
-	},
-	getChannel: function(id, title) {
-		var conn = this.getConnection(id);
+	};
+
+	self.getChannel = function(id, title) {
+		var conn = self.getConnection(id);
 		if (conn) {
+			if (title == "---")
+				return conn;
+
 			for (var i = 0; i < conn.channels().length; i++) {
 				if (conn.channels()[i].title() == title)
 					return conn.channels()[i];
 			}
 		}
-	},
+	};
 
+	self.activeConnection = ko.computed(function() {
+		return self.getConnection(self._activeConnectionId());
+	});
+
+	self.activeChannel = ko.computed({
+		read: function() {
+			return self.getChannel(self._activeConnectionId(), self._activeChannel());
+		},
+		write: function(value) {
+			if (value) {
+				self._activeChannel(value.title());
+				self._activeConnectionId(value.connection_id());
+			} else {
+				self._activeChannel("");
+				self._activeConnectionId(0);
+			}
+		},
+		owner: self});
 };
+
+var model = new Model();
 
 var colormap = [ "#00CCCC", "#000000", "#0000CC", "#CC00CC", "#606060",
 	"green", "#00CC00", "maroon", "navy", "olive", "purple",
@@ -376,11 +484,6 @@ function handle_update(transport) {
 					if (!window_active) ++new_messages;
 				}
 
-				if (buffers[connection_id] && buffers[connection_id][chan]) {
-					while (buffers[connection_id][chan].length > 100) {
-						buffers[connection_id][chan].shift();
-					}
-				}
 			}
 
 			last_id = lines[i].id;
@@ -558,11 +661,11 @@ function update_buffer(force_redraw) {
 
 		var connection_id = tab.getAttribute("connection_id");
 
-		var test_height = $("log").scrollHeight - $("log").offsetHeight;
-		var scroll_buffer = false;
+		/* var test_height = $("log").scrollHeight - $("log").offsetHeight;
+		var scroll_buffer = false; */
 		var line_id = 0;
 
-		if (test_height - $("log").scrollTop < 300) scroll_buffer = true;
+		/* if (test_height - $("log").scrollTop < 300) scroll_buffer = true; */
 
 		if (autocompleter) {
 			autocomplete = [];
@@ -585,62 +688,15 @@ function update_buffer(force_redraw) {
 			topic_autocompleter.options.array = autocomplete;
 		}
 
-		if (buffers[connection_id]) {
+		window.setTimeout(function() {
+			$("log").scrollTop = $("log").scrollHeight;
+		}, 100);
 
-			var buffer = buffers[connection_id][channel];
-
-			if (buffer) {
-
-				/* do we need to redraw everything? */
-
-				var log_channel = $("log-list").getAttribute("channel");
-				var log_connection = $("log-list").getAttribute("connection_id");
-				var log_line_id = $("log-list").getAttribute("last_id");
-
-				if (log_channel != channel || log_connection != connection_id || force_redraw) {
-					var tmp = "";
-					line_id = 0;
-					for (var i = 0; i < buffer.length; i++) {
-						tmp += buffer[i][1];
-						line_id = buffer[i][0];
-					}
-
-					$("log-list").innerHTML = tmp;
-
-				} else {
-
-					line_id = parseInt(log_line_id);
-					var tmp = "";
-
-					for (var i = 0; i < buffer.length; i++) {
-						var tmp_id = parseInt(buffer[i][0]);
-						var force_display = buffer[i][2];
-
-						if (tmp_id > line_id || force_display != undefined) {
-							tmp += buffer[i][1];
-							line_id = tmp_id;
-							buffer[i][2] = undefined;
-						}
-					}
-
-					$("log-list").innerHTML += tmp;
-
-				}
-
-				if (scroll_buffer) window.setTimeout(function() {
-					$("log").scrollTop = $("log").scrollHeight;
-				}, 100);
-
-			} else {
-				$("log-list").innerHTML = "";
-			}
-		} else {
-			$("log-list").innerHTML = "";
+		if ($("log-list")) {
+			$("log-list").setAttribute("last_id", line_id);
+			$("log-list").setAttribute("channel", channel);
+			$("log-list").setAttribute("connection_id", connection_id);
 		}
-
-		$("log-list").setAttribute("last_id", line_id);
-		$("log-list").setAttribute("channel", channel);
-		$("log-list").setAttribute("connection_id", connection_id);
 
 		$("topic-input").title = "";
 		$("topic-input").innerHTML = "";
@@ -836,7 +892,6 @@ function send(elem, evt) {
 			if (tab.getAttribute("tab_type") == "S") channel = "---";
 
 			if (elem.value.trim() == "/clear") {
-				buffers[tab.getAttribute("connection_id")][channel] = [];
 				update_buffer(true);
 			} else {
 				var query = "op=send&message=" + param_escape(elem.value) +
@@ -906,8 +961,8 @@ function change_tab(elem) {
 				elem.getAttribute("channel").replace("#", "#"));
 		}
 
-		model.activeChannel(model.getChannel(elem.getAttribute("connection_id"),
-					elem.getAttribute("channel")));
+		model.activeChannel(model.getChannel(
+			elem.getAttribute("connection_id"), elem.getAttribute("channel")));
 
 		update_buffer();
 
@@ -1587,9 +1642,9 @@ function handle_event(connection_id, line) {
 		case "NICK":
 			var new_nick = params[1];
 
-			if (buffers[connection_id] && buffers[connection_id][line.sender]) {
-				buffers[connection_id][new_nick] = buffers[connection_id][line.sender];
-			}
+			var chan = model.getChannel(connection_id, line.sender);
+
+			if (chan) chan.title(new_nick);
 
 			line.message = __("%u is now known as %n").replace("%u", line.sender);
 			line.message = line.message.replace("%n", new_nick);
@@ -1614,9 +1669,6 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 		if (!message_type) message_type = MSGT_PRIVMSG;
 
-		if (!buffers[connection_id]) buffers[connection_id] = [];
-		if (!buffers[connection_id][channel]) buffers[connection_id][channel] = [];
-
 		if (id_history.indexOf(message.id) != -1 && !message.force_display)
 			return; // dupe
 
@@ -1626,11 +1678,15 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 			id_history.shift();
 
 		if (message_type != MSGT_BROADCAST) {
-			var tmp_html = format_message(message, connection_id);
+			var chan = model.getChannel(connection_id, channel);
 
-			tmp_html.push(message.force_display);
+			if (chan && chan.lines) {
 
-			buffers[connection_id][channel].push(tmp_html);
+				while (chan.lines.length > 5)
+					chan.lines.shift();
+
+				chan.lines.push(new Message(message));
+			}
 
 			var tab = find_tab(connection_id, channel);
 
@@ -1670,19 +1726,13 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 			var tabs = get_all_tabs(connection_id);
 
 			for (var i = 0; i < tabs.length; i++) {
-				var chan = tabs[i].getAttribute("channel");
-
-				if (!buffers[connection_id][chan]) buffers[connection_id][chan] = [];
 
 				if (tabs[i].getAttribute("tab_type") == "C") {
-					var tmp_html = format_message(message, connection_id);
+					var chan = model.getChannel(connection_id, tabs[i].getAttribute("channel"));
 
-					tmp_html.push(message.force_display);
-
-					buffers[connection_id][chan].push(tmp_html);
-
-//					highlight_tab_if_needed(connection_id,
-//						tabs[i].getAttribute("channel"), message);
+					if (chan && chan.lines) {
+						chan.lines.push(new Message(message));
+					}
 				}
 			}
 		}
@@ -1717,56 +1767,6 @@ function set_window_active(active) {
 		window.setTimeout("update_title()", 100);
 	} catch (e) {
 		exception_error("window_active", e);
-	}
-}
-
-var _tooltip_elem;
-
-function show_thumbnail(img) {
-	try {
-		if (_tooltip_elem && !Element.visible("image-preview")) {
-
-			hide_spinner();
-
-			var elem = _tooltip_elem;
-
-			var xy = Element.cumulativeOffset(elem);
-
-			xy[1] -= $("log-list").scrollTop;
-			xy[1] -= $("log").scrollTop;
-
-			var scaled_height = img.height;
-
-			if (img.height > 250 && img.height > img.width) {
-				scaled_height = 250;
-			} else if (img.width > 250) {
-				scaled_height *= (250 / img.width);
-			}
-
-			scaled_height = parseInt(scaled_height);
-
-			//console.log("SH:" + scaled_height);
-
-			if (xy[1] + scaled_height >= $("log").offsetHeight - 50) {
-				xy[1] -= 10;
-				xy[1] -= scaled_height;
-			} else {
-				xy[1] += Element.getHeight(elem);
-				xy[1] += 10;
-			}
-
-			console.log(xy[1]);
-
-			$("image-tooltip").style.left = xy[0] + "px";
-			$("image-tooltip").style.top = xy[1] + "px";
-
-			Effect.Appear($("image-tooltip"));
-		} else {
-			hide_spinner();
-		}
-
-	} catch (e) {
-		exception_error("show_thumbnail", e);
 	}
 }
 
@@ -1816,7 +1816,7 @@ function show_preview(img) {
 	}
 }
 
-function m_c(elem) {
+function url_clicked(elem) {
 	try {
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
@@ -1836,47 +1836,6 @@ function m_c(elem) {
 
 	} catch (e) {
 		exception_error("m_i", e);
-	}
-}
-
-function m_i(elem) {
-	try {
-
-		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
-			return;
-
-		if (!elem.href.toLowerCase().match("(jpg|gif|png|bmp)$") ||
-				Element.visible("image-preview"))
-			return;
-
-		var timeout = window.setTimeout(function() {
-
-			show_spinner();
-
-			$("image-tooltip").innerHTML = "<img onload=\"show_thumbnail(this)\" " +
-				"src=\"" + elem.href + "\"/>";
-
-			_tooltip_elem = elem;
-
-			}, 250);
-
-		elem.setAttribute("timeout", timeout);
-
-	} catch (e) {
-		exception_error("m_i", e);
-	}
-}
-
-function m_o(elem) {
-	try {
-		hide_spinner();
-
-		window.clearTimeout(elem.getAttribute("timeout"));
-
-		Element.hide("image-tooltip");
-
-	} catch (e) {
-		exception_error("m_o", e);
 	}
 }
 
@@ -1992,7 +1951,7 @@ function hotkey_handler(e) {
 
 		}
 
-		if (keycode == 76 && e.ctrlKey) {
+		/* if (keycode == 76 && e.ctrlKey) {
 
 			var tab = get_selected_tab();
 
@@ -2005,7 +1964,7 @@ function hotkey_handler(e) {
 
 				return false;
 			}
-		}
+		} */
 
 		if (keycode == 9) {
 			/* var tab = get_selected_tab();

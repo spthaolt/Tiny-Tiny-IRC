@@ -66,9 +66,6 @@
 </head>
 <body class="main">
 
-<div id="image-tooltip" onclick="Element.hide(this)"
-	title="<?php echo __("Click to close") ?>" style="display : none"></div>
-
 <div id="image-preview" onclick="Element.hide(this)" style="display : none"
 	title="<?php echo __("Click to close") ?>"></div>
 
@@ -158,7 +155,11 @@
 			<div class="autocomplete" id="topic-suggest" style="display:none"></div>
 		</div>
 	</div>
-	<div id="log"><ul id="log-list"></ul></div>
+	<div id="log" data-bind="with: activeChannel" >
+	<ul id="log-list" data-bind="foreach: lines">
+		<li data-bind="html: format, css: { row: true, HL: is_hl }"> </li>
+	</ul>
+	</div>
 
 	<div id="sidebar">
 
@@ -174,8 +175,8 @@
 		</form>
 
 		<div id="userlist">
-			<div data-bind="if: activeChannel" id="userlist-inner">
-				<ul id="userlist-list" data-bind="foreach: activeChannel().nicklist">
+			<div data-bind="with: activeChannel" id="userlist-inner">
+				<ul id="userlist-list" data-bind="foreach: nicklist">
 					<li>
 						<img src="images/user_me.png" data-bind="attr: { src: $root.getNickImage($data) }" alt=""/>
 						<span onclick="query_user(this)"

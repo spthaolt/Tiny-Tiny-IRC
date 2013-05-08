@@ -913,7 +913,7 @@
 		$urls = null;
 
 		$result = preg_replace("/(([a-z]+):\/\/[^ ]+)/i",
-			"<a target=\"_blank\" onclick=\"return m_c(this)\" onmouseover=\"m_i(this)\" onmouseout=\"m_o(this)\" href=\"\\1\">\\1</a>", $line);
+			"<a target=\"_blank\" onclick=\"return url_clicked(this)\" href=\"\\1\">\\1</a>", $line);
 
 		return $result;
 	}
