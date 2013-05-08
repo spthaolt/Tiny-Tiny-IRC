@@ -1086,4 +1086,79 @@
 		return $line;
 	}
 
+	function stylesheet_tag($filename) {
+		$timestamp = filemtime($filename);
+
+		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$filename?$timestamp\"/>\n";
+	}
+
+	function javascript_tag($filename) {
+		$query = "";
+
+		if (!(strpos($filename, "?") === FALSE)) {
+			$query = substr($filename, strpos($filename, "?")+1);
+			$filename = substr($filename, 0, strpos($filename, "?"));
+		}
+
+		$timestamp = filemtime($filename);
+
+		if ($query) $timestamp .= "&$query";
+
+		echo "<script type=\"text/javascript\" charset=\"utf-8\" src=\"$filename?$timestamp\"></script>\n";
+	}
+
+	function get_minified_js($files) {
+		require_once 'lib/jshrink/Minifier.php';
+
+		$rv = '';
+
+		foreach ($files as $js) {
+			if (!isset($_GET['debug'])) {
+				$cached_file = "cache/js/$js.js";
+
+				if (file_exists($cached_file) &&
+						is_readable($cached_file) &&
+						filemtime($cached_file) >= filemtime("js/$js.js")) {
+
+					$rv .= file_get_contents($cached_file);
+
+				} else {
+					$minified = JShrink\Minifier::minify(file_get_contents("js/$js.js"));
+					file_put_contents($cached_file, $minified);
+					$rv .= $minified;
+				}
+			} else {
+				$rv .= file_get_contents("js/$js.js");
+			}
+		}
+
+		return $rv;
+	}
+
+	function init_js_translations() {
+
+	print 'var T_messages = new Object();
+
+		function __(msg) {
+			if (T_messages[msg]) {
+				return T_messages[msg];
+			} else {
+				return msg;
+			}
+		}
+
+		function ngettext(msg1, msg2, n) {
+			return (parseInt(n) > 1) ? msg2 : msg1;
+		}';
+
+		$l10n = _get_reader();
+
+		for ($i = 0; $i < $l10n->total; $i++) {
+			$orig = $l10n->get_original_string($i);
+			$translation = __($orig);
+
+			print T_js_decl($orig, $translation);
+		}
+	}
+
 ?>

@@ -12,38 +12,43 @@
 
 	login_sequence($link);
 
-	$dt_add = get_script_dt_add();
-
 	header('Content-Type: text/html; charset=utf-8');
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<!DOCTYPE html>
 <head>
 	<title>Tiny Tiny IRC</title>
 
-	<link rel="stylesheet" type="text/css" href="tt-irc.css?<?php echo $dt_add ?>"/>
+	<?php stylesheet_tag("tt-irc.css") ?>
 
 	<link id="favicon" rel="shortcut icon" type="image/png" href="images/favicon.png" />
 
 	<link rel="icon" type="image/png" sizes="72x72"
 		href="images/icon-hires.png" />
 
-	<script type="text/javascript" charset="utf-8" src="localized_js.php?<?php echo $dt_add ?>"></script>
-	<script type="text/javascript" src="lib/prototype.js"></script>
-	<script type="text/javascript" src="lib/scriptaculous/scriptaculous.js?load=effects,dragdrop,controls"></script>
-	<script type="text/javascript" src="lib/knockout.js"></script>
+	<?php
+	foreach (array("lib/prototype.js",
+				"lib/scriptaculous/scriptaculous.js?load=effects,dragdrop,controls",
+				"lib/knockout.js") as $jsfile) {
 
-		<script type="text/javascript" charset="utf-8" src="js/tt-irc.js?<?php echo $dt_add ?>"></script>
-		<script type="text/javascript" charset="utf-8" src="js/prefs.js?<?php echo $dt_add ?>"></script>
-	<script type="text/javascript" charset="utf-8" src="js/users.js?<?php echo $dt_add ?>"></script>
-	<script type="text/javascript" charset="utf-8" src="js/functions.js?<?php echo $dt_add ?>"></script>
+		javascript_tag($jsfile);
+	} ?>
 
-	<?php	$user_theme = get_user_theme_path($link);
-		if ($user_theme) { ?>
-			<link rel="stylesheet" type="text/css" href="<?php echo $user_theme ?>/theme.css?<?php echo $dt_add ?>">
-	<?php } ?>
+	<script type="text/javascript">
+	<?php
+		init_js_translations();
+
+		print get_minified_js(array("tt-irc",
+			"functions", "prefs", "users"));
+	?>
+	</script>
+
+	<?php
+	$user_theme = get_user_theme_path($link);
+		if ($user_theme) {
+			stylesheet_tag("$user_theme/theme.css");
+		}
+	?>
 
 	<?php print_user_css($link); ?>
 
