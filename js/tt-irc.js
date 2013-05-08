@@ -231,7 +231,7 @@ var Channel = function(connection_id, title, tab_type) {
 				var line = new Object();
 
 				line.message = __("Topic for %c is: %s").replace("%c", self.title()).
-					replace("%s", topic[0])
+					replace("%s", rewrite_urls(topic[0]))
 
 				line.message_type = MSGT_SYSTEM;
 				line.ts = new Date();
