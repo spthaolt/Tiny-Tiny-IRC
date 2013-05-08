@@ -1714,7 +1714,6 @@ function url_clicked(elem) {
 			return true;
 
 		window.clearTimeout(elem.getAttribute("timeout"));
-		Element.hide("image-tooltip");
 
 		show_spinner();
 
@@ -1724,7 +1723,7 @@ function url_clicked(elem) {
 		return false;
 
 	} catch (e) {
-		exception_error("m_i", e);
+		exception_error("url_clicked", e);
 	}
 }
 
