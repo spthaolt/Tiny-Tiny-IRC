@@ -480,6 +480,7 @@ div#errorBox input {
 	border-width : 1px 1px 1px 1px;
 	border-style : solid;
 	border-color : #659a4c;
+	border-radius : 4px;
 	background-color : #f8fcf5;
 	overflow : hidden;
 	left : 25%;
@@ -488,8 +489,7 @@ div#errorBox input {
 	position : absolute;
 	min-width : 600px;
 	z-index : 5;
-	box-shadow : 2px 2px 4px #c0c0c0;
-
+	box-shadow : 0px 0px 4px #999;
 }
 
 div#errorBox {
@@ -503,7 +503,7 @@ div#errorBox {
 	position : absolute;
 	min-width : 600px;
 	z-index : 1000;
-	box-shadow : 2px 2px 4px #c0c0c0;
+	box-shadow : 0px 0px 4px #999;
 }
 
 div.infoBoxContents {
@@ -717,16 +717,14 @@ div.error {
 }
 
 div#image-preview {
-	background-color : #fff7d5; 
+	background-color : white; 
 	border-width : 1px;
-	padding : 5px;
 	border-style : solid;
-	border-color : #e7d796;
-	font-size : 8px;
-	color : #9a8c59;
+	border: 1px solid #ccc;
+	padding : 4px;
 	position : absolute;
 	z-index : 4;
-	box-shadow : 2px 2px 4px #c0c0c0;
+	box-shadow : 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 button, input, select {
