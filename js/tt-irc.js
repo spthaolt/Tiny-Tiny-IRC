@@ -61,6 +61,7 @@ var Connection = function(data) {
 	self.userhosts = ko.observableArray([]);
 	self.channels = ko.observableArray([]);
 	self.lines = ko.observableArray([]);
+	self.status = ko.observable(0);
 
 	self.update = function(data) {
 		self.id(data.id);
@@ -69,8 +70,12 @@ var Connection = function(data) {
 		self.active_server(data.active_server);
 		self.title(data.title);
 		self.userhosts(data.userhosts);
-		self.status(data.status);
+		self.status(parseInt(data.status));
 	};
+
+	self.connected = ko.computed(function() {
+		return self.status() == CS_CONNECTED;
+	}, self);
 
 	self.nickExists = function(nick) {
 		for (var i = 0; i < self.channels().length; i++) {
@@ -254,6 +259,42 @@ function Model() {
 			}
 		},
 		owner: self});
+
+	self.connectBtnLabel = ko.computed(function() {
+		var conn = self.activeConnection();
+
+		if (conn) {
+			switch (conn.status()) {
+			case CS_CONNECTING:
+				return __("Connecting...");
+			case CS_CONNECTED:
+				return __("Disconnect");
+			case CS_DISCONNECTED:
+				return __("Connect");
+			}
+
+		} else {
+			return __("Connect");
+		}
+
+	});
+
+	self.toggleConnection = ko.computed({
+		read: function() {
+			return self.activeConnection;
+		},
+		write: function() {
+			var conn = self.activeConnection();
+
+			if (conn)
+				toggle_connection(conn.id(), conn.connected() ? 0 : 1);
+		},
+		owner: self
+	});
+
+	self.activeStatus = ko.computed(function() {
+		return self.activeConnection() && self.activeConnection().status() || CS_DISCONNECTED;
+	});
 };
 
 var model = new Model();
@@ -745,10 +786,6 @@ function update_buffer(force_redraw) {
 			$("topic-input").disabled = true;
 		}
 
-		if (model.getConnection(connection_id)) {
-			$("input-prompt").disabled = model.getConnection(connection_id).status() != CS_CONNECTED;
-		}
-
 		if ($("topic-input").disabled) {
 			$("topic-input").addClassName("disabled");
 		} else {
@@ -770,26 +807,6 @@ function update_buffer(force_redraw) {
 			}
 
 		}
-
-		switch (model.getConnection(connection_id).status()) {
-			case "0":
-				$('connect-btn').innerHTML = __("Connect");
-				$('connect-btn').disabled = false;
-				$('connect-btn').setAttribute("set_enabled", 1);
-				break;
-			case "1":
-				$('connect-btn').innerHTML = __("Connecting...");
-				$('connect-btn').disabled = false;
-				$('connect-btn').setAttribute("set_enabled", 0);
-				break;
-			case "2":
-				$('connect-btn').innerHTML = __("Disconnect");
-				$('connect-btn').disabled = false;
-				$('connect-btn').setAttribute("set_enabled", 0);
-				break;
-		}
-
-		$('connect-btn').setAttribute("connection_id", connection_id);
 
 		update_title();
 
@@ -974,14 +991,13 @@ function change_tab(elem) {
 	}
 }
 
-function toggle_connection(elem) {
+function toggle_connection(connection_id, set_enabled) {
 	try {
 
 //		elem.disabled = true;
 
-		var query = "op=toggle-connection&set_enabled=" +
-			param_escape(elem.getAttribute("set_enabled")) +
-			"&connection_id=" + param_escape(elem.getAttribute("connection_id"));
+		var query = "op=toggle-connection&set_enabled=" + param_escape(set_enabled) +
+			"&connection_id=" + param_escape(connection_id);
 
 		console.log(query);
 
@@ -1326,7 +1342,7 @@ function handle_event(connection_id, line) {
 
 		var params = line.message.split(":", 3);
 
-		console.log("handle_event " + params[0]);
+//		console.log("handle_event " + params[0]);
 
 		switch (params[0]) {
 		case "TOPIC":

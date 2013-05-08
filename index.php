@@ -170,8 +170,9 @@
 
 		<!-- fuck you very much, MSIE team -->
 		<form action="javascript:void(null);" method="post">
-		<div id="connect"><button onclick="toggle_connection(this)"
-			id="connect-btn">Connect</button></div>
+		<div id="connect"><button
+			id="connect-btn" data-bind="enable: toggleConnection, text: connectBtnLabel, click: toggleConnection"> </button>
+		</div>
 		</form>
 
 		<div id="userlist">
@@ -194,10 +195,10 @@
 
 	<div id="input"><div class="wrapper">
 		<?php if (@$_REQUEST["ta"] != "1") { ?>
-		<input disabled="true" rows="1" id="input-prompt"
+		<input data-bind="enable: activeStatus() == 2" rows="1" id="input-prompt"
 			onkeypress="return send(this, event)"/>
 		<?php } else { ?>
-		<textarea disabled="true" rows="1" id="input-prompt"
+		<textarea data-bind="enable: activeStatus() == 2" disabled="true" rows="1" id="input-prompt"
 			onkeypress="send(this, event)"/></textarea>
 		<?php } ?>
 		<div onclick="Element.toggle('emoticons')" class="emoticon_prompt" id="emoticon-prompt">:)</div>
