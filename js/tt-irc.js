@@ -86,7 +86,7 @@ var Message = function(data) {
 	var self = this;
 
 	self.id = ko.observable(data.id);
-	self.message_type = ko.observable(data.message_type);
+	self.message_type = ko.observable(parseInt(data.message_type));
 	self.sender = ko.observable(data.sender);
 	self.channel = ko.observable(data.channel);
 	self.connection_id = ko.observable(data.connection_id);
@@ -94,7 +94,6 @@ var Message = function(data) {
 	self.message = ko.observable(data.message);
 	self.ts = ko.observable(data.ts);
 	self.sender_color = ko.observable(data.sender_color);
-	self.data = data;
 	self.is_hl = ko.observable(is_highlight(data.connection_id, data));
 
 	if (emoticons_map && self.message()) {
@@ -104,7 +103,7 @@ var Message = function(data) {
 	self.format = ko.computed(function() {
 		var nick_ext_info = "";
 
-		switch (parseInt(self.message_type())) {
+		switch (self.message_type()) {
 		case MSGT_ACTION:
 			return "<span class='timestamp'>" +
 				make_timestamp(self.ts()) + "</span> " +
@@ -1990,6 +1989,9 @@ function is_highlight(connection_id, message) {
 		var message_text = message.message.toUpperCase();
 
 		if (message.message_type == MSGT_SYSTEM)
+			return false;
+
+		if (message.sender == "---" || message.sender == model.getConnection(connection_id).active_nick())
 			return false;
 
 		if (message.id <= last_old_id)
