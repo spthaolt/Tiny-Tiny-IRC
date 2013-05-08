@@ -191,7 +191,7 @@
 
 	</div>
 
-	<div id="nick" onclick="change_nick()"></div>
+	<div id="nick" onclick="change_nick()" data-bind="text: activeNick, css: { away: isAway }"></div>
 
 	<div id="input"><div class="wrapper">
 		<?php if (@$_REQUEST["ta"] != "1") { ?>

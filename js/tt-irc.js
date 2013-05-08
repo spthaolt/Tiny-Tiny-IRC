@@ -243,7 +243,24 @@ function Model() {
 
 	self.activeConnection = ko.computed(function() {
 		return self.getConnection(self._activeConnectionId());
-	});
+	}, self);
+
+	self.activeNick = ko.computed(function() {
+		var conn = self.activeConnection();
+
+		if (conn && conn.active_nick)
+			return conn.active_nick();
+
+	}, self);
+
+	self.isAway = ko.computed(function() {
+		var conn = self.activeConnection();
+
+		if (conn && conn.active_nick)
+			if (conn.userhosts && conn.userhosts()[conn.active_nick()])
+				return conn.userhosts()[conn.active_nick()][4] == true;
+
+	}, self);
 
 	self.activeChannel = ko.computed({
 		read: function() {
@@ -263,7 +280,7 @@ function Model() {
 	self.connectBtnLabel = ko.computed(function() {
 		var conn = self.activeConnection();
 
-		if (conn) {
+		if (conn && conn.status) {
 			switch (conn.status()) {
 			case CS_CONNECTING:
 				return __("Connecting...");
@@ -277,7 +294,7 @@ function Model() {
 			return __("Connect");
 		}
 
-	});
+	}, self);
 
 	self.toggleConnection = ko.computed({
 		read: function() {
@@ -294,7 +311,7 @@ function Model() {
 
 	self.activeStatus = ko.computed(function() {
 		return self.activeConnection() && self.activeConnection().status() || CS_DISCONNECTED;
-	});
+	}, self);
 };
 
 var model = new Model();
@@ -790,22 +807,6 @@ function update_buffer(force_redraw) {
 			$("topic-input").addClassName("disabled");
 		} else {
 			$("topic-input").removeClassName("disabled");
-		}
-
-		$("nick").innerHTML = model.getConnection(connection_id).active_nick();
-
-		if (model.getConnection(connection_id)) {
-			var nick = model.getConnection(connection_id).active_nick();
-
-			if (nick && model.getConnection(connection_id).userhosts()[nick]) {
-
-				if (model.getConnection(connection_id).userhosts()[nick][4] == true) {
-					$("nick").addClassName("away");
-				} else {
-					$("nick").removeClassName("away");
-				}
-			}
-
 		}
 
 		update_title();
