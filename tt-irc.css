@@ -190,6 +190,7 @@ ul#tabs-list li.offline {
 
 #tabs-list li div.indented {
 	padding-left : 10px;
+	text-overflow : ellipsis;
 }
 
 #tabs-list li.attention {
