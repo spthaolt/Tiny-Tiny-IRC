@@ -10,6 +10,27 @@ a:hover {
 	color : #00cc00;
 }
 
+body.main .modal .row {
+	background : white;
+	border-color : #f0f0f0;
+}
+
+body.main .modal .row:nth-child(even) {
+	background : #fafafa;
+}
+
+body.main .row {
+	border-color : #202020;
+}
+
+body.main .row.HL, body.main .row.HL:nth-child(even) {
+	background-color : #003000;
+	border-color : #003000;
+}
+
+body.main .row:nth-child(even), .row:nth-child(even) td {
+	background : #101010;
+} 
 
 div.topLinks, div.topLinks a  {
 	color : green;
@@ -64,10 +85,14 @@ input, select, button, textarea {
 }
 
 #tabs li.selected {
-	color : green;
+	color : green ! important;
 	border-color : #303030;
 	background : #202020;
-	text-shadow : black 0px 0px;
+	text-shadow : 0px 0px 2px black;
+}
+
+body.main #tabs li.offline {
+	color : #202020;
 }
 
 #content {
@@ -77,31 +102,30 @@ input, select, button, textarea {
 
 #log, #log-list {
 	background : black;
-	color : white;
 }
 
-.odd {
-	background-color : black;
+body.main .row {
 	border-color : #101010;
-}
-
-.even {
-	background-color : black;
-	border-color : #101010;
-}
-
-.oddHL, .evenHL {
-	border-color : #101010;
-	background-color : #001000;
-}
-
-#topic div.wrapper {
-	border : 1px solid #303030;
 	background : black;
 }
 
-#input div.wrapper {
-	border : 1px solid #303030;
+#topic-input {
+	border-color : #555 ! important;
+}
+
+#topic-input {
+	background : black;
+}
+
+#topic-input-real {
+	background : black;
+}
+
+#topic-input.disabled {
+	background : #202020 ! important;
+}
+
+#topic div.wrapper {
 	background : black;
 }
 
@@ -118,33 +142,8 @@ div#image-tooltip {
 	border-color : #303030;
 }
 
-div#infoBox, ul.container {
-	color : gray;
-	background : black;
-	border : 1px solid green;
-}
-
-div#infoBoxTitle {
-	color : black;
-	background : green;
-	text-shadow : black 0px 0px;
-	border-color : green;
-}
-
 #dialog_overlay {
 	background-image : url("images/shadow_dark.png");
-}
-
-div.infoBoxContents a {
-	color : green;
-}
-
-div.infoBoxContents a:hover {
-	color : #00cc00;
-}
-
-div.dlgSec {
-	color : green;
 }
 
 #overlay {
@@ -154,4 +153,8 @@ div.dlgSec {
 
 #debug_output {
 	color : white;
+}
+
+body.main div.modal {
+	background : white;
 }
