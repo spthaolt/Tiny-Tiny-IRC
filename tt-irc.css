@@ -21,10 +21,10 @@ div#errorBody textarea {
 #emoticon-prompt {
 	position : absolute;
 	right : 115px;
-	bottom : 5px;
+	bottom : 6px;
 	text-align : center;
 	padding-top : 1px;
-	height : 19px;
+	height : 18px;
 }
 
 #emoticons {
