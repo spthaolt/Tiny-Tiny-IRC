@@ -152,6 +152,14 @@ div#errorBody textarea {
 	top : -2px;
 }
 
+#tabs-list span.unread {
+	display : block;
+	float : right;
+	color : #ccc;
+	font-size : 9px;
+	font-weight : normal;
+}
+
 #tabs-list {
 	list-style-type : none;
 	margin : 0px;

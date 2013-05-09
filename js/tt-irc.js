@@ -60,7 +60,7 @@ var Connection = function(data) {
 	self.status = ko.observable(0);
 	self.nicklist = ko.observableArray([]);
 	self.highlight = ko.observable(false);
-	self.attention = ko.observable(false);
+	self.unread = ko.observable(0);
 	self.type = ko.observable("S");
 
 	self.update = function(data) {
@@ -198,7 +198,7 @@ var Channel = function(connection_id, title, tab_type) {
 	self._topic = ko.observableArray([]);
 	self.topicEventSynthesized = ko.observable(false);
 	self.highlight = ko.observable(false);
-	self.attention = ko.observable(false);
+	self.unread = ko.observable(0);
 
 	self.topicDisabled = ko.computed(function() {
 		return self.type() != "C";
@@ -377,7 +377,7 @@ function Model() {
 
 			if (chan) {
 				chan.highlight(false);
-				chan.attention(false);
+				chan.unread(0);
 			}
 		},
 		owner: self});
@@ -1976,9 +1976,8 @@ function highlight_tab_if_needed(connection_id, channel, message) {
 			if (chan.type() != "S" && is_highlight(connection_id, message)) {
 				chan.highlight(true);
 				++new_highlights;
-			} else {
-				chan.attention(true);
 			}
+			chan.unread(chan.unread()+1);
 		}
 
 	} catch (e) {

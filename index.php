@@ -131,14 +131,15 @@
 <div id="tabs">
 	<div id="tabs-inner">
 		<ul id="tabs-list" data-bind="foreach: connections">
-			<li channel="---" tab_type="S" data-bind="attr: { id: 'tab-' + id(), connection_id: id() }, css: { selected: selected, attention: attention }" onclick="change_tab(this)">
-				<span data-bind="attr: { id: 'cimg-' + id() }, css: { 'conn-img': true, connected: connected }"> </span>
+			<li channel="---" tab_type="S" data-bind="attr: { id: 'tab-' + id(), connection_id: id() }, css: { selected: selected }" onclick="change_tab(this)">
+				<span data-bind="attr: { id: 'cimg-' + id() }, css: { 'conn-img': true, connected: connected, attention: unread() > 0 }"> </span>
 				<div data-bind="text: title"></div>
 			</li>
 			<ul class="sub-tabs" data-bind="foreach: channels, attr: { id: 'tabs-' + id() }">
-				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }, css: { selected: selected, highlight: highlight, attention: attention, offline: offline }">
+				<li onclick="change_tab(this)" data-bind="attr: { id: 'tab-' + title() + ':' + $parent.id(), connection_id: $parent.id(), channel: title(), tab_type: type() }, css: { selected: selected, highlight: highlight, offline: offline, attention: unread() > 0 }">
 					<span onclick="close_tab(this)" title="Close this tab" class="close-img"
 						data-bind="attr: { tab_id: 'tab-' + title() + ':' + $parent.id() }">&times;</span>
+					<span class="unread" data-bind="visible: unread, text: unread"></span>
 					<div class="indented" data-bind="text: title"></div>
 				</li>
 			</ul>
