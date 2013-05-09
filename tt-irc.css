@@ -1,8 +1,12 @@
+div#errorBody textarea {
+	width : 515px;
+}
 
 #header {
 	margin : 5px;
 	height : 15px;
 	text-align : right;
+	color : #555;
 }
 
 #input {
@@ -340,35 +344,6 @@ div#main.fade {
 	margin : 10px;
 }
 
-div#errorBox div#xebBtn {
-	text-align : center;
-	clear : both;
-	margin-bottom : 5px;
-}
-
-div#errorBox div#xebTitle {
-	background-color : #ff0000;
-	color : white;
-	padding : 4px 2px 4px 10px;
-	color : white;
-	font-weight : bold;
-	font-size : 12px;
-}
-
-div#errorBox div#xebContent {
-	font-size : 12px;
-	padding : 10px;
-}
-
-div#errorBox textarea {
-	width : 100%;
-	height : 100px;
-}
-
-div#errorBox input {
-	margin-bottom : 10px;
-}
-
 #log ul#log-list {
   list-style-type : none;
   margin : 0px;
@@ -392,7 +367,7 @@ div#errorBox input {
 }
 
 #log span.message {
-	color : #555;
+	color : black;
 	white-space : pre-wrap;
 }
 

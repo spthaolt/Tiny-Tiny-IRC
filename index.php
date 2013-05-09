@@ -90,11 +90,11 @@
 	</div>
 </div>
 
-<div id="errorBox" style="display : none">
-	<div id="xebTitle"><?php echo __('Fatal Exception') ?></div>
-	<div id="xebContent">&nbsp;</div>
-	<div id='xebBtn'>
-		<button class="btn" onclick="window.location.reload()">
+<div id="errorBox" class="modal" style="display : none">
+	<div class="modal-header"><?php echo __('Fatal Exception') ?></div>
+	<div id="errorBody" class="modal-body">&nbsp;</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" onclick="window.location.reload()">
 			<?php echo __('Try again') ?></button>
 	</div>
 </div>

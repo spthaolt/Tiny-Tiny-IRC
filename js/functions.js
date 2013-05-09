@@ -35,7 +35,7 @@ function exception_error(location, e, ext_info) {
 
 	try {
 
-		var ebc = $("xebContent");
+		var ebc = $("errorBody");
 
 		if (ebc) {
 
