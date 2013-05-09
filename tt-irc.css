@@ -268,7 +268,7 @@ ul.sub-tabs {
 }
 
 #topic #topic-input.disabled {
-	color : gray;
+	background : #f0f0f0;
 }
 
 #topic div.wrapper {
@@ -376,7 +376,7 @@ div#errorBox input {
 }  
 
 #log span.timestamp {
-	color : gray;
+	color : #999;
 }
 
 #log span.pvt-sender, #log span.pvt-sender-out {
@@ -392,7 +392,7 @@ div#errorBox input {
 }
 
 #log span.message {
-	color : black;
+	color : #555;
 	white-space : pre-wrap;
 }
 
