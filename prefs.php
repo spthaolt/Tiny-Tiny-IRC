@@ -57,7 +57,7 @@
 				$connected = '';
 			}
 
-			print "<li id='S-$id' server_id='$id'>";
+			print "<li class='row' id='S-$id' server_id='$id'>";
 			print "<input style='margin-right : 1em' type='checkbox' onchange='select_row(this)'
 				row_id='S-$id'>";
 			print $line['server'] . ":" . $line['port'] . " $connected";
@@ -126,7 +126,7 @@
 
 	<div class="modal-footer">
 		<div style='float : left'>
-			<button class="btn btn-success" type="submit" onclick="notify_enable()"><?php echo __('Enable notifications') ?></button></div>
+			<button class="btn" type="submit" onclick="notify_enable()"><?php echo __('Enable notifications') ?></button></div>
 
 			<button class="btn btn-primary" type="submit" onclick="save_notifications()"><?php echo __('Save') ?></button>
 			<button class="btn" type="submit" onclick="show_prefs()"><?php echo __('Go back') ?></button></div>
@@ -262,7 +262,7 @@
 
 	<div class="modal-footer">
 			<div style='float : left'>
-			<button class="btn btn-success" onclick="create_server()"><?php echo __('Add server') ?></button>
+			<button class="btn" onclick="create_server()"><?php echo __('Add server') ?></button>
 			<button class="btn btn-danger" onclick="delete_server()"><?php echo __('Delete') ?></button>
 			</div>
 			<button class="btn btn-primary" type="submit" onclick="save_conn()"><?php echo __('Save') ?></button>
@@ -289,7 +289,7 @@
 				$connected = "";
 			}
 
-			print "<li id='C-$id' connection_id='$id'>";
+			print "<li class='row' id='C-$id' connection_id='$id'>";
 			print "<input style=\"margin-right : 1em\" type='checkbox' onchange='select_row(this)'
 				row_id='C-$id'>";
 			print "<a href=\"#\" title=\"".__('Click to edit connection')."\"
@@ -419,7 +419,7 @@
 
 	<div class="modal-footer">
 		<div style='float : left'>
-			<button class="btn btn-success" onclick="create_connection()">
+			<button class="btn" onclick="create_connection()">
 				<?php echo __('Create connection') ?></button class="btn">
 			<button class="btn btn-danger" onclick="delete_connection()">
 				<?php echo __('Delete') ?></button class="btn">
