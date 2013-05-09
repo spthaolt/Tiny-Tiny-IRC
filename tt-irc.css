@@ -22,24 +22,21 @@ div#errorBody textarea {
 	position : absolute;
 	right : 5px;
 	bottom : 5px;
-	color : gray;
-	width : 15px;
 	text-align : center;
-	cursor : pointer;
-}
-
-#emoticon-prompt:hover {
-	color : #88b0f0;
+	padding-top : 1px;
+	height : 20px;
 }
 
 #emoticons {
+	border-width : 1px 0px 1px 0px;
+	border-color : #ccc;
+	border-style : solid;
 	position : absolute;
 	bottom : 30px;
-	right : -156px;
-	width : 155px;
+	right : -155px;
+	width : 154px;
 	height : 250px;
 	overflow : auto;
-	border : 1px solid #88b0f0;
 }
 
 #emoticons img {

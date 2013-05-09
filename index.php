@@ -199,10 +199,12 @@
 		<textarea data-bind="enable: activeStatus() == 2" disabled="true" rows="1" id="input-prompt"
 			onkeypress="send(this, event)"/></textarea>
 		<?php } ?>
-		<div onclick="Element.toggle('emoticons')" class="emoticon_prompt" id="emoticon-prompt">:)</div>
 		<div style="display : none" id="emoticons"><?php render_emoticons() ?></div>
 		<div class="autocomplete" id="input-suggest" style="display:none"></div>
 	</div></div>
+
+	<a class="btn" onclick="Element.toggle('emoticons')" id="emoticon-prompt">:)</a>
+
 </div>
 
 </div>
