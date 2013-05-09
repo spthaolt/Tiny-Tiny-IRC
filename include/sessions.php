@@ -34,6 +34,7 @@
 		} else {
 			$session_read = db_fetch_assoc($res);
 			$session_read["data"] = base64_decode($session_read["data"]);
+
 			return $session_read["data"];
 		}
 	}
@@ -66,8 +67,6 @@
 
 		global $session_connection;
 
-		db_close($session_connection);
-
 		return true;
 	}
 
@@ -97,11 +96,12 @@
 			"ttirc_destroy", "ttirc_gc");
 	}
 
-	session_set_cookie_params(SESSION_COOKIE_LIFETIME);
+	if (!defined('NO_SESSION_AUTOSTART')) {
+		session_set_cookie_params(SESSION_COOKIE_LIFETIME);
 
-	if ($_REQUEST["sid"]) {
-		session_id($_REQUEST["sid"]);
+		if ($_REQUEST["sid"]) {
+			session_id($_REQUEST["sid"]);
+		}
+		session_start();
 	}
-
-	session_start();
 ?>

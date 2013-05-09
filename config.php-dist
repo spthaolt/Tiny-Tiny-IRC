@@ -49,6 +49,15 @@
 	// Should be less than maximum script lifetime configured in your HTTPD
 	// 0 disables the functionality.
 
+	// *************************
+	// *** WebSocket support ***
+	// *************************
+
+	//define('WEBSOCKET_PORT', 8080);
+	//define('WEBSOCKET_URL', 'ws://your.host.name:8080');
+	// Configuration for WebSocket server (wsserver.php). You will need to
+	// run the server to enable WebSocket support.
+
 	define('CONFIG_VERSION', 2);
 	// Expected config version. Please update this option in config.php
 	// if necessary (after migrating all new options from this file).

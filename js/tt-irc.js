@@ -1,3 +1,4 @@
+var sid = false;
 var window_active = true;
 var last_id = 0;
 var last_old_id = 0;
@@ -21,6 +22,8 @@ var emoticons_map = false;
 var autocomplete = [];
 var autocompleter = false;
 var topic_autocompleter = false;
+var websocket_host = false;
+var websocket_connection = false;
 
 var timeout_id = false;
 var update_id = false;
@@ -518,6 +521,10 @@ function init_second_stage(transport) {
 		theme = params.theme;
 		uniqid = params.uniqid;
 		emoticons_map = params.emoticons;
+		sid = params.sid;
+		websocket_host = params.websocket_host;
+
+		websocket_connect();
 
 		Element.hide("overlay");
 
@@ -607,6 +614,8 @@ function handle_update(transport) {
 		} else {
 			Element.hide("net-alert");
 		}
+
+		if (rv.message) return;
 
 		if (!handle_error(rv, transport)) return false;
 
@@ -756,26 +765,38 @@ function timeout() {
 
 function update(init) {
 	try {
-		var query = "op=update&last_id=" + last_id + "&uniqid=" + uniqid;
+		if (websocket_connection.readyState != 1) {
 
-		if (init) query += "&init=" + init;
+			var query = "op=update&last_id=" + last_id + "&uniqid=" + uniqid;
 
-//		console.log("request update..." + query + " last: " + last_update);
+			if (init) query += "&init=" + init;
 
-		timeout_id = window.setTimeout("timeout()",
-			(update_delay_max * 1000) + 10000);
+	//		console.log("request update..." + query + " last: " + last_update);
 
-		new Ajax.Request("backend.php", {
-		parameters: query,
-		onComplete: function (transport) {
-			window.clearTimeout(timeout_id);
+			timeout_id = window.setTimeout("timeout()",
+				(update_delay_max * 1000) + 10000);
+
+			new Ajax.Request("backend.php", {
+			parameters: query,
+			onComplete: function (transport) {
+				window.clearTimeout(timeout_id);
+				window.clearTimeout(update_id);
+				if (!handle_update(transport)) return;
+
+	//			console.log("update done, next update in " + delay + " ms");
+
+				update_id = window.setTimeout("update()", delay);
+			} });
+		} else {
+			console.log("request update through websocket");
+
+			websocket_connection.send(
+				JSON.stringify({'sid': sid, 'method': 'update', 'last_id': last_id,
+					'uniqid': uniqid}));
+
 			window.clearTimeout(update_id);
-			if (!handle_update(transport)) return;
-
-//			console.log("update done, next update in " + delay + " ms");
-
-			update_id = window.setTimeout("update()", delay);
-		} });
+			update_id = window.setTimeout("update()", timeout_delay);
+		}
 
 	} catch (e) {
 		exception_error("update", e);
@@ -949,8 +970,11 @@ function send(elem, evt) {
 				model.activeChannel().lines.removeAll();
 
 			} else {
+				var send_only = websocket_connection.readyState == 1;
+
 				var query = "op=send&message=" + param_escape(elem.value) +
 					"&chan=" + param_escape(channel) +
+					"&send_only=" + param_escape(send_only) +
 					"&connection=" + param_escape(tab.getAttribute("connection_id")) +
 					"&last_id=" + last_id + "&tab_type=" + tab.getAttribute("tab_type");
 
@@ -960,7 +984,11 @@ function send(elem, evt) {
 				parameters: query,
 				onComplete: function (transport) {
 					hide_spinner();
-					handle_update(transport);
+
+					if (!send_only)
+						handle_update(transport);
+					else
+						update();
 				} });
 			}
 
@@ -2080,4 +2108,32 @@ function hash_set(value) {
 	} catch (e) {
 		exception_error("hash_set", e);
 	}
+}
+
+function websocket_connect() {
+	try {
+		if (websocket_host && typeof WebSocket != "undefined") {
+			websocket_connection = new ReconnectingWebSocket(websocket_host);
+//			websocket_connection.reconnectInterval = 5000;
+			websocket_connection.onopen = function() {
+				console.log("WebSocket connected");
+
+				websocket_connection.send(
+					JSON.stringify({method: 'hello', 'sid': sid}));
+			};
+
+			websocket_connection.onerror = function(error) {
+				console.log("WebSocket error: " + error);
+			};
+
+			websocket_connection.onmessage = function(evt) {
+///			console.log("WebSocket <<< " + evt.data);
+				handle_update({responseText: evt.data});
+			};
+		}
+
+	} catch (e) {
+		console.log(e);
+	}
+
 }

@@ -43,6 +43,4 @@
 		print "Snippet not found.";
 	}
 
-	db_close($link);
-
 ?>

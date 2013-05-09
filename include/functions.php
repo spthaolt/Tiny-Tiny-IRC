@@ -1163,4 +1163,50 @@
 		}
 	}
 
+	function update_common_tasks($link, $nowait = false) {
+		cleanup_session_cache();
+
+		$last_id = (int) db_escape_string($_REQUEST["last_id"]);
+		$init = db_escape_string($_REQUEST["init"]);
+		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
+		@$uniqid = db_escape_string($_REQUEST["uniqid"]);
+
+		if (!$init || !$nowait) {
+			$sleep_start = time();
+			while (time() - $sleep_start < UPDATE_DELAY_MAX &&
+					!num_new_lines($link, $last_id)) {
+
+				sleep(1);
+			}
+		}
+
+		$lines = get_new_lines($link, $last_id, $rewrite_urls);
+		$conn = get_conn_info($link);
+		$chandata = get_chan_data($link, false);
+		$params = get_misc_params($link, $uniqid);
+
+		if ($uniqid) {
+			if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
+				$conn = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["conn"] = serialize($conn);
+			}
+
+			if (serialize($chandata) == $_SESSION["cache"][$uniqid]["chandata"]) {
+				$chandata = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["chandata"] = serialize($chandata);
+			}
+
+			if (serialize($params) == $_SESSION["cache"][$uniqid]["params"]) {
+				$params = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["params"] = serialize($params);
+			}
+
+			$_SESSION["cache"][$uniqid]["last"] = time();
+		}
+
+		return json_encode(array($conn, $lines, $chandata, $params));
+	}
 ?>

@@ -29,6 +29,7 @@
 	<?php
 	foreach (array("lib/prototype.js",
 				"lib/scriptaculous/scriptaculous.js?load=effects,dragdrop,controls",
+				"lib/reconnecting-websocket.js",
 				"lib/knockout.js") as $jsfile) {
 
 		javascript_tag($jsfile);

@@ -191,51 +191,7 @@
 		break;
 
 	case "update":
-		cleanup_session_cache();
-
-		$last_id = (int) db_escape_string($_REQUEST["last_id"]);
-		$init = db_escape_string($_REQUEST["init"]);
-		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
-		@$uniqid = db_escape_string($_REQUEST["uniqid"]);
-
-		if (!$init) {
-			$sleep_start = time();
-			while (time() - $sleep_start < UPDATE_DELAY_MAX &&
-					!num_new_lines($link, $last_id)) {
-
-				sleep(1);
-			}
-		}
-
-		$lines = get_new_lines($link, $last_id, $rewrite_urls);
-		$conn = get_conn_info($link);
-		$chandata = get_chan_data($link, false);
-		$params = get_misc_params($link, $uniqid);
-
-		if ($uniqid) {
-			if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
-				$conn = array("duplicate" => true);
-			} else {
-				$_SESSION["cache"][$uniqid]["conn"] = serialize($conn);
-			}
-
-			if (serialize($chandata) == $_SESSION["cache"][$uniqid]["chandata"]) {
-				$chandata = array("duplicate" => true);
-			} else {
-				$_SESSION["cache"][$uniqid]["chandata"] = serialize($chandata);
-			}
-
-			if (serialize($params) == $_SESSION["cache"][$uniqid]["params"]) {
-				$params = array("duplicate" => true);
-			} else {
-				$_SESSION["cache"][$uniqid]["params"] = serialize($params);
-			}
-
-			$_SESSION["cache"][$uniqid]["last"] = time();
-		}
-
-
-		print json_encode(array($conn, $lines, $chandata, $params));
+		print update_common_tasks($link);
 		break;
 
 	case "set-topic":
@@ -304,6 +260,11 @@
 		$rv["theme"] = get_pref($link, "USER_THEME");
 		$rv["update_delay_max"] = UPDATE_DELAY_MAX;
 		$rv["uniqid"] = uniqid();
+		$rv["sid"] = session_id();
+
+		if (defined('WEBSOCKET_PORT')) {
+			$rv["websocket_host"] = WEBSOCKET_URL;
+		}
 
 		global $emoticons_map;
 		$rv["emoticons"] = $emoticons_map;
