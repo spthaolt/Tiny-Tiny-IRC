@@ -399,6 +399,7 @@
 			<div class="controls">
 				<input placeholder="<?php echo __("New password") ?>" type="text" name="new_password" type="password" size="30" value="">
 			</div>
+		</div>
 
 		<div class="control-group">
 			<label class="control-label"> </label>
