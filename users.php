@@ -35,26 +35,28 @@
 	function show_users($link) {
 
 	?>
-	<div id="infoBoxTitle"><?php echo __("Edit Users") ?></div>
-	<div class="infoBoxContents">
-		<div id="mini-notice" style='display : none'>&nbsp;</div>
+	<div class="modal-header">
+		<button type="button" onclick="close_infobox()" class="close">&times;</button>
+		<h3><?php echo __("Edit Users") ?></h3></div>
+	<div class="modal-body">
+		<div id="mini-notice" class="alert" style='display : none'>&nbsp;</div>
 
-		<ul class="container" id="users-list">
+		<ul class="unstyled scrollable" id="users-list">
 			<?php echo format_users($link); ?>
 		</ul>
+	</div>
 
-		<div class="dlgButtons">
-			<div style='float : left'>
-				<button onclick="create_user()">
-					<?php echo __('Add user') ?></button>
-				<button onclick="reset_user()">
-					<?php echo __('Reset password') ?></button>
-				<button onclick="delete_user()">
-					<?php echo __('Delete') ?></button>
-			</div>
-			<button type="submit" onclick="close_infobox()">
-				<?php echo __('Close') ?></button></div>
+	<div class="modal-footer">
+		<div style='float : left'>
+			<button class="btn" onclick="create_user()">
+				<?php echo __('Add user') ?></button>
+			<button class="btn" onclick="reset_user()">
+				<?php echo __('Reset password') ?></button>
+			<button class="btn btn-danger" onclick="delete_user()">
+				<?php echo __('Delete') ?></button>
 		</div>
+		<button class="btn btn-primary" type="submit" onclick="close_infobox()">
+			<?php echo __('Close') ?></button></div>
 	</div>
 	<?php
 
