@@ -117,24 +117,17 @@ div#errorBody textarea {
 	overflow : auto;
 }
 
-#tabs-list span.conn-title {
-	display : table-cell;
-	vertical-align : middle;
-	width : 100%;
-}
-
 #tabs-list span.conn-img.connected {
 	background : #B8F2B8;
 }
 
-#tabs-list span.conn-wrapper {
-	display : table-cell;
-	vertical-align : middle;
-	padding-right : 8px;
-}
-
 #tabs-list span.conn-img {
-	display : inline-block;
+	display : block;
+	vertical-align : middle;
+	margin-right : 7px;
+	font-size : 13px;
+	float : right;
+	text-align : center;
 	width : 11px;
 	height : 11px;
 	border : 1px solid #ccc;
@@ -147,30 +140,24 @@ div#errorBody textarea {
 	color : gray;
 }
 
-
 #tabs-list span.close-img {
-	font-size : 18px;
+	display : block;
+	vertical-align : middle;
+	margin-right : 8px;
+	font-size : 16px;
+	float : right;
 	font-weight : bold;
-	color : #ccc;
-	display : table-cell;
-	vertical-align : middle;
-	padding-right : 8px;
-	padding-bottom : 2px;
-}
-
-#tabs-list span.indented {
-	padding-left : 10px;
-	display : table-cell;
-	vertical-align : middle;
-	width : 100%;
+	color : #e0e0e0;
+	position : relative;
+	top : -2px;
 }
 
 #tabs-list span.unread {
+	display : block;
+	float : right;
 	color : #ccc;
 	font-size : 9px;
 	font-weight : normal;
-	display : table-cell;
-	vertical-align : middle;
 }
 
 #tabs-list {
@@ -201,6 +188,9 @@ ul#tabs-list li.offline {
 	margin-right : 5px;
 }
 
+#tabs-list li div.indented {
+	padding-left : 10px;
+}
 
 #tabs-list li.attention {
 	color : red;
