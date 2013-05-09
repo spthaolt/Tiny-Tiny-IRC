@@ -837,7 +837,9 @@ function update_buffer(force_redraw) {
 
 		var connection_id = tab.getAttribute("connection_id");
 
-		window.setTimeout(function() {
+		var scroll_buffer = $("log").scrollHeight - $("log").offsetHeight - $("log").scrollTop < 100;
+
+		if (scroll_buffer) window.setTimeout(function() {
 			$("log").scrollTop = $("log").scrollHeight;
 		}, 100);
 
@@ -1006,6 +1008,8 @@ function change_tab(elem) {
 		}
 
 		model.activeChannel(elem.getAttribute("connection_id"), elem.getAttribute("channel"));
+
+		$("log").scrollTop = $("log").scrollHeight;
 
 		update_buffer();
 
@@ -1649,9 +1653,9 @@ function set_window_active(active) {
 				notifications.pop().cancel();
 			}
 
-			window.setTimeout(function() {
+			/* window.setTimeout(function() {
 				$("log").scrollTop = $("log").scrollHeight;
-			}, 100);
+			}, 100); */
 
 			if (theme != "tablet")
 				$("input-prompt").focus();
