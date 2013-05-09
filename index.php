@@ -71,7 +71,7 @@
 </head>
 <body class="main">
 
-<div id="image-preview" onclick="Element.hide(this)" style="display : none"
+<div id="image-preview" onclick="close_preview(this)" style="display : none"
 	title="<?php echo __("Click to close") ?>"></div>
 
 <div id="overlay" style="display : block">

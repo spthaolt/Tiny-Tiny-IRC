@@ -1663,6 +1663,15 @@ function set_window_active(active) {
 	}
 }
 
+function close_preview(elem) {
+	try {
+		Element.hide(elem);
+		$("main").removeClassName("fade");
+	} catch (e) {
+		exception_error("close_preview", e);
+	}
+}
+
 function resize_preview() {
 
 	try {
@@ -1700,6 +1709,7 @@ function show_preview(img) {
 	try {
 		hide_spinner();
 
+		$("main").addClassName("fade");
 		Element.show("image-preview");
 
 		window.setTimeout("resize_preview()", 1);
@@ -1757,6 +1767,7 @@ function hotkey_handler(e) {
 
 		if (keycode == 27) { // escape
 			close_infobox();
+			$("main").removeClassName("fade");
 			Element.hide("image-preview");
 		}
 
