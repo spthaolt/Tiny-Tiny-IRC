@@ -4,5 +4,3 @@
 		"(oo)" => array("../images/piggie_icon.png", "15")
 	);
 ?>
-
-
