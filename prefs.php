@@ -393,19 +393,17 @@
 			</div>
 		</div>
 
-		<h5><?php echo __('Authentication') ?></h5>
-
 		<div class="control-group">
-			<label class="control-label"><?php echo __('New password:') ?></label>
+			<label class="control-label"><?php echo __('Change password:') ?></label>
+
 			<div class="controls">
-				<input type="text" name="new_password" type="password" size="30" value="">
+				<input placeholder="<?php echo __("New password") ?>" type="text" name="new_password" type="password" size="30" value="">
 			</div>
-		</div>
 
 		<div class="control-group">
-			<label class="control-label"><?php echo __('Confirm:') ?></label>
+			<label class="control-label"> </label>
 			<div class="controls">
-				<input type="text" name="confirm_password" type="password" size="30" value="">
+				<input placeholder="<?php echo __("Confirm password") ?>" type="text" name="confirm_password" type="password" size="30" value="">
 			</div>
 		</div>
 
