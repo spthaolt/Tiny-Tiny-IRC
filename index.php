@@ -181,7 +181,7 @@
 			<div data-bind="with: activeChannel" id="userlist-inner">
 				<ul id="userlist-list" data-bind="foreach: nicklist">
 					<li>
-						<img data-bind="attr: { src: $root.getNickImage($data) }" alt=""/>
+						<span data-bind="css: { 'user-img': true, op: $root.nickIsOp($data), voice: $root.nickIsVoiced($data) }"> </span>
 						<span onclick="query_user(this)"
 							data-bind="text: $root.stripNickPrefix($data), attr: { nick: $root.stripNickPrefix($data),
 								title: $root.getNickHost($root.activeChannel().connection_id(), $data) }"></span>

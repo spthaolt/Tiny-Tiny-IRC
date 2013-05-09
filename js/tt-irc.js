@@ -11,7 +11,6 @@ var input_cache = [];
 var input_cache_offset = 0;
 var highlight_on = [];
 var notify_events = [];
-var theme_images = [];
 var update_delay_max = 0;
 var theme = "";
 var hide_join_part = false;
@@ -293,15 +292,12 @@ function Model() {
 			return "";
 	};
 
-	self.getNickImage = function(nick) {
-		switch (nick.substr(0,1)) {
-		case "@":
-			return theme_images['user_op.png'];
-		case "+":
-			return theme_images['user_voice.png'];
-		default:
-			return theme_images['user_normal.png'];
-		}
+	self.nickIsOp = function(nick) {
+		return nick[0] == '@';
+	};
+
+	self.nickIsVoiced = function(nick) {
+		return nick[0] == '+';
 	};
 
 	self.cleanupChannels = function(connection_id, titles) {
@@ -518,7 +514,6 @@ function init_second_stage(transport) {
 		}
 
 		last_old_id = params.max_id;
-		theme_images = params.images;
 		update_delay_max = params.update_delay_max;
 		theme = params.theme;
 		uniqid = params.uniqid;

@@ -301,11 +301,6 @@
 
 		$rv["status"] = 1;
 
-		foreach (array("user_normal.png", "user_voice.png", "user_op.png") as $img) {
-
-			$rv["images"][$img] = theme_image($link, "images/$img");
-		}
-
 		$rv["theme"] = get_pref($link, "USER_THEME");
 		$rv["update_delay_max"] = UPDATE_DELAY_MAX;
 		$rv["uniqid"] = uniqid();

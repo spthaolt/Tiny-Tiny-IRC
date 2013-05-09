@@ -302,8 +302,23 @@ form.connect-form {
 	margin-top : 5px;
 }
 
-#userlist img {
+#userlist span.user-img {
+	display : inline-block;
 	vertical-align : middle;
+	width : 11px;
+	height : 11px;
+	border : 1px solid #ccc;
+	border-radius : 20px;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+	background : #f0f0f0;
+}
+
+#userlist span.user-img.voice {
+	background : #EDE4B6;
+}
+
+#userlist span.user-img.op {
+	background : #B8F2B8;
 }
 
 #log-inner {
