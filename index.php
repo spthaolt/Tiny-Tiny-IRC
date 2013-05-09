@@ -104,8 +104,6 @@
 <div id="main">
 
 <div id="header">
-	<div class="topLinks" id="topLinks">
-
 	<img id="spinner" style="display : none"
 		alt="spinner" title="Loading..."
 		src="<?php echo theme_image($link, 'images/indicator_tiny.gif') ?>"/>
@@ -128,8 +126,6 @@
 	<?php if (!SINGLE_USER_MODE) { ?>
 			| <a href="backend.php?op=logout"><?php echo __('Logout') ?></a>
 	<?php } ?>
-
-	</div>
 </div>
 
 <div id="tabs">
