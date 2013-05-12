@@ -966,6 +966,10 @@ function send(elem, evt) {
 				} });
 			}
 
+			window.setTimeout(function() {
+				$("log").scrollTop = $("log").scrollHeight;
+			}, 100);
+
 			push_cache(elem.value);
 			elem.value = '';
 			console.log(query);
