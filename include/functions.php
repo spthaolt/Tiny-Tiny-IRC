@@ -1066,7 +1066,7 @@
 
 	}
 
-	function shorten_urls($link, $line, $prefix) {
+	function shorten_urls($link, $line, $prefix = false) {
 
 		$prefix = (defined('SHORTURL_PREFIX') ? SHORTURL_PREFIX :
 				get_self_url_prefix()) . "/url.php?id=";
