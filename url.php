@@ -10,7 +10,12 @@
 
 	$link = db_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-	$id = db_escape_string(shorten_key_to_id($_REQUEST['id']));
+	$key = $_REQUEST['id'];
+
+	if (strpos($key, ".") !== FALSE)
+		$key = substr($key, 0, strpos($key, "."));
+
+	$id = db_escape_string(shorten_key_to_id($key));
 
 	$result = db_query($link, "SELECT url FROM ttirc_shorturls
 		WHERE id = '$id'");
