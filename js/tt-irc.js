@@ -1568,7 +1568,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 			if (chan && chan.lines) {
 
-				while (chan.lines().length > 200)
+				while (chan.lines().length > 100)
 					chan.lines.shift();
 
 				chan.lines.push(new Message(message));
