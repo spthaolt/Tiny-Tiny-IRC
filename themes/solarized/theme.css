@@ -1,0 +1,116 @@
+body {
+	background : #1c1c1c;
+	color : #839496;
+}
+
+#header {
+	color : #839496;
+}
+
+a {
+	color : #b58900;
+}
+
+a:hover {
+	color : #b58900;
+}
+
+#content {
+	background : #678cb1;
+	border-color : #268bd2;
+}
+
+ul#tabs-list li.selected {
+	background : #678cb1;
+	border-color : #268bd2;
+}
+
+ul#tabs-list li.offline {
+	color : #404040;
+}
+
+#log {
+	background : #1c1c1c;
+	border-color : #1c1c1c;
+}
+
+#log-list {
+	color : #839496;
+}
+
+body.main .row {
+	border-color : #383838;
+}
+
+body.main .row.HL, body.main .row.HL:nth-child(even) {
+}
+
+body.main .row:nth-child(even), .row:nth-child(even) td {
+	background : #1e1e1e;	
+} 
+
+#log span.timestamp {
+	color : #2aa198;
+}
+
+#log span.pvt-sender, #log span.pvt-sender-out {
+	color : #678cb1;
+}
+
+#log span.sender {
+	color : #2aa198;
+}
+
+#log .lt, #log .gt {
+	color : #a082bd;
+}
+
+#log span.message {
+	color : #839496;
+	white-space : pre-wrap;
+}
+
+#log span.sys-message {
+	color : #5FA7CC;
+}
+
+#log span.action {
+	color : gray;
+}
+
+#userlist li {
+	color : #e0e2e4;
+}	
+
+#nick {
+	color : #e0e2e4;
+}
+
+#input-prompt, #topic-input-real, #topic-input {
+	background : #1c1c1c;
+	color : #808080;
+	border-color : #268bd2 ! important;
+}
+
+#topic-input.disabled {
+	background : #93A1A1 ! important;
+	color : #666 ! important;
+}
+
+#tabs-list span.conn-img.connected {
+	background : #2aa198;
+}
+
+#userlist span.user-img.voice {
+	background : #b58900;
+}
+
+#userlist span.user-img.op {
+	background : #2aa198;
+}
+
+#tabs-list span.close-img {
+	color : #839496;
+}
+
+
