@@ -1149,6 +1149,7 @@ function update_title() {
 	try {
 
 		var tab = get_selected_tab();
+		var title = "Tiny Tiny IRC";
 
 		if (tab) {
 			var title = __("Tiny Tiny IRC [%a @ %b / %c]");
@@ -1188,14 +1189,15 @@ function update_title() {
 				title = title.replace("%a", model.getConnection(connection_id).active_nick());
 				title = title.replace("%b", model.getConnection(connection_id).title());
 				title = title.replace("%c", tab.getAttribute("channel"));
-				document.title = title;
-			} else {
-				document.title = __("Tiny Tiny IRC");
-			}
 
-		} else {
-			document.title = __("Tiny Tiny IRC");
+			} else {
+				title = "Tiny Tiny IRC";
+			}
 		}
+
+		window.setTimeout(function() {
+			document.title = title;
+		}, 200);
 
 	} catch (e) {
 		exception_error("update_title", e);
