@@ -1169,17 +1169,17 @@ function update_title() {
 					}
 				}
 
-				if ($("favicon").href.indexOf("active") == -1)
+				/* if ($("favicon").href.indexOf("active") == -1)
 					$("favicon").href = $("favicon").href.replace("favicon",
-							"favicon_active");
+							"favicon_active"); */
 
 			} else {
 				if (window.fluid) {
 					window.fluid.dockBadge = "";
 				}
 
-				$("favicon").href = $("favicon").href.replace("favicon_active",
-						"favicon");
+				/* $("favicon").href = $("favicon").href.replace("favicon_active",
+						"favicon"); */
 
 			}
 
