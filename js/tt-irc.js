@@ -1729,12 +1729,15 @@ function show_preview(img) {
 	}
 }
 
-function url_clicked(elem) {
+function url_clicked(elem, event) {
 	try {
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
 
 		if (!elem.href.toLowerCase().match("(jpg|gif|png|bmp)$"))
+			return true;
+
+		if (event.ctrlKey)
 			return true;
 
 		window.clearTimeout(elem.getAttribute("timeout"));

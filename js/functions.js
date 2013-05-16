@@ -330,7 +330,7 @@ function rewrite_urls(s) {
 	try {
 
 		return s.replace(/(([a-z]+):\/\/[^ ]+)/ig,
-			"<a target=\"_blank\" onclick=\"return url_clicked(this)\" href=\"$1\">$1</a>");
+			"<a target=\"_blank\" onclick=\"return url_clicked(this, event)\" href=\"$1\">$1</a>");
 
 	} catch (e) {
 		exception_error("rewrite_urls", e);
