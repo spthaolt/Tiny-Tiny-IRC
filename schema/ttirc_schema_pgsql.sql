@@ -119,6 +119,8 @@ insert into ttirc_prefs (pref_name,type_id,def_value,short_desc,section_id) valu
 
 insert into ttirc_prefs (pref_name,type_id,def_value,short_desc,section_id) values('NOTIFY_ON', 2, '', '', 1);
 
+insert into ttirc_prefs (pref_name,type_id,def_value,short_desc,section_id) values('DISABLE_IMAGE_PREVIEW', 1, 'false', '', 1);
+
 create table ttirc_settings_profiles(id serial not null primary key,
 	title varchar(250) not null,
 	owner_uid integer not null references ttirc_users(id) on delete cascade);
@@ -151,6 +153,6 @@ create table ttirc_shorturls(id serial not null primary key,
 
 create table ttirc_version (schema_version int not null);
 
-insert into ttirc_version values (8);
+insert into ttirc_version values (9);
 
 commit;

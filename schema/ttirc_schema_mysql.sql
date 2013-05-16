@@ -118,6 +118,8 @@ insert into ttirc_prefs (pref_name,type_id,def_value,short_desc,section_id,help_
 
 insert into ttirc_prefs (pref_name,type_id,def_value,short_desc,section_id) values('NOTIFY_ON', 2, '', '', 1);
 
+insert into ttirc_prefs (pref_name,type_id,def_value,short_desc,section_id) values('DISABLE_IMAGE_PREVIEW', 1, 'false', '', 1);
+
 create table ttirc_settings_profiles(id integer not null primary key auto_increment,
 	title varchar(250) not null,
 	owner_uid integer not null references ttirc_users(id) on delete cascade) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
@@ -144,5 +146,5 @@ create table ttirc_snippets(id integer not null primary key auto_increment,
 
 create table ttirc_version (schema_version integer not null) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
-insert into ttirc_version values (7);
+insert into ttirc_version values (8);
 
