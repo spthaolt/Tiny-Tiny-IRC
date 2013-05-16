@@ -1744,6 +1744,8 @@ function url_clicked(elem) {
 		$("image-preview").innerHTML = "<img onload=\"show_preview(this)\" " +
 			"src=\"" + elem.href + "\"/>";
 
+		window.setTimeout("hide_spinner()", 2000);
+
 		return false;
 
 	} catch (e) {
