@@ -320,6 +320,7 @@
 	}
 
 	$highlight_on = get_pref($link, "HIGHLIGHT_ON");
+	$disable_image_preview_checked = get_pref($link, "DISABLE_IMAGE_PREVIEW") ? "checked" : "";
 ?>
 
 	<div class="modal-header">
@@ -389,6 +390,11 @@
 					<input name="hide_join_part" <?php echo $hide_join_part_checked ?>
 						id="pr_hide_join_part" type="checkbox" value="1">
 					<?php echo __('Do not highlight tabs on auxiliary messages') ?></label>
+
+				<label class="checkbox">
+					<input name="disable_image_preview" <?php echo $disable_image_preview_checked ?>
+						id="pr_disable_image_preview" type="checkbox" value="1">
+					<?php echo __('Disable inline image preview') ?></label>
 
 			</div>
 		</div>

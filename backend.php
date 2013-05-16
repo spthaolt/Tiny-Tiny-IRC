@@ -359,6 +359,7 @@
 		$theme = db_escape_string($_REQUEST["theme"]);
 		$highlight_on = db_escape_string($_REQUEST["highlight_on"]);
 		$hide_join_part = bool_to_sql_bool(db_escape_string($_REQUEST["hide_join_part"]));
+		$disable_image_preview = bool_to_sql_bool(db_escape_string($_REQUEST["disable_image_preview"]));
 
 		$theme_changed = false;
 
@@ -370,6 +371,7 @@
 		}
 
 		set_pref($link, "HIGHLIGHT_ON", $highlight_on);
+		set_pref($link, "DISABLE_IMAGE_PREVIEW", $disable_image_preview);
 
 		db_query($link, "UPDATE ttirc_users SET realname = '$realname',
 			quit_message = '$quit_message',

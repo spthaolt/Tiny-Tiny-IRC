@@ -987,6 +987,7 @@
 		$rv = array(
 			"hide_join_part" => $hide_join_part,
 			"uniqid" => $uniqid,
+			"disable_image_preview" => get_pref($link, "DISABLE_IMAGE_PREVIEW"),
 			"highlight_on" => explode(",", get_pref($link, "HIGHLIGHT_ON")),
 			"notify_events" => $notify_events);
 

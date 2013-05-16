@@ -14,6 +14,7 @@ var notify_events = [];
 var update_delay_max = 0;
 var theme = "";
 var hide_join_part = false;
+var disable_image_preview = false;
 var startup_date;
 var id_history = [];
 var uniqid;
@@ -634,6 +635,7 @@ function handle_update(transport) {
 
 			notify_events = params.notify_events;
 			hide_join_part = params.hide_join_part;
+			disable_image_preview = params.disable_image_preview;
 			uniqid = params.uniqid;
 		}
 
@@ -1738,6 +1740,9 @@ function url_clicked(elem, event) {
 			return true;
 
 		if (event.ctrlKey)
+			return true;
+
+		if (disable_image_preview)
 			return true;
 
 		window.clearTimeout(elem.getAttribute("timeout"));
