@@ -11,6 +11,14 @@
 	$link = db_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
 	init_connection($link);
+
+	$version = get_schema_version($link);
+
+	if ($version == SCHEMA_VERSION) {
+		header("Location: index.php");
+		exit;
+	}
+
 	login_sequence($link);
 
 	$owner_uid = $_SESSION["uid"];
