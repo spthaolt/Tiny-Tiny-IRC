@@ -338,6 +338,9 @@ form.connect-form {
 
 div#main.fade {
 	opacity : 0.3;
+	transition: opacity 0.5s;
+	-webkit-transition : opacity 0.5s;
+	-moz-transition : opacity 0.5s;
 }
 
 
