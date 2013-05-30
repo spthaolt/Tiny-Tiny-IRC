@@ -600,7 +600,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 	private void sendPing() {
 		long timestamp = new Date().getTime();
 		
-		if (timestamp - m_lastPingSent > 30*1000) { 
+		if (timestamp - m_lastPingSent > 2*60*1000) { 
 			if (irc != null && irc.isConnected()) {
 				try {
 					logger.info("[" + connectionId + "] Sending ping");
