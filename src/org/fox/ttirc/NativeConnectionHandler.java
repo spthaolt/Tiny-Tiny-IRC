@@ -18,6 +18,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.channels.*;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 import java.util.logging.*;
 
 public class NativeConnectionHandler extends ConnectionHandler {
@@ -38,6 +39,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 	private FileLock lock;
 	private FileChannel lockChannel;
 	private Connection conn;
+	
+	private long m_lastPingSent = 0;
 
 	public NativeConnectionHandler(int connectionId, Master master) {
 		this.connectionId = connectionId;
@@ -209,12 +212,13 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			irc.setPong(true);
 			irc.setDaemon(false);
 			irc.setColors(true);
-			
+						
 			try {
 				irc.connect();
 				
 				return true;
 			} catch (IOException e) {
+				e.printStackTrace();
 				pushMessage("---", "---", "CONNECTION_ERROR:" + server[0] + ":" + server[1], 
 						Constants.MSGT_EVENT);
 				return false;
@@ -334,7 +338,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				irc.doQuit(getQuitMessage());
 				setEnabled(false);
 			} catch (SQLException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			return;
 		}
@@ -576,11 +580,12 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				
 				try {
 					checkMessages();
+					sendPing();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				sleep(250);
-			}
+			} 
 			
 
 		} catch (Exception e) {
@@ -592,6 +597,23 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		cleanup();
 	}
 	
+	private void sendPing() {
+		long timestamp = new Date().getTime();
+		
+		if (timestamp - m_lastPingSent > 30*1000) { 
+			if (irc != null && irc.isConnected()) {
+				try {
+					logger.info("[" + connectionId + "] Sending ping");
+					irc.send("PING");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				m_lastPingSent = timestamp;
+			}			
+		}		
+	}
+
 	public void cleanup() {
 		logger.info("[" + connectionId + "] Connection loop terminating.");
 		
@@ -876,6 +898,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		@Override
 		public void onNotice(String target, IRCUser user, String msg) {
 			
+			if (user == null) return;
+
 			// CTCP
 			if (msg.indexOf('\001') == 0) {
 				msg = msg.substring(1, msg.length()-1);
