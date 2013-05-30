@@ -12,3 +12,4 @@ manifest.mf
 backend.jar
 locale/xx_XX/LC_MESSAGES/borkify
 bin/*
+/bin

@@ -620,7 +620,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		try {
 			irc.doQuit(getQuitMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		
 		try {
@@ -898,8 +898,9 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		@Override
 		public void onNotice(String target, IRCUser user, String msg) {
 			
-			if (user == null) return;
-
+			// we got notice before registering, discard it
+			if (user.getNick() == null) return;
+			
 			// CTCP
 			if (msg.indexOf('\001') == 0) {
 				msg = msg.substring(1, msg.length()-1);
