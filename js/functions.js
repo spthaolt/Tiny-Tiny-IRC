@@ -161,7 +161,7 @@ function fatal_error(code, msg, ext_info) {
 
 			if (msg == "") msg = "Unknown error";
 
-			var ebc = $("xebContent");
+			var ebc = $("errorBody");
 
 			if (ebc) {
 
