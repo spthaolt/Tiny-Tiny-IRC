@@ -78,6 +78,10 @@ var Connection = function(data) {
 		return self.status() == CS_CONNECTED;
 	}, self);
 
+	self.connecting = ko.computed(function() {
+		return self.status() == CS_CONNECTING;
+	}, self);
+
 	self.selected = ko.computed(function() {
 		return model.activeChannel() == self;
 	});
@@ -410,7 +414,8 @@ function Model() {
 			var conn = self.activeConnection();
 
 			if (conn)
-				toggle_connection(conn.id(), conn.connected() ? 0 : 1);
+				toggle_connection(conn.id(),
+					conn.connected() || conn.connecting() ? 0 : 1);
 		},
 		owner: self
 	});
