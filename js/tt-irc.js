@@ -1996,19 +1996,20 @@ function highlight_tab_if_needed(connection_id, channel, message) {
 		console.log("highlight_tab_if_needed " + connection_id + " " + channel);
 
 		var chan = model.getChannel(connection_id, channel);
+		var is_hl = false;
 
 		if (chan && chan != model.activeChannel()) {
 			if (chan.type() != "S") {
 				if (is_highlight(connection_id, message)) {
 					chan.highlight(true);
 					++new_highlights;
-				} else {
-					if (!window_active) ++new_messages;
+					is_hl = true;
 				}
 			}
-
 			chan.unread(chan.unread()+1);
 		}
+
+		if (!window_active && !is_hl) ++new_messages;
 
 		update_title();
 
