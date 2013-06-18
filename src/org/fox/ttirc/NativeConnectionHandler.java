@@ -604,7 +604,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			if (irc != null && irc.isConnected()) {
 				try {
 					logger.info("[" + connectionId + "] Sending ping");
-					irc.send("PING");
+					irc.send("PING " + System.currentTimeMillis());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
