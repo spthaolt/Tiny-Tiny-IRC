@@ -1629,6 +1629,10 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 			}
 
+			// do not highlight system tab on server PONG
+			if (message.sender = "---" && message.message.indexOf("PONG") != -1)
+				no_tab_hl = true;
+
 			if (!no_tab_hl && message.ts > startup_date)
 				highlight_tab_if_needed(connection_id, channel, message);
 
