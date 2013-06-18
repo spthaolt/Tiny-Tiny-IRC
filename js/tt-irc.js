@@ -687,7 +687,7 @@ function handle_update(transport) {
 					handle_event(connection_id, lines[i]);
 				} else {
 					push_message(connection_id, chan, lines[i], lines[i].message_type);
-					if (!window_active) ++new_messages;
+					//if (!window_active) ++new_messages;
 				}
 
 			}
@@ -1998,12 +1998,19 @@ function highlight_tab_if_needed(connection_id, channel, message) {
 		var chan = model.getChannel(connection_id, channel);
 
 		if (chan && chan != model.activeChannel()) {
-			if (chan.type() != "S" && is_highlight(connection_id, message)) {
-				chan.highlight(true);
-				++new_highlights;
+			if (chan.type() != "S") {
+				if (is_highlight(connection_id, message)) {
+					chan.highlight(true);
+					++new_highlights;
+				} else {
+					if (!window_active) ++new_messages;
+				}
 			}
+
 			chan.unread(chan.unread()+1);
 		}
+
+		update_title();
 
 	} catch (e) {
 		exception_error("highlight_tab_if_needed", e);
