@@ -1577,7 +1577,9 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 			if (chan && chan.lines) {
 
-				while (chan.lines().length > 500)
+				var max_lines = navigator.userAgent.match("Firefox") ? 250 : 500;
+
+				while (chan.lines().length > max_lines)
 					chan.lines.shift();
 
 				chan.lines.push(new Message(message));
