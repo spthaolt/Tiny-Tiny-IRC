@@ -469,6 +469,18 @@ span.underline {
 	text-decoration : underline;
 }
 
+span.bold {
+	font-weight : bold;
+}
+
+span.amazing {
+	color : #FF00DC;
+	font-style : italic;
+	-moz-animation : amazing 5s infinite;
+	animation : amazing 5s infinite;
+	-webkit-animation : amazing 5s infinite;
+}
+
 span.italic {
 	font-style : italic;
 }
@@ -574,6 +586,25 @@ div.autocomplete ul li {
 	50% { color : red; }
 	100% { transform : rotate(360deg); color : black; }
 }
+
+@-webkit-keyframes amazing {
+	0% { color : #FF00DC; }
+	50% { color : red; }
+	100% { color : #FF00DC; }
+}
+
+@-moz-keyframes amazing {
+	0% { color : #FF00DC; }
+	50% { color : red; }
+	100% { color : #FF00DC; }
+}
+
+@keyframes amazing {
+	0% { color : #FF00DC; }
+	50% { color : red; }
+	100% { color : #FF00DC; }
+}
+
 
 @-webkit-keyframes hl {
 	0% { color : black; }
