@@ -2087,6 +2087,8 @@ function rewrite_emoticons(str) {
 		str = str.replace(/\(р\)|\(r\)/g, "&reg;");
 		str = str.replace(/\(ц\)|\(с\)|\(c\)/g, "&copy;");
 
+		if (str.match("://")) return str;
+
 		str = str.replace(/(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк/g,
 				"<span class='anim'>$&</span>");
 
