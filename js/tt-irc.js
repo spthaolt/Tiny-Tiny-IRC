@@ -844,7 +844,7 @@ function update_buffer(force_redraw) {
 
 		var connection_id = tab.getAttribute("connection_id");
 
-		var scroll_buffer = $("log").scrollHeight - $("log").offsetHeight - $("log").scrollTop < 100;
+		var scroll_buffer = $("log").scrollHeight - $("log").offsetHeight - $("log").scrollTop < $("log").offsetHeight * 0.7;
 
 		if (scroll_buffer) window.setTimeout(function() {
 			$("log").scrollTop = $("log").scrollHeight;
@@ -1577,7 +1577,7 @@ function push_message(connection_id, channel, message, message_type, no_tab_hl) 
 
 			if (chan && chan.lines) {
 
-				var max_lines = navigator.userAgent.match("Firefox") ? 250 : 500;
+				var max_lines = navigator.userAgent.match("Firefox") ? 200 : 500;
 
 				while (chan.lines().length > max_lines)
 					chan.lines.shift();
