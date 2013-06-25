@@ -2079,7 +2079,7 @@ function rewrite_emoticons(str) {
 				str = str.replace(
 						new RegExp(RegExp.escape(key), "g"),
 					"<img title=\""+key+"\" class=\"anim\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
-					" height=\""+emoticons_map[key][1]+"\">");
+					" style='height: "+emoticons_map[key][1]+"px ! important'>");
 			}
 		}
 
