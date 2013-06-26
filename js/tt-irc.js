@@ -2092,10 +2092,10 @@ function rewrite_emoticons(str) {
 		str = str.replace(/(_)(.*?)(_)/g,
 					"<span class=\"underline\">$2</span>");
 
-		str = str.replace(/(\*)(.*?)(\*)/g,
+		str = str.replace(/(\*)([^ ]+)(\*)/g,
 					"<span class=\"bold\">$2</span>");
 
-		str = str.replace(/(\~)(.*?)(\~)/g,
+		str = str.replace(/(\~)([^ ]+)(\~)/g,
 					"<span class=\"amazing\">$2</span>");
 
 		str = str.replace(/(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк/g,
