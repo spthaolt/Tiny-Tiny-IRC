@@ -2073,8 +2073,9 @@ function inject_text(str) {
 function rewrite_emoticons(str) {
 	try {
 		if (!str) return "";
+		if (get_cookie('ttirc_emoticons') == "false") return str;
 
-		if (emoticons_map && get_cookie('ttirc_emoticons') != "false") {
+		if (emoticons_map) {
 			for (key in emoticons_map) {
 				str = str.replace(
 						new RegExp(RegExp.escape(key), "g"),
