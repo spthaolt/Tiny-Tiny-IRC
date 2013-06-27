@@ -2146,30 +2146,32 @@ function favicon_badge(number, is_hl) {
 		var canvas = document.createElement('canvas');
 		canvas.width = 16;
 		canvas.height = 16;
-		var ctx = canvas.getContext('2d');
-		var img = new Image();
-		img.src = 'images/favicon.png';
-		img.onload = function() {
-			if (number > 0) {
-				if (number > 99) number = 99;
+		if (canvas.getContext) {
+			var ctx = canvas.getContext('2d');
+			var img = new Image();
+			img.src = 'images/favicon.png';
+			img.onload = function() {
+				if (number > 0) {
+					if (number > 99) number = 99;
 
-				ctx.fillStyle = is_hl ? "EFD09D" : "#88b0f0";
-				ctx.fillRect(0, 0, 16, 16);
-				ctx.fillStyle = is_hl ? "#fff" : "#ECF4FF";
-				ctx.fillRect(1, 1, 14, 14);
-				ctx.fillStyle = is_hl ? "D3BC9A" : '#88B0F0';
-				ctx.font = 'bold 10px sans-serif';
-				ctx.textAlign = 'center';
-				ctx.fillText(number, 8, 12);
-			} else {
-				ctx.drawImage(img, 0, 0);
+					ctx.fillStyle = is_hl ? "EFD09D" : "#88b0f0";
+					ctx.fillRect(0, 0, 16, 16);
+					ctx.fillStyle = is_hl ? "#fff" : "#ECF4FF";
+					ctx.fillRect(1, 1, 14, 14);
+					ctx.fillStyle = is_hl ? "D3BC9A" : '#88B0F0';
+					ctx.font = 'bold 10px sans-serif';
+					ctx.textAlign = 'center';
+					ctx.fillText(number, 8, 12);
+				} else {
+					ctx.drawImage(img, 0, 0);
+				}
+
+				var link = $("favicon");
+
+				link.type = 'image/x-icon';
+				link.rel = 'shortcut icon';
+				link.href = canvas.toDataURL("image/x-icon");
 			}
-
-			var link = $("favicon");
-
-			link.type = 'image/x-icon';
-			link.rel = 'shortcut icon';
-			link.href = canvas.toDataURL("image/x-icon");
 		}
 
 	} catch (e) {
