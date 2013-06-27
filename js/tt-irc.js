@@ -1182,8 +1182,7 @@ function update_title() {
 							"favicon_active"); */
 
 				window.setTimeout(function() {
-					favicon_badge(new_highlights > 0 ?
-							new_highlights : new_messages, new_highlights > 0);
+					favicon_badge(new_messages, new_highlights > 0);
 				}, 10);
 
 			} else {
