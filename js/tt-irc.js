@@ -2147,6 +2147,9 @@ function favicon_badge(number, is_hl) {
 		canvas.width = 16;
 		canvas.height = 16;
 		if (canvas.getContext) {
+			$$("link[rel='icon']","link[rel='shortcut icon']").each(
+				function(e) { e.parentNode.removeChild(e); });
+
 			var ctx = canvas.getContext('2d');
 			var img = new Image();
 			img.src = 'images/favicon.png';
@@ -2166,12 +2169,14 @@ function favicon_badge(number, is_hl) {
 					ctx.drawImage(img, 0, 0);
 				}
 
-				var link = $("favicon");
+				var link = new Element("link");
 
 				link.type = 'image/x-icon';
 				link.rel = 'shortcut icon';
 				link.href = canvas.toDataURL("image/x-icon");
-			}
+
+				$$("head")[0].appendChild(link);
+			};
 		}
 
 	} catch (e) {
