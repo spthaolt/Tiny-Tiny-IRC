@@ -2098,7 +2098,7 @@ function rewrite_emoticons(str) {
 
 		if (str.match("://")) return str;
 
-		str = str.replace(/(_)(.*?)(_)/g,
+		str = str.replace(/(_)([^_]+)(_)/g,
 					"<span class=\"underline\">$2</span>");
 
 		str = str.replace(/(\*)([^ ]+)(\*)/g,
