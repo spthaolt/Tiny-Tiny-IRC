@@ -220,7 +220,7 @@ var Channel = function(connection_id, title, tab_type) {
 				if (nick_ext_info)
 					topic = topic + " (" + nick_ext_info + ")";
 
-				return [topic];
+				return [topic.escapeHTML()];
 			default:
 				return self._topic();
 			}
