@@ -1990,7 +1990,9 @@ function is_highlight(connection_id, message) {
 			return true;
 
 		for (var i = 0; i < highlight_on.length; i++) {
-			if (highlight_on[i].length > 0 && message_text.match(highlight_on[i]))
+			var r = new RegExp("\\b" + RegExp.escape(highlight_on[i]) + "\\b");
+
+			if (highlight_on[i].length > 0 && r.match(message_text))
 				return true;
 		}
 
@@ -2086,7 +2088,7 @@ function rewrite_emoticons(str) {
 		if (emoticons_map) {
 			for (key in emoticons_map) {
 				str = str.replace(
-						new RegExp(RegExp.escape(key), "g"),
+						new RegExp("" + RegExp.escape(key) + "", "g"),
 					"<img title=\""+key+"\" class=\"anim\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
 					" style='height: "+emoticons_map[key][1]+"px ! important'>");
 			}
@@ -2098,7 +2100,7 @@ function rewrite_emoticons(str) {
 
 		if (str.match("://")) return str;
 
-		str = str.replace(/(_)([^_]+)(_)/g,
+		str = str.replace(/\b(_)([^_]+)(_)\b/g,
 					"<span class=\"underline\">$2</span>");
 
 		str = str.replace(/(\*)([^ ]+)(\*)/g,
@@ -2107,10 +2109,10 @@ function rewrite_emoticons(str) {
 		str = str.replace(/(\~)([^ ]+)(\~)/g,
 					"<span class=\"amazing\">$2</span>");
 
-		str = str.replace(/(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк/g,
+		str = str.replace(/\b(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк\b/g,
 				"<span class='anim'>$&</span>");
 
-		str = str.replace(/([=8:;]\(|[T]_{1,5}[T])/,
+		str = str.replace(/\b([=8:;]\(|[T]_{1,5}[T])\b/,
 				"<span class='anim blue'>$&</span>");
 
 		ts = new Date().getTime();
