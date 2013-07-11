@@ -2114,8 +2114,8 @@ function rewrite_emoticons(str) {
 		str = str.replace(/(\~)([^ ]+)(\~)/g,
 					"<span class=\"amazing\">$2</span>");
 
-		str = str.replace(/\#([^ ]+)\b/g,
-					"<span class=\"hashtag\">#$1</span>");
+		/*str = str.replace(/\#([^ ]+)\b/g,
+					"<span class=\"hashtag\">#$1</span>");*/
 
 
 		str = str.replace(/\b(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк\b/g,
