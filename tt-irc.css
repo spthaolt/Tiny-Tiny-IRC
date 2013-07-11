@@ -473,6 +473,10 @@ span.bold {
 	font-weight : bold;
 }
 
+span.hashtag {
+	color : #555;
+}
+
 span.amazing {
 	color : #FF00DC;
 	font-style : italic;
