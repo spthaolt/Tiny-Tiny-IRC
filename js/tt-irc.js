@@ -1990,14 +1990,17 @@ function is_highlight(connection_id, message) {
 		if (message_text.match(":\/\/"))
 			return false;
 
-		if (model.getConnection(connection_id) &&
-				message_text.match(model.getConnection(connection_id).active_nick().toUpperCase()))
-			return true;
+		var hl = highlight_on;
 
-		for (var i = 0; i < highlight_on.length; i++) {
-			var r = new RegExp("\\b" + RegExp.escape(highlight_on[i]) + "\\b");
+		if (model.getConnection(connection_id))
+			hl.push(model.getConnection(connection_id).active_nick())
 
-			if (highlight_on[i].length > 0 && r.match(message_text))
+		for (var i = 0; i < hl.length; i++) {
+			var r = new RegExp("(^| )" + RegExp.escape(hl[i].toUpperCase()) + "([,\.\; ]|$)");
+
+			console.log(r);
+
+			if (hl[i].length > 0 && r.match(message_text.toUpperCase()))
 				return true;
 		}
 
