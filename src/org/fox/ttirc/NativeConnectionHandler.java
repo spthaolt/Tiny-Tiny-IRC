@@ -580,7 +580,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			while (active) {
 				//logger.info("Last message received: " + (System.currentTimeMillis() - m_lastReceived));
 
-				if (System.currentTimeMillis() - m_lastReceived > 5*60*1000) {
+				if (m_lastReceived > 0 && System.currentTimeMillis() - m_lastReceived > 5*60*1000) {
 					logger.info("Disconnecting from server, connection timeout.");
 					setActive(false);
 				}
