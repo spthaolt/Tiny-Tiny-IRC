@@ -1358,6 +1358,13 @@ function handle_event(connection_id, line) {
 //		console.log("handle_event " + params[0]);
 
 		switch (params[0]) {
+		case "SERVER_PONG":
+			line.message = __("Received server pong: %ds").replace("%d", params[1]);
+			line.sender = "---";
+
+			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
+
+			break;
 		case "TOPIC":
 			var topic = line.message.replace("TOPIC:", "");
 
@@ -1997,8 +2004,6 @@ function is_highlight(connection_id, message) {
 
 		for (var i = 0; i < hl.length; i++) {
 			var r = new RegExp("(^| )" + RegExp.escape(hl[i].toUpperCase()) + "([,\.\; ]|$)");
-
-			console.log(r);
 
 			if (hl[i].length > 0 && r.match(message_text.toUpperCase()))
 				return true;

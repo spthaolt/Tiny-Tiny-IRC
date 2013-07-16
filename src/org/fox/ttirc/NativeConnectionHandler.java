@@ -41,6 +41,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 	private Connection conn;
 	
 	private long m_lastPingSent = 0;
+	private long m_lastPingReceived = 0;
+	private long m_lastReceived = 0;
 
 	public NativeConnectionHandler(int connectionId, Master master) {
 		this.connectionId = connectionId;
@@ -576,6 +578,13 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			}
 		
 			while (active) {
+				//logger.info("Last message received: " + (System.currentTimeMillis() - m_lastReceived));
+
+				if (System.currentTimeMillis() - m_lastReceived > 5*60*1000) {
+					logger.info("Disconnecting from server, connection timeout.");
+					setActive(false);
+				}
+
 				disconnectIfDisabled();
 				
 				try {
@@ -598,13 +607,13 @@ public class NativeConnectionHandler extends ConnectionHandler {
 	}
 	
 	private void sendPing() {
-		long timestamp = new Date().getTime();
+		long timestamp = System.currentTimeMillis();
 		
 		if (timestamp - m_lastPingSent > 2*60*1000) { 
 			if (irc != null && irc.isConnected()) {
 				try {
-					logger.info("[" + connectionId + "] Sending ping");
-					irc.send("PING " + System.currentTimeMillis());
+					logger.info("[" + connectionId + "] Sending ping [" + timestamp + "]");
+					irc.send("PING " + timestamp);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -901,6 +910,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			// we got notice before registering, discard it
 			if (user.getNick() == null) return;
 			
+
 			// CTCP
 			if (msg.indexOf('\001') == 0) {
 				msg = msg.substring(1, msg.length()-1);
@@ -963,7 +973,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				handler.pushMessage(user.getNick(), target, String.format("PING_REPLY:%.2f", pingInterval), Constants.MSGT_EVENT);
 				return;
 			}
-			
+
 			if (target.equals(irc.getNick())) {
 				
 				try {
@@ -981,7 +991,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		
 		public void onCtcp(String target, IRCUser user, String command, String msg) {
 			//System.out.println("CTCP target: " + target + " CMD: [" + command + "] MSG: " + msg);
-						
+			m_lastReceived = System.currentTimeMillis();
+
 			if (command.equals("ACTION")) {
 				if (target.equals(handler.irc.getNick())) {
 					try {
@@ -1019,7 +1030,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		
 		@Override
 		public void onPrivmsg(String target, IRCUser user, String msg) {
-			
+			m_lastReceived = System.currentTimeMillis();
+
 			// CTCP
 			if (msg.indexOf('\001') == 0) {
 				msg = msg.substring(1, msg.length()-1);
@@ -1104,6 +1116,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 
 		@Override
 		public void onReply(int num, String value, String msg) {
+			m_lastReceived = System.currentTimeMillis();
+
 			if (num == RPL_TOPIC) {
 				String[] params = value.split(" ");
 								
@@ -1198,7 +1212,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			if (num == RPL_ENDOFWHO) {
 				return;
 			}
-			
+		
 			handler.pushMessage(irc.getHost(), "---", num + " " + value + " " + msg, Constants.MSGT_SYSTEM);
 		}
 
@@ -1216,6 +1230,20 @@ public class NativeConnectionHandler extends ConnectionHandler {
 
 		@Override
 		public void unknown(String prefix, String command, String middle, String trailing) {
+			m_lastReceived = System.currentTimeMillis();
+
+			if (command.equals("PONG")) {
+				m_lastPingReceived = System.currentTimeMillis();
+
+				float pingInterval = (float)(System.currentTimeMillis() - m_lastPingSent) / 1000;
+
+				logger.info("[" + connectionId + "] Received server PONG, lag=" + pingInterval);
+
+				handler.pushMessage("---", "---", "SERVER_PONG:" + pingInterval, Constants.MSGT_EVENT);
+
+				return;
+			}
+
 			handler.pushMessage("---", "---", prefix + " " + command + " " + middle + " " + trailing, 
 				Constants.MSGT_SYSTEM);			
 		}		
