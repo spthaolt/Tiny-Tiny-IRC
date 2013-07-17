@@ -221,7 +221,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				return true;
 			} catch (IOException e) {
 				e.printStackTrace();
-				pushMessage("---", "---", "CONNECTION_ERROR:" + server[0] + ":" + server[1], 
+				pushMessage("---", "---", "CONNECTION_ERROR:" + server[0] + ":" + server[1] + ":" + e.getMessage(), 
 						Constants.MSGT_EVENT);
 				return false;
 			}

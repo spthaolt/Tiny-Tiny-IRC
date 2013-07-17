@@ -165,7 +165,7 @@ function fatal_error(code, msg, ext_info) {
 
 			if (ebc) {
 
-				$("#main").addClassName("fade");
+				$("main").addClassName("fade");
 				Element.show("errorBox");
 
 				if (ext_info) {

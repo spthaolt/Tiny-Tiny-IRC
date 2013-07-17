@@ -1353,18 +1353,30 @@ function handle_event(connection_id, line) {
 	try {
 		if (!line.message) return;
 
-		var params = line.message.split(":", 3);
+		var params = line.message.split(":", 4);
+
+//		console.log(line);
 
 //		console.log("handle_event " + params[0]);
 
 		switch (params[0]) {
-		case "SERVER_PONG":
+		case "CONNECTION_ERROR":
+			line.message = __("Error connecting to %s:%p (%e)").
+				replace("%s", params[1]).
+				replace("%p", params[2]).
+				replace("%e", params[3]);
+
+			line.sender = "---";
+
+			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
+			break;
+/*		case "SERVER_PONG":
 			line.message = __("Received server pong: %ds").replace("%d", params[1]);
 			line.sender = "---";
 
 			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
 
-			break;
+			break; */
 		case "TOPIC":
 			var topic = line.message.replace("TOPIC:", "");
 
