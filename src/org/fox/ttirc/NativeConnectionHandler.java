@@ -339,8 +339,10 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			try {
 				irc.doQuit(getQuitMessage());
 				setEnabled(false);
+			} catch (NullPointerException e) {
+				//
 			} catch (SQLException e) {
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
 			return;
 		}
@@ -562,6 +564,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			boolean enabled = rs.getBoolean("enabled");			
 			setActive(enabled);			
 		} else {
+			pushMessage("---", "---", "DISCONNECT_USER_IDLE", Constants.MSGT_EVENT);
+
 			logger.info("[" + connectionId + "] Disconnecting due to user inactivity.");
 			setActive(false);
 		}
@@ -581,6 +585,10 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				//logger.info("Last message received: " + (System.currentTimeMillis() - m_lastReceived));
 
 				if (m_lastReceived > 0 && System.currentTimeMillis() - m_lastReceived > 5*60*1000) {
+
+					pushMessage("---", "---", "DISCONNECT_PING_TIMEOUT", 
+							Constants.MSGT_EVENT);
+
 					logger.info("Disconnecting from server, connection timeout.");
 					setActive(false);
 				}
@@ -628,8 +636,10 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		
 		try {
 			irc.doQuit(getQuitMessage());
+		} catch (NullPointerException e) {
+			//
 		} catch (Exception e) {
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 		
 		try {
@@ -640,6 +650,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		
 		try {
 			irc.close();
+		} catch (NullPointerException e) {
+			//
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

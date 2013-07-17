@@ -1377,6 +1377,17 @@ function handle_event(connection_id, line) {
 			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
 
 			break; */
+		case "DISCONNECT_USER_IDLE":
+			line.message = __("Disconnecting from server: no users connected.");
+
+			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
+			break;
+		case "DISCONNECT_PING_TIMEOUT":
+
+			line.message = __("Disconnecting from server: ping timeout.");
+
+			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
+			break;
 		case "TOPIC":
 			var topic = line.message.replace("TOPIC:", "");
 
