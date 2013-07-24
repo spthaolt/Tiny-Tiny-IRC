@@ -2149,7 +2149,7 @@ function rewrite_emoticons(str) {
 					"<span class=\"hashtag\">#$1</span>");*/
 
 
-		str = str.replace(/\b(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|lol|лол|kjk|кжк\b/g,
+		str = str.replace(/\b(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|лол|kjk|кжк\b/g,
 				"<span class='anim'>$&</span>");
 
 		str = str.replace(/\b([=8:;]\(|[T]_{1,5}[T])\b/,
