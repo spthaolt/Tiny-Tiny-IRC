@@ -581,6 +581,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				active = false;
 			}
 		
+			long disconnectLastChecked = 0;
+
 			while (active) {
 				//logger.info("Last message received: " + (System.currentTimeMillis() - m_lastReceived));
 
@@ -593,7 +595,10 @@ public class NativeConnectionHandler extends ConnectionHandler {
 					setActive(false);
 				}
 
-				disconnectIfDisabled();
+				if (System.currentTimeMillis() - disconnectLastChecked > 3000) {
+					disconnectIfDisabled();
+					disconnectLastChecked = System.currentTimeMillis();
+				}
 				
 				try {
 					checkMessages();
