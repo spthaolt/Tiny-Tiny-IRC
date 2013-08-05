@@ -530,7 +530,7 @@ function init_second_stage(transport) {
 		$("input-prompt").value = "";
 		$("input-prompt").focus();
 
-		if (navigator.appName.indexOf("Microsoft Internet") == -1) {
+		if (navigator.appName.indexOf("Microsoft Internet") == -1 && getURLParam("ec")) {
 			autocompleter = new Autocompleter.Local("input-prompt",
 				"input-suggest", autocomplete, {tokens: ' ',
 					choices : 5,
