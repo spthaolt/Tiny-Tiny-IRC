@@ -844,7 +844,7 @@ function update_buffer(force_redraw) {
 
 		var connection_id = tab.getAttribute("connection_id");
 
-		var scroll_buffer = $("log").scrollHeight - $("log").offsetHeight - $("log").scrollTop < $("log").offsetHeight * 0.2;
+		var scroll_buffer = $("log").scrollHeight - $("log").offsetHeight - $("log").scrollTop < $("log").offsetHeight * 0.4;
 
 		if (scroll_buffer) window.setTimeout(function() {
 			$("log").scrollTop = $("log").scrollHeight;
