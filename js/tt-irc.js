@@ -2108,8 +2108,18 @@ function title_timeout() {
 
 function inject_text(str) {
 	try {
-		$("input-prompt").value += " " + str + " ";
-		$("input-prompt").focus();
+		var e = $("input-prompt");
+
+		e.value += " " + str + " ";
+		e.focus();
+
+		if (typeof e.selectionStart == "number") {
+			e.selectionStart = e.selectionEnd = e.value.length;
+		} else if (typeof e.createTextRange != "undefined") {
+			var range = e.createTextRange();
+			range.collapse(false);
+			range.select();
+		}
 
 	} catch (e) {
 		exception_error("inject_text", e);
@@ -2125,7 +2135,7 @@ function rewrite_emoticons(str) {
 			for (key in emoticons_map) {
 				str = str.replace(
 						new RegExp("" + RegExp.escape(key) + "", "g"),
-					"<img title=\""+key+"\" class=\"anim\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+					"<img alt=\""+key+"\" title=\""+key+"\" class=\"anim\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
 					" style='height: "+emoticons_map[key][1]+"px ! important'>");
 			}
 		}
