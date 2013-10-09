@@ -33,7 +33,7 @@ public class Master {
 	private String m_jdbcUrl;
 	private String m_dbUser;
 	private String m_dbPass;
-	private DbType m_dbType;
+	private final DbType m_dbType = DbType.PGSQL;
 	
 	private Logger logger = Logger.getLogger("org.fox.ttirc");
 	private PurgeThread m_purgeThread;
@@ -196,45 +196,22 @@ public class Master {
 		String dbPass = m_prefs.get("DB_PASS", "pass");
 		String dbName = m_prefs.get("DB_NAME", "user");
 		String dbPort = m_prefs.get("DB_PORT", "5432");
-		String dbType = m_prefs.get("DB_TYPE", "pgsql");
 		
 		String jdbcUrl = null;
 
-		if (dbType.equals("mysql")) {
-			jdbcUrl = "jdbc:mysql://" + dbHost + ":" + dbPort + 
-				"/" + dbName + "?useUnicode=true&characterEncoding=utf8&encoding=utf8";
-			
-			m_dbKeyParam = "param";
-			m_dbType = DbType.MYSQL;
-			
-			try {
-				Class.forName("com.mysql.jdbc.Driver");
-			} catch (ClassNotFoundException e) {
-				logger.severe("error: JDBC driver for MySQL not found.");
-				e.printStackTrace();
-				System.exit(1);			
-			}
-			
-		} else if (dbType.equals("pgsql")) {
-			jdbcUrl = "jdbc:postgresql://" + dbHost + ":" + dbPort + 
-				"/" + dbName;
-			
-			m_dbKeyParam = "key";
-			m_dbType = DbType.PGSQL;
-			
-			try {
-				Class.forName("org.postgresql.Driver");
-			} catch (ClassNotFoundException e) {
-				logger.severe("error: JDBC driver for PostgreSQL not found.");
-				e.printStackTrace();
-				System.exit(1);			
-			}
-
-		} else {
-			logger.severe("Incorrect database type (expected pgsql or mysql): " + dbType);
-			System.exit(10);
-		}
+		jdbcUrl = "jdbc:postgresql://" + dbHost + ":" + dbPort + 
+			"/" + dbName;
 		
+		m_dbKeyParam = "key";
+		
+		try {
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
+			logger.severe("error: JDBC driver for PostgreSQL not found.");
+			e.printStackTrace();
+			System.exit(1);			
+		}
+
 		this.m_jdbcUrl = jdbcUrl;
 		this.m_dbUser = dbUser;
 		this.m_dbPass = dbPass;
@@ -320,13 +297,13 @@ public class Master {
 			while (!configured) {
 
 				readOption(reader, m_prefs, "LOCK_DIR", "Directory for lock files", "/var/tmp");
-				readOption(reader, m_prefs, "DB_TYPE", "Database type (pgsql or mysql)", "pgsql");
-
-				readOption(reader, m_prefs, "DB_HOST", "Database host", "localhost");
+				
+				readOption(reader, m_prefs, "DB_HOST", "PostgreSQL database host", "localhost");
 				readOption(reader, m_prefs, "DB_PORT", "Database port (usually 5432 or 3306)", "5432");
 				readOption(reader, m_prefs, "DB_NAME", "Database name", "ttirc_db");
 				readOption(reader, m_prefs, "DB_USER", "Database user", "ttirc_user");
 				readOption(reader, m_prefs, "DB_PASS", "Database password", "ttirc_pwd");
+
 				readOption(reader, m_prefs, "PURGE_HOURS", 
 						"Purge messages older than this amount of hours", "12");
 
