@@ -4,7 +4,7 @@
 	// *** Database configuration (important!) ***
 	// *******************************************
 
-	define('DB_TYPE', "pgsql"); // or mysql
+	define('DB_TYPE', "pgsql"); //mysql is not supported
 	define('DB_HOST', "localhost");
 	define('DB_USER', "");
 	define('DB_NAME', "");
