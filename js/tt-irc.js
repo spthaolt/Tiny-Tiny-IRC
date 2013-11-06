@@ -1787,6 +1787,8 @@ function show_preview(img) {
 
 function url_clicked(elem, event) {
 	try {
+		elem.addClassName("visited");
+
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
 
