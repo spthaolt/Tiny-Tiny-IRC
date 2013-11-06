@@ -22,6 +22,7 @@ var emoticons_map = false;
 var autocomplete = [];
 var autocompleter = false;
 var topic_autocompleter = false;
+var visited_urls = [];
 
 var timeout_id = false;
 var update_id = false;
@@ -145,11 +146,24 @@ var Message = function(data) {
 	self.format = ko.computed(function() {
 		var nick_ext_info = model.getNickHost(self.connection_id(), self.sender());
 
+		var tmp = new Element("div");
+
+		tmp.innerHTML = self.message();
+		var links = tmp.getElementsByTagName("a");
+
+		for (var i = 0; i < links.length; i++) {
+			if (visited_urls.indexOf(links[i].href) != -1) {
+				links[i].addClassName("visited");
+			}
+		}
+
+		var tmp_message = tmp.innerHTML;
+
 		switch (self.message_type()) {
 		case MSGT_ACTION:
 			return "<span class='timestamp'>" +
 				make_timestamp(self.ts()) + "</span> " +
-				"<span class='action'> * " + self.sender() + " " + self.message() + "</span>";
+				"<span class='action'> * " + self.sender() + " " + tmp_message + "</span>";
 			break;
 		case MSGT_NOTICE:
 
@@ -161,7 +175,7 @@ var Message = function(data) {
 				"class='"+sender_class+"' style=\"color : "+colormap[self.sender_color()]+"\">" +
 				self.sender() + "</span><span class='gt'>-</span> " +
 				"<span class='message'>" +
-				self.message() + "</span>";
+				tmp_message + "</span>";
 
 			break;
 		case MSGT_SYSTEM:
@@ -169,7 +183,7 @@ var Message = function(data) {
 			return "<span class='timestamp'>" +
 				make_timestamp(self.ts()) + "</span> " +
 				"<span class='sys-message'>" +
-				self.message() + "</span>";
+				tmp_message + "</span>";
 
 			break;
 		default:
@@ -180,12 +194,12 @@ var Message = function(data) {
 					"class='sender' style=\"color : "+colormap[self.sender_color()]+"\">" +
 					self.sender() + "</span><span class='gt'>&gt;</span> " +
 					"<span class='message'>" +
-					self.message() + "</span>";
+					tmp_message + "</span>";
 			} else {
 				return "<span class='timestamp'>" +
 					make_timestamp(self.ts()) + "</span> " +
 					"<span class='sys-message'>" +
-					self.message() + "</span>";
+					tmp_message + "</span>";
 			}
 		}
 
@@ -1804,6 +1818,11 @@ function url_clicked(elem, event) {
 		window.clearTimeout(elem.getAttribute("timeout"));
 
 		show_spinner();
+
+		visited_urls.push(elem.href);
+
+		while (visited_urls.length > 100)
+			visited_urls.pop();
 
 		$("image-preview").innerHTML = "<img onload=\"show_preview(this)\" " +
 			"src=\"" + elem.href + "\"/>";
