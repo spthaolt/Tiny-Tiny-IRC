@@ -1814,6 +1814,12 @@ function url_clicked(elem, event) {
 		elem.addClassName("visited");
 		visited_urls.push(elem.href);
 
+		while (visited_urls.length > 50)
+			visited_urls.pop();
+
+		if (sessionStorage != undefined)
+			sessionStorage["visited_urls"] = JSON.stringify(visited_urls);
+
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
 
@@ -1829,12 +1835,6 @@ function url_clicked(elem, event) {
 		window.clearTimeout(elem.getAttribute("timeout"));
 
 		show_spinner();
-
-		while (visited_urls.length > 50)
-			visited_urls.pop();
-
-		if (sessionStorage != undefined)
-			sessionStorage["visited_urls"] = JSON.stringify(visited_urls);
 
 		$("image-preview").innerHTML = "<img onload=\"show_preview(this)\" " +
 			"src=\"" + elem.href + "\"/>";
