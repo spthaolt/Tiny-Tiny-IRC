@@ -1807,6 +1807,7 @@ function show_preview(img) {
 function url_clicked(elem, event) {
 	try {
 		elem.addClassName("visited");
+		visited_urls.push(elem.href);
 
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
@@ -1823,8 +1824,6 @@ function url_clicked(elem, event) {
 		window.clearTimeout(elem.getAttribute("timeout"));
 
 		show_spinner();
-
-		visited_urls.push(elem.href);
 
 		while (visited_urls.length > 50)
 			visited_urls.pop();
