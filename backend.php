@@ -155,7 +155,7 @@
 		$send_only = $_REQUEST["send_only"] == "true";
 		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
 
-		if ($message && valid_connection($link, $connection_id)) {
+		if ($message !== "" && valid_connection($link, $connection_id)) {
 			if (strpos($message, "/") === 0) {
 				handle_command($link, $connection_id, $chan, $message);
 			} else {
