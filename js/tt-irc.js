@@ -546,6 +546,14 @@ function init_second_stage(transport) {
 
 		Element.hide("overlay");
 
+		if (sessionStorage != undefined) {
+			try {
+				visited_urls = JSON.parse(sessionStorage["visited_urls"]);
+			} catch (e) {
+				visited_urls = [];
+			}
+		}
+
 		$("input-prompt").value = "";
 		$("input-prompt").focus();
 
@@ -1827,6 +1835,9 @@ function url_clicked(elem, event) {
 
 		while (visited_urls.length > 50)
 			visited_urls.pop();
+
+		if (sessionStorage != undefined)
+			sessionStorage["visited_urls"] = JSON.stringify(visited_urls);
 
 		$("image-preview").innerHTML = "<img onload=\"show_preview(this)\" " +
 			"src=\"" + elem.href + "\"/>";
