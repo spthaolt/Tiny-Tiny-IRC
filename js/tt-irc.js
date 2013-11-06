@@ -138,7 +138,6 @@ var Message = function(data) {
 	self.ts = ko.observable(data.ts);
 	self.sender_color = ko.observable(data.sender_color);
 	self.is_hl = ko.observable(is_highlight(data.connection_id, data));
-	self.visited_rewritten = ko.observable(0);
 
 	if (emoticons_map && self.message()) {
 		self.message(rewrite_emoticons(self.message()));
@@ -147,28 +146,18 @@ var Message = function(data) {
 	self.format = ko.computed(function() {
 		var nick_ext_info = model.getNickHost(self.connection_id(), self.sender());
 
-		var tmp_message = "";
+		var tmp = new Element("div");
 
-		if (!self.visited_rewritten()) {
-			var tmp = new Element("div");
+		tmp.innerHTML = self.message();
+		var links = tmp.getElementsByTagName("a");
 
-			tmp.innerHTML = self.message();
-			var links = tmp.getElementsByTagName("a");
-
-			for (var i = 0; i < links.length; i++) {
-				if (visited_urls.indexOf(links[i].href) != -1) {
-					links[i].addClassName("visited");
-				}
+		for (var i = 0; i < links.length; i++) {
+			if (visited_urls.indexOf(links[i].href) != -1) {
+				links[i].addClassName("visited");
 			}
-
-			tmp_message = tmp.innerHTML;
-
-			self.message(tmp_message);
-			self.visited_rewritten(1);
-
-		} else {
-			tmp_message = self.message();
 		}
+
+		var tmp_message = tmp.innerHTML;
 
 		switch (self.message_type()) {
 		case MSGT_ACTION:
