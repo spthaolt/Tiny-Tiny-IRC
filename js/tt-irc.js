@@ -139,7 +139,7 @@ var Message = function(data) {
 	self.sender_color = ko.observable(data.sender_color);
 	self.is_hl = ko.observable(is_highlight(data.connection_id, data));
 
-	if (self.message() && self.message().indexOf("http://") != -1) {
+	if (self.message() && self.message().indexOf("//") != -1) {
 		var tmp = new Element("div");
 
 		tmp.innerHTML = self.message();
