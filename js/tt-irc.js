@@ -138,7 +138,6 @@ var Message = function(data) {
 	self.ts = ko.observable(data.ts);
 	self.sender_color = ko.observable(data.sender_color);
 	self.is_hl = ko.observable(is_highlight(data.connection_id, data));
-	self.cached_message = ko.observable(false);
 
 	if (self.message() && self.message().indexOf("http://") != -1) {
 		var tmp = new Element("div");
