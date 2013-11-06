@@ -1818,7 +1818,7 @@ function url_clicked(elem, event) {
 			visited_urls.push(elem.href);
 
 		while (visited_urls.length > 50)
-			visited_urls.pop();
+			visited_urls.shift();
 
 		if (sessionStorage != undefined)
 			sessionStorage["visited_urls"] = JSON.stringify(visited_urls);
