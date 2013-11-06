@@ -138,6 +138,22 @@ var Message = function(data) {
 	self.ts = ko.observable(data.ts);
 	self.sender_color = ko.observable(data.sender_color);
 	self.is_hl = ko.observable(is_highlight(data.connection_id, data));
+	self.cached_message = ko.observable(false);
+
+	if (self.message() && self.message().indexOf("http://") != -1) {
+		var tmp = new Element("div");
+
+		tmp.innerHTML = self.message();
+		var links = tmp.getElementsByTagName("a");
+
+		for (var i = 0; i < links.length; i++) {
+			if (visited_urls.indexOf(links[i].href) != -1) {
+				links[i].addClassName("visited");
+			}
+		}
+
+		self.message(tmp.innerHTML);
+	}
 
 	if (emoticons_map && self.message()) {
 		self.message(rewrite_emoticons(self.message()));
@@ -146,29 +162,11 @@ var Message = function(data) {
 	self.format = ko.computed(function() {
 		var nick_ext_info = model.getNickHost(self.connection_id(), self.sender());
 
-		var tmp = new Element("div");
-
-		var tmp_message = self.message();
-
-		if (tmp_message && tmp_message.indexOf("http://") != -1) {
-
-			tmp.innerHTML = tmp_message;
-			var links = tmp.getElementsByTagName("a");
-
-			for (var i = 0; i < links.length; i++) {
-				if (visited_urls.indexOf(links[i].href) != -1) {
-					links[i].addClassName("visited");
-				}
-			}
-
-			tmp_message = tmp.innerHTML;
-		}
-
 		switch (self.message_type()) {
 		case MSGT_ACTION:
 			return "<span class='timestamp'>" +
 				make_timestamp(self.ts()) + "</span> " +
-				"<span class='action'> * " + self.sender() + " " + tmp_message + "</span>";
+				"<span class='action'> * " + self.sender() + " " + self.message() + "</span>";
 			break;
 		case MSGT_NOTICE:
 
@@ -180,7 +178,7 @@ var Message = function(data) {
 				"class='"+sender_class+"' style=\"color : "+colormap[self.sender_color()]+"\">" +
 				self.sender() + "</span><span class='gt'>-</span> " +
 				"<span class='message'>" +
-				tmp_message + "</span>";
+				self.message() + "</span>";
 
 			break;
 		case MSGT_SYSTEM:
@@ -188,7 +186,7 @@ var Message = function(data) {
 			return "<span class='timestamp'>" +
 				make_timestamp(self.ts()) + "</span> " +
 				"<span class='sys-message'>" +
-				tmp_message + "</span>";
+				self.message() + "</span>";
 
 			break;
 		default:
@@ -199,12 +197,12 @@ var Message = function(data) {
 					"class='sender' style=\"color : "+colormap[self.sender_color()]+"\">" +
 					self.sender() + "</span><span class='gt'>&gt;</span> " +
 					"<span class='message'>" +
-					tmp_message + "</span>";
+					self.message() + "</span>";
 			} else {
 				return "<span class='timestamp'>" +
 					make_timestamp(self.ts()) + "</span> " +
 					"<span class='sys-message'>" +
-					tmp_message + "</span>";
+					self.message() + "</span>";
 			}
 		}
 
