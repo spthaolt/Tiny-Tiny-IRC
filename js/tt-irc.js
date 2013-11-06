@@ -148,16 +148,21 @@ var Message = function(data) {
 
 		var tmp = new Element("div");
 
-		tmp.innerHTML = self.message();
-		var links = tmp.getElementsByTagName("a");
+		var tmp_message = self.message();
 
-		for (var i = 0; i < links.length; i++) {
-			if (visited_urls.indexOf(links[i].href) != -1) {
-				links[i].addClassName("visited");
+		if (tmp_message && tmp_message.indexOf("http://") != -1) {
+
+			tmp.innerHTML = tmp_message;
+			var links = tmp.getElementsByTagName("a");
+
+			for (var i = 0; i < links.length; i++) {
+				if (visited_urls.indexOf(links[i].href) != -1) {
+					links[i].addClassName("visited");
+				}
 			}
-		}
 
-		var tmp_message = tmp.innerHTML;
+			tmp_message = tmp.innerHTML;
+		}
 
 		switch (self.message_type()) {
 		case MSGT_ACTION:
@@ -1821,7 +1826,7 @@ function url_clicked(elem, event) {
 
 		visited_urls.push(elem.href);
 
-		while (visited_urls.length > 100)
+		while (visited_urls.length > 50)
 			visited_urls.pop();
 
 		$("image-preview").innerHTML = "<img onload=\"show_preview(this)\" " +
