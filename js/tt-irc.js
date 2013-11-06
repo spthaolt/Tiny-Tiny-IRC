@@ -148,6 +148,7 @@ var Message = function(data) {
 		for (var i = 0; i < links.length; i++) {
 			if (visited_urls.indexOf(links[i].href) != -1) {
 				links[i].addClassName("visited");
+				break;
 			}
 		}
 
@@ -1812,7 +1813,9 @@ function show_preview(img) {
 function url_clicked(elem, event) {
 	try {
 		elem.addClassName("visited");
-		visited_urls.push(elem.href);
+
+		if (visited_urls.indexOf(elem.href) == -1)
+			visited_urls.push(elem.href);
 
 		while (visited_urls.length > 50)
 			visited_urls.pop();
