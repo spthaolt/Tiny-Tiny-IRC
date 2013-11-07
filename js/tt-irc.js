@@ -22,7 +22,6 @@ var emoticons_map = false;
 var autocomplete = [];
 var autocompleter = false;
 var topic_autocompleter = false;
-var visited_urls = [];
 
 var timeout_id = false;
 var update_id = false;
@@ -147,22 +146,6 @@ var Message = function(data) {
 		var nick_ext_info = model.getNickHost(self.connection_id(), self.sender());
 
 		var tmp_message = self.message();
-
-		if (self.message() && self.message().indexOf("//") != -1) {
-			var tmp = new Element("div");
-
-			tmp.innerHTML = self.message();
-			var links = tmp.getElementsByTagName("a");
-
-			for (var i = 0; i < links.length; i++) {
-				if (visited_urls.indexOf(links[i].href) != -1) {
-					links[i].addClassName("visited");
-					break;
-				}
-			}
-
-			tmp_message = tmp.innerHTML;
-		}
 
 		switch (self.message_type()) {
 		case MSGT_ACTION:
@@ -545,14 +528,6 @@ function init_second_stage(transport) {
 		emoticons_map = params.emoticons;
 
 		Element.hide("overlay");
-
-		if (sessionStorage != undefined) {
-			try {
-				visited_urls = JSON.parse(sessionStorage["visited_urls"]);
-			} catch (e) {
-				visited_urls = [];
-			}
-		}
 
 		$("input-prompt").value = "";
 		$("input-prompt").focus();
@@ -1756,75 +1731,8 @@ function set_window_active(active) {
 	}
 }
 
-function close_preview(elem) {
-	try {
-		Element.hide(elem);
-		$("main").removeClassName("fade");
-	} catch (e) {
-		exception_error("close_preview", e);
-	}
-}
-
-function resize_preview() {
-
-	try {
-		var vp = document.viewport.getDimensions();
-		var img = $$("#image-preview img")[0];
-
-		var max_width = vp.width/1.5;
-		var max_height = vp.height/1.5;
-
-		if (img.width > max_width) {
-			img.height *= (max_width / img.width);
-			img.width = max_width;
-		}
-
-		if (img.height > max_height) {
-			img.width *= (max_height / img.height);
-			img.height = max_height;
-		}
-
-		var dp = $("image-preview").getDimensions();
-
-		$("image-preview").setStyle({
-			left: (vp.width/2 - dp.width/2) + "px",
-			top: (vp.height/2 - dp.height/2) + "px",
-			width: dp.width,
-			height: dp.height,
-		});
-
-	} catch (e) {
-		exception_error("resize_preview", e);
-	}
-}
-
-function show_preview(img) {
-	try {
-		hide_spinner();
-
-		$("main").addClassName("fade");
-		Element.show("image-preview");
-
-		window.setTimeout("resize_preview()", 1);
-
-	} catch (e) {
-		exception_error("show_preview", e);
-	}
-}
-
 function url_clicked(elem, event) {
 	try {
-		elem.addClassName("visited");
-
-		if (visited_urls.indexOf(elem.href) == -1)
-			visited_urls.push(elem.href);
-
-		while (visited_urls.length > 50)
-			visited_urls.shift();
-
-		if (sessionStorage != undefined)
-			sessionStorage["visited_urls"] = JSON.stringify(visited_urls);
-
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
 
@@ -1837,14 +1745,12 @@ function url_clicked(elem, event) {
 		if (disable_image_preview)
 			return true;
 
-		window.clearTimeout(elem.getAttribute("timeout"));
+		var left = screen.width/2 - 250;
+		var top = screen.height/2 - 200;
 
-		show_spinner();
-
-		$("image-preview").innerHTML = "<img onload=\"show_preview(this)\" " +
-			"src=\"" + elem.href + "\"/>";
-
-		window.setTimeout("hide_spinner()", 2000);
+		window.open("backend.php?op=preview&url=" + param_escape(elem.href),
+			"_ttirc_preview",
+			"width=500,height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
 
 		return false;
 
@@ -1880,7 +1786,6 @@ function hotkey_handler(e) {
 		if (keycode == 27) { // escape
 			close_infobox();
 			$("main").removeClassName("fade");
-			Element.hide("image-preview");
 		}
 
 		if (!hotkeys_enabled) {

@@ -516,6 +516,13 @@
 
 		break;
 
+	case "preview":
+		$url = htmlspecialchars($_REQUEST["url"]);
+
+		header("Location: $url");
+
+		break;
+
 	case "emoticons":
 		global $emoticons_map;
 		if ($emoticons_map) {

@@ -71,9 +71,6 @@
 </head>
 <body class="main">
 
-<div id="image-preview" onclick="close_preview(this)" style="display : none"
-	title="<?php echo __("Click to close") ?>"></div>
-
 <div id="overlay" style="display : block">
 	<div id="overlay_inner">
 		<?php echo __("Loading, please wait...") ?>

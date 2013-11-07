@@ -447,17 +447,6 @@ textarea.user-css {
 	overflow : auto;
 }
 
-div#image-preview {
-	background-color : white; 
-	border-width : 1px;
-	border-style : solid;
-	border: 1px solid #ccc;
-	padding : 4px;
-	position : absolute;
-	z-index : 4;
-	box-shadow : 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
 .invisible {
 	display : none;
 }
