@@ -640,6 +640,6 @@ div.autocomplete ul li {
 	-webkit-animation : hl 5s;
 }
 
-span.message a.visited, span.sys-message a:visited {
+span.message a:visited, span.sys-message a:visited {
 	color : #6100D1;
 }
