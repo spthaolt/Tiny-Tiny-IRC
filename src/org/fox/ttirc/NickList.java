@@ -275,6 +275,7 @@ public class NickList {
 					nick.renameTo(newNick);		
 					handler.renameUserhost(oldNick, newNick);
 					handler.pushMessage(oldNick, chan, "NICK:" + newNick, Constants.MSGT_EVENT);
+					handler.renamePrivateChannel(oldNick, newNick);
 				}
 			}		
 		}

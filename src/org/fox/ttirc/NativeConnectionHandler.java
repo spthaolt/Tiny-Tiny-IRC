@@ -71,6 +71,26 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		extnickinfo.renameNick(oldNick, newNick);
 	}
 	
+	public void renamePrivateChannel(String oldNick, String newNick) {
+		try {
+			PreparedStatement ps = getConnection().prepareStatement("UPDATE ttirc_channels SET " +
+				"channel = ? WHERE channel = ? AND chan_type = ? AND connection_id = ? AND " +
+				"(SELECT COUNT(id) FROM ttirc_channels WHERE channel = ? and connection_id = ?) = 0");
+			
+			ps.setString(1, newNick);
+			ps.setString(2, oldNick);
+			ps.setInt(3, Constants.CT_PRIVATE);
+			ps.setInt(4, connectionId);
+			ps.setString(5, oldNick);
+			ps.setInt(6, connectionId);
+			
+			ps.execute();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
 	public synchronized Connection getConnection() {
 		return conn;
 	}
