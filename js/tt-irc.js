@@ -228,37 +228,41 @@ var Channel = function(connection_id, title, tab_type) {
 			}
 		},
 		write: function(topic) {
-			if (topic[0] != "" && !self.topicEventSynthesized()) {
-				self.topicEventSynthesized(true);
-
-				var line = new Object();
-
-				line.message = __("Topic for %c is: %s").replace("%c", self.title()).
-					replace("%s", rewrite_urls(topic[0]))
-
-				line.message_type = MSGT_SYSTEM;
-				line.ts = new Date();
-				line.id = last_id;
-				line.force_display = 1;
-
-				push_message(self.connection_id(), self.title(), line, MSGT_PRIVMSG);
-
-				line.message = __("Topic for %c set by %n at %d").replace("%c", self.title()).
-					replace("%n", topic[1]).
-					replace("%d", rewrite_urls(topic[2]));
-
-				line.message_type = MSGT_SYSTEM;
-				line.ts = new Date();
-				line.id = last_id;
-				line.force_display = 1;
-
-				push_message(self.connection_id(), self.title(), line, MSGT_PRIVMSG);
-			}
-
+			self.synthesizeTopicEvent(topic);
 			self._topic(topic);
 		},
 		owner: self
 	});
+
+	self.synthesizeTopicEvent = function(topic, force) {
+		if (topic[0] != "" && (force || !self.topicEventSynthesized())) {
+			self.topicEventSynthesized(true);
+
+			var line = new Object();
+
+			line.message = __("Topic for %c is: %s").replace("%c", self.title()).
+				replace("%s", rewrite_urls(topic[0]))
+
+			line.message_type = MSGT_SYSTEM;
+			line.ts = new Date();
+			line.id = last_id;
+			line.force_display = 1;
+
+			push_message(self.connection_id(), self.title(), line, MSGT_PRIVMSG, force);
+
+			line.message = __("Topic for %c set by %n at %d").replace("%c", self.title()).
+				replace("%n", topic[1]).
+				replace("%d", rewrite_urls(topic[2]));
+
+			line.message_type = MSGT_SYSTEM;
+			line.ts = new Date();
+			line.id = last_id;
+			line.force_display = 1;
+
+			push_message(self.connection_id(), self.title(), line, MSGT_PRIVMSG, force);
+		}
+
+	};
 
 	self.selected = ko.computed(function() {
 		return model.activeChannel() == self;
@@ -1462,6 +1466,16 @@ function handle_event(connection_id, line) {
 			line.message_type = MSGT_SYSTEM;
 
 			push_message(connection_id, line.channel, line, MSGT_PRIVMSG, hide_join_part);
+
+			var conn = model.getConnection(connection_id);
+
+			if (conn && conn.active_nick() == nick) {
+				var chan = model.getChannel(connection_id, line.channel);
+
+				if (chan && chan.lines().length >= 20) {
+					chan.synthesizeTopicEvent(chan._topic(), true);
+				}
+			}
 
 			break;
 		case "QUIT":
