@@ -228,9 +228,7 @@ var Channel = function(connection_id, title, tab_type) {
 			}
 		},
 		write: function(topic) {
-			if (self._topic()[0]) {
-				self.synthesizeTopicEvent(topic);
-			}
+			self.synthesizeTopicEvent(topic);
 			self._topic(topic);
 		},
 		owner: self
@@ -1474,9 +1472,9 @@ function handle_event(connection_id, line) {
 			if (conn && conn.active_nick() == nick) {
 				var chan = model.getChannel(connection_id, line.channel);
 
-//				if (chan && chan.lines().length >= 20) {
+				if (chan && chan.lines().length >= 10) {
 					chan.synthesizeTopicEvent(chan._topic(), true);
-//				}
+				}
 			}
 
 			break;
