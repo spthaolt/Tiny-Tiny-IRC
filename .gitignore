@@ -11,5 +11,7 @@ emoticons/map_local.php
 manifest.mf
 backend.jar
 locale/xx_XX/LC_MESSAGES/borkify
+themes/xmas
+server.sh
 bin/*
 /bin
