@@ -245,7 +245,7 @@
 		$chan = db_escape_string($_REQUEST["chan"]);
 		$connection_id = db_escape_string($_REQUEST["connection"]);
 
-		if ($topic) {
+		if ($topic !== FALSE) {
 
 			$topic = shorten_urls($link, $topic);
 
