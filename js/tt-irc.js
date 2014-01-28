@@ -1745,6 +1745,18 @@ function set_window_active(active) {
 	}
 }
 
+function emoticons_popup() {
+
+	var left = screen.width/2 - 460/2;
+	var top = screen.height/2 - 200;
+
+	window.open("backend.php?op=emoticons_list",
+		"_ttirc_emhelp",
+		"width=460,height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
+
+	return false;
+}
+
 function url_clicked(elem, event) {
 	try {
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))

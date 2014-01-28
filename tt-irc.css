@@ -41,6 +41,7 @@ div#errorBody textarea {
 
 #emoticons img {
 	margin : 5px;
+	cursor : pointer;
 }
 
 #sidebar {
@@ -643,3 +644,45 @@ div.autocomplete ul li {
 span.message a:visited, span.sys-message a:visited {
 	color : #6100D1;
 }
+
+body#emoticons_list {
+	margin : 0px;
+	padding : 0px;
+	background : #C4E0FF;
+	font-family : sans-serif;
+	font-size : 10px;
+}
+
+#emoticons_long {
+	overflow : auto;
+	position : absolute;
+	top : 0;
+	right : 0;
+	bottom : 0;
+	left : 0;
+}
+
+#emoticons_list div.tile img {
+	padding-top : 4px;
+
+	cursor : pointer;
+	margin : auto;
+	vertical-align : middle;
+	display : block;
+}
+
+#emoticons_list div.tile div.wrapper {
+	width : 64px;
+	height : 50px;
+}
+
+#emoticons_list div.tile {
+	margin : 4px;
+	float : left;
+	width : 64px;
+	height : 64px;
+	text-align : center;
+	border : 1px solid rgba(0,0,0,0.1);
+
+}
+

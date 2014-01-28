@@ -1052,15 +1052,56 @@
 		}
 	}
 
+	function render_emoticons_full() {
+		global $emoticons_map;
+
+		?>
+		<html>
+		<head>
+			<title>Tiny Tiny IRC</title>
+			<?php echo stylesheet_tag("tt-irc.css") ?>
+		</head>
+		<body id="emoticons_list">
+		<div id="emoticons_long">
+		<?php
+
+		foreach ($emoticons_map as $k => $e) {
+			print "<div class=\"tile\"><div class=\"wrapper\">";
+			print "<img onclick=\"window.opener.inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
+			print "</div>$k";
+			print "</div>";
+		}
+
+		/* foreach ($emoticons_map as $k => $e) {
+			if ($e[2] != 1) {
+				print "<img onclick=\"window.opener.inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
+			}
+		} */
+
+		?>
+		</div>
+		</body>
+		</html>
+		<?php
+	}
+
 	function render_emoticons() {
 		global $emoticons_map;
 
 #		print "<ul>";
 
+		$more_needed = false;
+
 		foreach ($emoticons_map as $k => $e) {
-#			print "<span class='wrapper'>";
+			if ($e[2] >= 1) {
 				print "<img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
-#			print "</span>";
+			} else {
+				$more_needed = true;
+			}
+		}
+
+		if ($more_needed) {
+			print "<p><a href=\"#\" onclick=\"return emoticons_popup()\">more...</a></p>";
 		}
 
 #		print "</ul>";

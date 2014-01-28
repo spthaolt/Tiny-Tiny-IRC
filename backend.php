@@ -532,6 +532,12 @@
 		}
 		break;
 
+	case "emoticons_list":
+		header('Content-Type: text/html; charset=utf-8');
+
+		render_emoticons_full();
+		break;
+
 	case "logout":
 		logout_user();
 		header("Location: index.php");
