@@ -1747,12 +1747,14 @@ function set_window_active(active) {
 
 function emoticons_popup() {
 
-	var left = screen.width/2 - 460/2;
+	var w = 448;
+
+	var left = screen.width/2 - w/2;
 	var top = screen.height/2 - 200;
 
 	window.open("backend.php?op=emoticons_list",
 		"_ttirc_emhelp",
-		"width=460,height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
+		"width="+w+",height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
 
 	return false;
 }
