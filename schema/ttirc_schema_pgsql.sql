@@ -89,6 +89,8 @@ create table ttirc_messages(id serial not null primary key,
 	channel varchar(120) not null,
 	connection_id integer not null references ttirc_connections(id) ON DELETE CASCADE);
 
+create index ttirc_messages_incoming on ttirc_messages(incoming);
+
 create table ttirc_prefs_types (id integer not null primary key,
 	type_name varchar(100) not null);
 

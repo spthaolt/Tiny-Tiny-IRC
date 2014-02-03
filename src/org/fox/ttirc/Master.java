@@ -16,7 +16,7 @@ public class Master {
 	
 	public static enum DbType { MYSQL, PGSQL };
 	
-	private final int m_schemaVersion = 9;
+	private final int m_schemaVersion = 10;
 	
 	private String m_dbKeyParam;
 	
