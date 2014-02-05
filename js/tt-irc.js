@@ -1773,12 +1773,15 @@ function url_clicked(elem, event) {
 		if (disable_image_preview)
 			return true;
 
-		var left = screen.width/2 - 250;
-		var top = screen.height/2 - 200;
+		var width = screen.width/3;
+		var height = width * 3/4;
+
+		var left = screen.width/2 - width/2;
+		var top = screen.height/2 - height/2;
 
 		window.open("backend.php?op=preview&url=" + param_escape(elem.href),
 			"_ttirc_preview",
-			"width=500,height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
+			"width="+width+",height="+height+",resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
 
 		return false;
 
