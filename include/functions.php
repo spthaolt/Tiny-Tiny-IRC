@@ -1094,7 +1094,7 @@
 
 		foreach ($emoticons_map as $k => $e) {
 			if ($e[2] >= 1) {
-				print "<img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\">";
+				print "<div class=\"wrapper\"><img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\"></div>";
 			} else {
 				$more_needed = true;
 			}

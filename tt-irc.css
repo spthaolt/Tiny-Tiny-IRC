@@ -40,8 +40,17 @@ div#errorBody textarea {
 }
 
 #emoticons img {
-	margin : 5px;
+	max-width : 40px;
+	max-height : 40px;
 	cursor : pointer;
+	vertical-align : middle;
+}
+
+#emoticons .wrapper {
+	margin-left : 4px;
+	width : 40px;
+	height : 40px;
+	float : left;
 }
 
 #sidebar {
@@ -678,7 +687,6 @@ body#emoticons_list {
 }
 
 #emoticons_list div.tile {
-	margin : 4px;
 	float : left;
 	width : 64px;
 	height : 64px;
