@@ -180,7 +180,7 @@ div#errorBody textarea {
 }
 
 #tabs-list li {
-	font-family : "Segoe UI", Tahoma, sans-serif;
+	font-family : "Segoe WP", "Segoe UI Web", "Segoe UI", Ubuntu, "DejaVu Sans", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
 	text-align : left;
 	text-indent : 10px;
 	padding : 5px 0px 5px 0px;
