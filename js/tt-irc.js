@@ -1754,7 +1754,7 @@ function emoticons_popup() {
 
 	window.open("backend.php?op=emoticons_list",
 		"_ttirc_emhelp",
-		"width="+w+",height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
+		"width="+w+",height=400,resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=yes,toolbar=no,left=" + left + ",top=" + top);
 
 	return false;
 }
@@ -1781,7 +1781,7 @@ function url_clicked(elem, event) {
 
 		window.open("backend.php?op=preview&url=" + param_escape(elem.href),
 			"_ttirc_preview",
-			"width="+width+",height="+height+",resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=no,toolbar=no,left=" + left + ",top=" + top);
+			"width="+width+",height="+height+",resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=yes,toolbar=no,left=" + left + ",top=" + top);
 
 		return false;
 
