@@ -7,6 +7,8 @@ div#errorBody textarea {
 	height : 15px;
 	text-align : right;
 	color : #555;
+	font-family : "Segoe WP", "Segoe UI Web", "Segoe UI", 
+		Ubuntu, "DejaVu Sans", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #input {
@@ -88,6 +90,8 @@ div#errorBody textarea {
 	text-align : right;
 	cursor : pointer;
 	overflow : hidden;
+	font-family : "Segoe WP", "Segoe UI Web", "Segoe UI", 
+		Ubuntu, "DejaVu Sans", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #input div.wrapper {
@@ -319,6 +323,8 @@ form.connect-form {
 #userlist {
 	font-size : 12px;
 	margin-top : 5px;
+	font-family : "Segoe WP", "Segoe UI Web", "Segoe UI", 
+		Ubuntu, "DejaVu Sans", Tahoma, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #userlist span.user-img {
