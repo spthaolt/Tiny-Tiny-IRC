@@ -679,7 +679,7 @@ body#emoticons_list {
 
 #emoticons_list div.tile img {
 	padding-top : 4px;
-	max-width : 64px;
+	max-width : 60px;
 	max-height : 50px;
 	cursor : pointer;
 	margin : auto;

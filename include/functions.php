@@ -1134,7 +1134,7 @@
 	function stylesheet_tag($filename) {
 		$timestamp = filemtime($filename);
 
-		echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"$filename?$timestamp\"/>\n";
+		echo "<link media=\"screen\" rel=\"stylesheet\" type=\"text/css\" href=\"$filename?$timestamp\"/>\n";
 	}
 
 	function javascript_tag($filename) {
