@@ -144,6 +144,7 @@ var Message = function(data) {
 
 	self.format = ko.computed(function() {
 		var nick_ext_info = model.getNickHost(self.connection_id(), self.sender());
+		var ident = model.getNickIdent(self.connection_id(), self.sender());
 
 		var tmp_message = self.message();
 
@@ -176,10 +177,15 @@ var Message = function(data) {
 			break;
 		default:
 			if (self.sender() != "---") {
+				var color = colormap[self.sender_color()];
+
+//				if (nick_ext_info.indexOf("sanych") != -1)
+//					color = "brown" ;
+
 				return "<span class='timestamp'>" +
 					make_timestamp(self.ts()) +
 					"</span> <span class='lt'>&lt;</span><span title=\""+nick_ext_info+"\" " +
-					"class='sender' style=\"color : "+colormap[self.sender_color()]+"\">" +
+					"class='sender' ident='"+ident+"' style=\"color : "+color+"\">" +
 					self.sender() + "</span><span class='gt'>&gt;</span> " +
 					"<span class='message'>" +
 					tmp_message + "</span>";
@@ -285,6 +291,16 @@ function Model() {
 	self.connections = ko.observableArray([]);
 	self._activeChannel = ko.observable("");
 	self._activeConnectionId = ko.observable(0);
+
+	self.getNickIdent = function(connection_id, nick) {
+		var nick = self.stripNickPrefix(nick);
+		var conn = self.getConnection(connection_id);
+
+		if (conn && conn.userhosts()[nick]) {
+			return conn.userhosts()[nick][0].replace("~", "");
+		}
+
+	};
 
 	self.getNickHost = function(connection_id, nick) {
 		var nick = self.stripNickPrefix(nick);
