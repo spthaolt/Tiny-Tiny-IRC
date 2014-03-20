@@ -296,7 +296,7 @@ function Model() {
 		var nick = self.stripNickPrefix(nick);
 		var conn = self.getConnection(connection_id);
 
-		if (conn && conn.userhosts()[nick]) {
+		if (conn && conn.userhosts()[nick] && conn.userhosts()[nick][0]) {
 			return conn.userhosts()[nick][0].replace("~", "");
 		}
 
