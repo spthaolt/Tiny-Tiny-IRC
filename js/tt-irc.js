@@ -187,7 +187,7 @@ var Message = function(data) {
 					"</span> <span class='lt'>&lt;</span><span title=\""+nick_ext_info+"\" " +
 					"class='sender' ident='"+ident+"' style=\"color : "+color+"\">" +
 					self.sender() + "</span><span class='gt'>&gt;</span> " +
-					"<span class='message'>" +
+					"<span class='message' ident='"+ident+"'>" +
 					tmp_message + "</span>";
 			} else {
 				return "<span class='timestamp'>" +
