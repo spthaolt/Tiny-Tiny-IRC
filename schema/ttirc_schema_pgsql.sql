@@ -155,6 +155,6 @@ create table ttirc_shorturls(id serial not null primary key,
 
 create table ttirc_version (schema_version int not null);
 
-insert into ttirc_version values (9);
+insert into ttirc_version values (10);
 
 commit;
