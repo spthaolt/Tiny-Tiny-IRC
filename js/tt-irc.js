@@ -1795,7 +1795,7 @@ function url_clicked(elem, event) {
 		var left = screen.width/2 - width/2;
 		var top = screen.height/2 - height/2;
 
-		window.open("backend.php?op=preview&url=" + param_escape(elem.href),
+		window.open(elem.href,
 			"_ttirc_preview",
 			"width="+width+",height="+height+",resizable=yes,status=no,location=no,menubar=no,directories=no,scrollbars=yes,toolbar=no,left=" + left + ",top=" + top);
 
