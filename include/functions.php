@@ -1101,7 +1101,7 @@
 		}
 
 		if ($more_needed) {
-			print "<p><a href=\"#\" onclick=\"return emoticons_popup()\">more...</a></p>";
+			print "<br clear='both'><p><a href=\"#\" onclick=\"return emoticons_popup()\">more...</a></p>";
 		}
 
 #		print "</ul>";
