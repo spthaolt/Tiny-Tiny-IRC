@@ -446,9 +446,7 @@ function Model() {
 		var chan = self.activeChannel();
 
 		if (chan)
-			return rewrite_emoticons(chan.topic()[0])
-				.replace("<", "&lt;")
-				.replace(">", "&gt;");
+			return rewrite_emoticons(chan.topic()[0]);
 
 	}, self);
 
