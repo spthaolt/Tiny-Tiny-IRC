@@ -596,8 +596,6 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			boolean heartbeatCheckResult = rs.getBoolean("heartbeatCheck");
 			boolean isAway = extnickinfo.getAway(irc.getNick());
 
-			logger.info("Heartbeat check: " + heartbeatCheckResult + " PE: " + permanent + " AW: " + isAway);
-
 			// TODO: maybe add a frontend option for this [x] Automatically set away when disconnected
 
 			if (permanent && !heartbeatCheckResult && !isAway) {
