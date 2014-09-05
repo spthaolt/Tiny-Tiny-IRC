@@ -155,7 +155,7 @@ public class ExtNickInfo {
 		}
 	}
 	
-	public void update(String nick, String ident, String host, String server, String realName) {
+	public void update(String nick, String ident, String host, String server, String realName, boolean isAway) {
 		ExtInfo xi = extinfo.get(nick);
 		
 		if (xi != null) {
@@ -163,6 +163,7 @@ public class ExtNickInfo {
 			xi.setHost(host);
 			xi.setServer(server);
 			xi.setRealName(realName);
+			xi.setAway(isAway);
 			xi.setUpdated();
 		} else {
 			xi = new ExtInfo(ident, host, server, realName);
@@ -200,12 +201,23 @@ public class ExtNickInfo {
 		ExtInfo xi = extinfo.get(nick);
 		
 		if (xi != null) {
+			xi.setAway(!"".equals(awayReason));
 			xi.awayReason = awayReason;
 			xi.setUpdated();
 			Sync();
 		}
 	}
-	
+
+	public boolean getAway(String nick) {
+		ExtInfo xi = extinfo.get(nick);
+		
+		if (xi != null) {
+			return xi.isAway;
+		}
+
+		return false;
+	}
+
 	public void setAway(String nick, boolean away) {
 		ExtInfo xi = extinfo.get(nick);
 		

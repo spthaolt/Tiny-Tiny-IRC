@@ -316,10 +316,12 @@ function Model() {
 	self.getNickHost = function(connection_id, nick) {
 		var nick = self.stripNickPrefix(nick);
 		var conn = self.getConnection(connection_id);
-
 		if (conn && conn.userhosts()[nick]) {
-			return conn.userhosts()[nick][0] + '@' +
-				conn.userhosts()[nick][1] + " <" + conn.userhosts()[nick][3] + ">";
+			var uh = conn.userhosts()[nick];
+
+			var away_msg = uh[5] ? "\n" + __("Away:") + " " + uh[5] : "";
+
+			return uh[0] + '@' +	uh[1] + " <" + uh[3] + ">" + away_msg;
 		}
 	};
 
@@ -1410,6 +1412,11 @@ function handle_event(connection_id, line) {
 			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
 
 			break; */
+		case "AUTOAWAY_USER_IDLE":
+			line.message = __("Automatically setting away: no users connected.");
+
+			push_message(connection_id, line.channel, line, MSGT_PRIVMSG);
+			break;
 		case "DISCONNECT_USER_IDLE":
 			line.message = __("Disconnecting from server: no users connected.");
 

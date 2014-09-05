@@ -43,6 +43,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 	private long m_lastPingSent = 0;
 	private long m_lastPingReceived = 0;
 	private long m_lastReceived = 0;
+	private long m_lastWhoSent = 0;
 
 	public NativeConnectionHandler(int connectionId, Master master) {
 		this.connectionId = connectionId;
@@ -513,6 +514,11 @@ public class NativeConnectionHandler extends ConnectionHandler {
 					break;					
 				case Constants.MSGT_PRIVMSG:			
 				case Constants.MSGT_PRIVATE_PRIVMSG:
+					// TODO: figure out if it's an automatic away and unset only in this case, not sure if it's needed though
+
+					if (extnickinfo.getAway(irc.getNick()))
+						irc.doAway("");
+
 					lines = splitByLength(message, 250);
 					
 					for (String line : lines)					
@@ -558,18 +564,22 @@ public class NativeConnectionHandler extends ConnectionHandler {
 
 	public void disconnectIfDisabled() throws SQLException {
 		String interval = null;
+		String heartbeatCheck = null;
 		
 		switch (master.getDbType()) {
 		case MYSQL:
             interval = "(heartbeat > DATE_SUB(NOW(), INTERVAL 10 MINUTE) OR permanent = true) AND ";
+				heartbeatCheck = "(heartbeat > DATE_SUB(NOW(), INTERVAL 10 MINUTE) AS heartbeatCheck ";
 			break;
 		case PGSQL:
             interval = "(heartbeat > NOW() - INTERVAL '10 minutes' OR permanent = true) AND ";
+				heartbeatCheck = "(heartbeat > NOW() - INTERVAL '10 minutes') AS heartbeatCheck ";
             break;
 		}
 		
 		
-		PreparedStatement ps = getConnection().prepareStatement("SELECT enabled " +
+		PreparedStatement ps = getConnection().prepareStatement("SELECT enabled, permanent, " +
+				heartbeatCheck +
             "FROM ttirc_connections, ttirc_users " +
             "WHERE owner_uid = ttirc_users.id AND visible = true AND " +
             interval +
@@ -582,6 +592,19 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		
 		if (rs.next()) {
 			boolean enabled = rs.getBoolean("enabled");			
+			boolean permanent = rs.getBoolean("permanent");			
+			boolean heartbeatCheckResult = rs.getBoolean("heartbeatCheck");
+			boolean isAway = extnickinfo.getAway(irc.getNick());
+
+			logger.info("Heartbeat check: " + heartbeatCheckResult + " PE: " + permanent + " AW: " + isAway);
+
+			// TODO: maybe add a frontend option for this [x] Automatically set away when disconnected
+
+			if (permanent && !heartbeatCheckResult && !isAway) {
+				pushMessage("---", "---", "AUTOAWAY_USER_IDLE", Constants.MSGT_EVENT);
+				irc.doAway("Automatically set away: no clients connected.");
+			}
+
 			setActive(enabled);			
 		} else {
 			pushMessage("---", "---", "DISCONNECT_USER_IDLE", Constants.MSGT_EVENT);
@@ -623,6 +646,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 				try {
 					checkMessages();
 					sendPing();
+					periodicWho();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -638,7 +663,29 @@ public class NativeConnectionHandler extends ConnectionHandler {
 
 		cleanup();
 	}
-	
+
+	private void periodicWho() {
+		long timestamp = System.currentTimeMillis();
+		
+		if (timestamp - m_lastWhoSent > 1*60*1000) { 
+			if (irc != null && irc.isConnected()) {
+				try {
+					logger.info("[" + connectionId + "] Sending WHO to active channels [" + timestamp + "]");
+
+					Vector<String> activeChans = getChannels();
+			
+					for (String chan : activeChans)
+						irc.doWho(chan);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				
+				m_lastWhoSent = timestamp;
+			}			
+		}		
+
+	}
+
 	private void sendPing() {
 		long timestamp = System.currentTimeMillis();
 		
@@ -873,6 +920,7 @@ public class NativeConnectionHandler extends ConnectionHandler {
 			if (user.getNick().equals(irc.getNick())) {
 				try {
 					handler.checkChannel(chan, Constants.CT_CHANNEL);
+					irc.doWho(chan);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -1155,6 +1203,8 @@ public class NativeConnectionHandler extends ConnectionHandler {
 		public void onReply(int num, String value, String msg) {
 			m_lastReceived = System.currentTimeMillis();
 
+			//System.out.println(num + " [" + value + "] " + msg);
+
 			if (num == RPL_TOPIC) {
 				String[] params = value.split(" ");
 								
@@ -1237,11 +1287,12 @@ public class NativeConnectionHandler extends ConnectionHandler {
 
 				String realName = msg.substring(2);
 				String nick = params[5];
+				boolean isAway = params[6].indexOf('G') != -1;
 				String ident = params[2];
 				String host = params[3];
 				String server = params[4];
 				
-				handler.extnickinfo.update(nick, ident, host, server, realName);
+				handler.extnickinfo.update(nick, ident, host, server, realName, isAway);
 				
 				return;
 			}
