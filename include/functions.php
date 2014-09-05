@@ -699,7 +699,7 @@
 			$re = array();
 
 			$re["chan_type"] = $line["chan_type"];
-			$re["users"] = json_decode($line["nicklist"]);
+			$re["users"] = sort_nicklist(json_decode($line["nicklist"]));
 			$re["topic"] = array(
 				$line["topic"], $line["topic_owner"], $line["topic_set"]);
 
@@ -1206,6 +1206,25 @@
 				print T_js_decl($orig, $translation);
 			}
 		}
+	}
+
+	function nicklist_sort_callback($a, $b) {
+		$ca = $a[0];
+		$cb = $b[0];
+
+		if ($ca == '@' && $cb != '@')
+			return -1;
+
+		if ($ca == '+' && $cb != '@' && $cb != '+')
+			return -1;
+
+		return $a <> $b;
+
+	}
+
+	function sort_nicklist($nicklist) {
+		usort($nicklist, "nicklist_sort_callback");
+		return $nicklist;
 	}
 
 ?>
