@@ -1208,18 +1208,31 @@
 		}
 	}
 
-	function nicklist_sort_callback($a, $b) {
-		$ca = $a[0];
-		$cb = $b[0];
+	function strip_prefix($nick) {
+		return preg_replace("/^[\+\@]/", "", $nick);
+	}
 
-		if ($ca == '@' && $cb != '@')
+	function nicklist_sort_callback($o1, $o2) {
+		$c1 = $o1[0];
+		$c2 = $o2[0];
+
+		if ($c1 == '@' && $c2 != '@') {
 			return -1;
+		}
 
-		if ($ca == '+' && $cb != '@' && $cb != '+')
+		if ($c1 != '@' && $c2 == '@') {
+			return 1;
+		}
+
+		if ($c1 == '+' && $c2 != '+') {
 			return -1;
+		}
 
-		return $a <> $b;
+		if ($c1 != '+' && $c2 == '+') {
+			return 1;
+		}
 
+		return strip_prefix($o1) < strip_prefix($o2) ? -1 : 1;
 	}
 
 	function sort_nicklist($nicklist) {
