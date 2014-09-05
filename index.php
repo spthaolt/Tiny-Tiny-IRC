@@ -178,7 +178,9 @@
 					<li>
 						<span data-bind="css: { 'user-img': true, op: $root.nickIsOp($data), voice: $root.nickIsVoiced($data) }"> </span>
 						<span onclick="query_user(this)"
-							data-bind="text: $root.stripNickPrefix($data), attr: { nick: $root.stripNickPrefix($data),
+							data-bind="text: $root.stripNickPrefix($data),
+								css: { away: $root.isUserAway($root.activeChannel().connection_id(), $data) },
+								attr: { nick: $root.stripNickPrefix($data),
 								title: $root.getNickHost($root.activeChannel().connection_id(), $data) }"></span>
 					</li>
 				</ul>

@@ -302,6 +302,17 @@ function Model() {
 
 	};
 
+	self.isUserAway = function(connection_id, nick) {
+		var nick = self.stripNickPrefix(nick);
+		var conn = self.getConnection(connection_id);
+
+		if (conn && conn.userhosts()[nick]) {
+			return conn.userhosts()[nick][4];
+		}
+
+		return false;
+	};
+
 	self.getNickHost = function(connection_id, nick) {
 		var nick = self.stripNickPrefix(nick);
 		var conn = self.getConnection(connection_id);

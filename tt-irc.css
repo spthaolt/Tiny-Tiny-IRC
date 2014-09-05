@@ -468,7 +468,7 @@ textarea.user-css {
 }
 
 .away {
-	color : gray;
+	font-style : italic;
 }
 
 span.underline {
