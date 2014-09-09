@@ -2242,3 +2242,14 @@ function favicon_badge(number, is_hl) {
 		exception_error("favicon_badge", e);
 	}
 }
+
+function input_filter_cr(elem, event) {
+	try {
+		if (elem.value.length > 30)
+			while (elem.value[elem.value.length-1] == '\n')
+				elem.value = elem.value.substr(0, elem.value.length - 1);
+
+	} catch (e) {
+		exception_error("input_change", e);
+	}
+}

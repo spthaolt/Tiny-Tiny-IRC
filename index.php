@@ -193,7 +193,7 @@
 	<div id="nick" onclick="change_nick()" data-bind="text: activeNick, css: { away: isAway }"></div>
 
 	<div id="input"><div class="wrapper">
-		<textarea data-bind="enable: activeStatus() == 2" disabled="true" rows="1" id="input-prompt" onkeypress="send(this, event)"/></textarea>
+		<textarea data-bind="enable: activeStatus() == 2" disabled="true" rows="1" id="input-prompt" oninput="input_filter_cr(this, event)" onkeypress="send(this, event)"/></textarea>
 		<div style="display : none" id="emoticons"><?php render_emoticons() ?></div>
 		<div class="autocomplete" id="input-suggest" style="display:none"></div>
 	</div></div>
