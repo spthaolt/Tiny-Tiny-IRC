@@ -1,4 +1,5 @@
 local.css
+local.js
 cache/js/*
 config.php
 messages.pot

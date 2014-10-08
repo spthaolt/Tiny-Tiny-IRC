@@ -658,12 +658,6 @@ function handle_update(transport) {
 
 		var ts = new Date().getTime();
 
-		$$(".applied").each(function(e) {
-			if (parseInt(e.getAttribute("applied_at")) < ts - 6000) {
-				e.removeClassName("applied");
-			}
-		});
-
 		if (params && !params.duplicate) {
 			highlight_on = params.highlight_on;
 
@@ -747,41 +741,7 @@ function handle_update(transport) {
 		exception_error("handle_update", e);
 	}
 
-	apply_anim_classes();
-
 	return true;
-}
-
-function apply_anim_classes() {
-	try {
-		if (Math.random() > 0.10) return;
-
-		var elems = Math.random() > 0.5 ? $$("span.anim") : $$("img.anim");
-
-		if (elems.size() > 0) {
-
-			if (elems.size() > 3)
-				elems = elems.slice(elems.size()-3, elems.size());
-
-			var index = parseInt(Math.random()*elems.size());
-
-			var e = elems[index];
-			var ts = new Date().getTime();
-
-			if (e && !e.hasClassName("applied")) {
-				e.addClassName("applied");
-				e.setAttribute("applied_at", ts);
-
-				window.setTimeout(function() {
-					e.removeClassName("applied")
-				}, 6000);
-
-			}
-		}
-
-	} catch (e) {
-		exception_error("apply_anim_classes", e);
-	}
 }
 
 function timeout() {
@@ -2143,40 +2103,13 @@ function rewrite_emoticons(str) {
 			for (key in emoticons_map) {
 				str = str.replace(
 						new RegExp("" + RegExp.escape(key) + "", "g"),
-					"<img alt=\""+key+"\" title=\""+key+"\" class=\"anim\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
+					"<img alt=\""+key+"\" title=\""+key+"\" src=\"emoticons/"+emoticons_map[key][0]+"\" "+
 					" style='height: "+emoticons_map[key][1]+"px ! important'>");
 			}
 		}
 
-		str = str.replace(/\(тм\)|\(tm\)/g, "&trade;");
-		str = str.replace(/\(р\)|\(r\)/g, "&reg;");
-		str = str.replace(/\(ц\)|\(с\)|\(c\)/g, "&copy;");
-
-		if (str.match("://")) return str;
-
-		str = str.replace(/\b(_)([^_]+)(_)\b/g,
-					"<span class=\"underline\">$2</span>");
-
-		str = str.replace(/(\*)([^ ]+)(\*)/g,
-					"<span class=\"bold\">$2</span>");
-
-		str = str.replace(/(\~)([^ ]+)(\~)/g,
-					"<span class=\"amazing\">$2</span>");
-
-		/*str = str.replace(/\#([^ ]+)\b/g,
-					"<span class=\"hashtag\">#$1</span>");*/
-
-
-		str = str.replace(/\b(=\)|8\)|8\(\))|[-\\\\^]_{1,5}[-\\\\^]|лол|kjk|кжк\b/g,
-				"<span class='anim'>$&</span>");
-
-		str = str.replace(/\b([=8:;]\(|[T]_{1,5}[T])\b/,
-				"<span class='anim blue'>$&</span>");
-
-		ts = new Date().getTime();
-
-		str = str.replace(/[АF!]{3,}/g,
-				"<span applied_at='"+ts+"' class='ahl applied'>$&</span>");
+		if (typeof rewrite_local != "undefined")
+			str = rewrite_local(str);
 
 		return str;
 
