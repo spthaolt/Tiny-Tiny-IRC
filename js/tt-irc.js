@@ -1758,7 +1758,7 @@ function url_clicked(elem, event) {
 		if (navigator.userAgent && navigator.userAgent.match("MSIE"))
 			return true;
 
-		if (!elem.href.toLowerCase().match("(jpg|gif|png|bmp)$"))
+		if (!elem.href.toLowerCase().match("\.(jpe?g|mp4|gifv?|png|bmp)$"))
 			return true;
 
 		if (event.ctrlKey)
