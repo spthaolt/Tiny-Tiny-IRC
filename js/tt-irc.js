@@ -1767,7 +1767,7 @@ function url_clicked(elem, event) {
 		if (disable_image_preview)
 			return true;
 
-		var width = screen.width/3;
+		var width = screen.width/2;
 		var height = width * 3/4;
 
 		var left = screen.width/2 - width/2;
