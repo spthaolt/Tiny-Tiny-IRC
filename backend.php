@@ -167,7 +167,7 @@
 
 				global $emoticons_map;
 
-				if (count($popcon_matches) > 0) {
+				if (count($popcon_matches[0]) > 0) {
 					foreach ($popcon_matches[0] as $emoticon) {
 						if (isset($emoticons_map[$emoticon])) {
 
