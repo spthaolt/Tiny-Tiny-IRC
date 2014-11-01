@@ -162,6 +162,36 @@
 
 				$message = shorten_urls($link, $message);
 
+				$popcon_matches = array();
+				preg_match_all("/(:[^ :]+:)/", $message, $popcon_matches);
+
+				global $emoticons_map;
+
+				if (count($popcon_matches) > 0) {
+					foreach ($popcon_matches[0] as $emoticon) {
+						if (isset($emoticons_map[$emoticon])) {
+
+							$emoticon = db_escape_string($emoticon);
+
+							$result = db_query($link, "SELECT id, times_used FROM ttirc_emoticons_popcon
+								WHERE emoticon = '$emoticon' AND owner_uid = " . $_SESSION["uid"]);
+
+							if (db_num_rows($result) == 0) {
+								db_query($link, "INSERT INTO ttirc_emoticons_popcon (emoticon, times_used, owner_uid)
+									VALUES ('$emoticon', 1, ".$_SESSION["uid"].")");
+							} else {
+								$ref_id = db_fetch_result($result, 0, "id");
+								$times_used = db_fetch_result($result, 0, "times_used");
+
+								if ($times_used < 1024) {
+									db_query($link, "UPDATE ttirc_emoticons_popcon SET times_used = times_used + 1
+										WHERE id = $ref_id");
+								}
+							}
+						}
+					}
+				}
+
 				$lines = explode("\n", $message);
 
 				if ($tab_type == "P") {
@@ -212,6 +242,7 @@
 		$conn = get_conn_info($link);
 		$chandata = get_chan_data($link, false);
 		$params = get_misc_params($link, $uniqid);
+		$emoticons = render_emoticons($link);
 
 		if ($uniqid) {
 			if (serialize($conn) == $_SESSION["cache"][$uniqid]["conn"]) {
@@ -232,11 +263,17 @@
 				$_SESSION["cache"][$uniqid]["params"] = serialize($params);
 			}
 
+			if (serialize($emoticons) == $_SESSION["cache"][$uniqid]["emoticons"]) {
+				$emoticons = array("duplicate" => true);
+			} else {
+				$_SESSION["cache"][$uniqid]["emoticons"] = serialize($emoticons);
+			}
+
 			$_SESSION["cache"][$uniqid]["last"] = time();
 		}
 
 
-		print json_encode(array($conn, $lines, $chandata, $params));
+		print json_encode(array($conn, $lines, $chandata, $params, $emoticons));
 		break;
 
 	case "set-topic":

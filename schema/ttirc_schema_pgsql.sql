@@ -1,3 +1,4 @@
+drop table ttirc_emoticon_popcon;
 drop table ttirc_shorturls;
 drop table ttirc_snippets;
 drop table ttirc_user_prefs;
@@ -153,8 +154,14 @@ create table ttirc_shorturls(id serial not null primary key,
 	url text not null unique,
 	created timestamp not null default NOW());
 
+create table ttirc_emoticons_popcon (id serial not null primary key,
+	owner_uid integer not null references ttirc_users(id) on delete cascade,
+	emoticon varchar(60) not null,
+	last_ised timestamp not null default NOW(),
+	times_used integer not null default 0);
+
 create table ttirc_version (schema_version int not null);
 
-insert into ttirc_version values (10);
+insert into ttirc_version values (11);
 
 commit;

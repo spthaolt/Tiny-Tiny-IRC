@@ -1085,27 +1085,32 @@
 		<?php
 	}
 
-	function render_emoticons() {
+	function render_emoticons($link) {
 		global $emoticons_map;
 
-#		print "<ul>";
+		$tmp = "";
 
-		$more_needed = false;
+		$result = db_query($link, "SELECT emoticon FROM ttirc_emoticons_popcon
+					WHERE owner_uid = " . $_SESSION["uid"] . " ORDER BY times_used DESC");
 
-		foreach ($emoticons_map as $k => $e) {
-			if ($e[2] >= 1) {
-				print "<div class=\"wrapper\"><img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e[0]\"></div>";
-			} else {
-				$more_needed = true;
-			}
+		$num_favs = 0;
+		while ($line = db_fetch_assoc($result)) {
+			++$num_favs;
+
+			$k = $line["emoticon"];
+			$e = $emoticons_map[$k][0];
+
+			$tmp .= "<div class=\"wrapper\"><img onclick=\"inject_text('$k')\" title=\"$k\" src=\"emoticons/$e\"></div>";
+
 		}
 
-		if ($more_needed) {
-			print "<br clear='both'><p><a href=\"#\" onclick=\"return emoticons_popup()\">more...</a></p>";
+		$num_more = count($emoticons_map) - $num_favs;
+
+		if ($num_more > 0) {
+			$tmp .= "<br clear='both'><p><a href=\"#\" onclick=\"return emoticons_popup()\">$num_more more...</a></p>";
 		}
 
-#		print "</ul>";
-
+		return $tmp;
 	}
 
 	function shorten_urls($link, $line, $prefix = false) {

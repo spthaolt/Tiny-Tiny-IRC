@@ -638,6 +638,7 @@ function handle_update(transport) {
 		try {
 			rv = JSON.parse(transport.responseText);
 		} catch (e) {
+			console.log(transport.responseText);
 			console.log(e);
 		}
 
@@ -655,6 +656,7 @@ function handle_update(transport) {
 		var lines = rv[1];
 		var chandata = rv[2];
 		var params = rv[3];
+		var emoticons = rv[4];
 
 		var ts = new Date().getTime();
 
@@ -671,6 +673,10 @@ function handle_update(transport) {
 			hide_join_part = params.hide_join_part;
 			disable_image_preview = params.disable_image_preview;
 			uniqid = params.uniqid;
+		}
+
+		if (emoticons && !emoticons.duplicate) {
+			$("emoticons").innerHTML = emoticons;
 		}
 
 		last_update = new Date();
