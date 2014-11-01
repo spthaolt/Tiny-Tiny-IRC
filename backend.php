@@ -183,10 +183,10 @@
 								$ref_id = db_fetch_result($result, 0, "id");
 								$times_used = db_fetch_result($result, 0, "times_used");
 
-								if ($times_used < 1024) {
+#								if ($times_used < 1024) {
 									db_query($link, "UPDATE ttirc_emoticons_popcon SET times_used = times_used + 1
 										WHERE id = $ref_id");
-								}
+#								}
 							}
 						}
 					}
