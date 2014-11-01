@@ -1091,7 +1091,7 @@
 		$tmp = "";
 
 		$result = db_query($link, "SELECT emoticon FROM ttirc_emoticons_popcon
-					WHERE owner_uid = " . $_SESSION["uid"] . " ORDER BY times_used DESC");
+					WHERE owner_uid = " . $_SESSION["uid"] . " ORDER BY times_used DESC LIMIT 30");
 
 		$num_favs = 0;
 		while ($line = db_fetch_assoc($result)) {
