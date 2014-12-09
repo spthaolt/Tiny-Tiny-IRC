@@ -21,7 +21,6 @@
 	<?php stylesheet_tag("tt-irc.css") ?>
 	<?php stylesheet_tag("lib/bootstrap/bootstrap.min.css") ?>
 	<?php if (file_exists("local.css")) stylesheet_tag("local.css") ?>
-	<?php if (file_exists("local.js")) javascript_tag("local.js") ?>
 
 	<link id="favicon" rel="shortcut icon" type="image/png" href="images/favicon.png" />
 
@@ -35,6 +34,8 @@
 
 		javascript_tag($jsfile);
 	} ?>
+
+	<?php if (file_exists("local.js")) javascript_tag("local.js") ?>
 
 	<script type="text/javascript">
 	<?php
