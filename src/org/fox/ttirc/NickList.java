@@ -295,7 +295,7 @@ public class NickList {
 			nicks.add(n.toString());				
 		}
 
-		Collections.sort(nicks, new NickComparator());
+		//Collections.sort(nicks, new NickComparator());
 		
 		try {
 		
