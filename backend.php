@@ -153,7 +153,6 @@
 		$connection_id = db_escape_string($_REQUEST["connection"]);
 		$tab_type = db_escape_string($_REQUEST["tab_type"]);
 		$send_only = $_REQUEST["send_only"] == "true";
-		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
 
 		if ($message !== "" && valid_connection($link, $connection_id)) {
 			if (strpos($message, "/") === 0) {
@@ -212,7 +211,7 @@
 		}
 
 		if (!$send_only) {
-			$lines = get_new_lines($link, $last_id, $rewrite_urls);
+			$lines = get_new_lines($link, $last_id);
 			$conn = get_conn_info($link);
 			$chandata = get_chan_data($link, false);
 			$params = get_misc_params($link);
@@ -226,7 +225,6 @@
 
 		$last_id = (int) db_escape_string($_REQUEST["last_id"]);
 		$init = db_escape_string($_REQUEST["init"]);
-		$rewrite_urls = $_REQUEST["rewrite_urls"] != "false";
 		@$uniqid = db_escape_string($_REQUEST["uniqid"]);
 
 		if (!$init) {
@@ -238,7 +236,7 @@
 			}
 		}
 
-		$lines = get_new_lines($link, $last_id, $rewrite_urls);
+		$lines = get_new_lines($link, $last_id);
 		$conn = get_conn_info($link);
 		$chandata = get_chan_data($link, false);
 		$params = get_misc_params($link, $uniqid);

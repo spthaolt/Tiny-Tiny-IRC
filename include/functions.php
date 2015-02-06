@@ -28,9 +28,6 @@
 		define('DB_KEY_FIELD', 'key');
 	}
 
-	$url_regex = "((((new|(ht|f)tp)s?://)?([a-zA-Z+0-9_-]+:[a-zA-Z+0-9_-]+\\@)?((www|ftp|[a-zA-Z+0-9]+(-\\+[a-zA-Z+0-9])*)\\.)?)([a-zA-Z+0-9]+(\\-+[a-zA-Z+0-9]+)*\\.)+[a-zA-Z+]{2,7}(:\\d+)?(/~[a-zA-Z+0-9_%\\-]+)?(/[a-zA-Z+0-9_%.-]+(?=/))*(/[a-zA-Z+0-9_%-]+(\\.[a-zA-Z+0-9]+)?(\\#[a-zA-Z+0-9_.]+)?)*(\\?([a-zA-Z+0-9_.%-]+)=[a-zA-Z+0-9_.%/-]*)?(&([a-zA-Z+0-9_.%-]+)=[a-zA-Z+0-9_.%/-]*)*/?)";
-
-
 	if (DB_TYPE == "pgsql") {
 		define('SUBSTRING_FOR_DATE', 'SUBSTRING_FOR_DATE');
 	} else {
@@ -647,7 +644,7 @@
 		return db_fetch_result($result, 0, "cl");
 	}
 
-	function get_new_lines($link, $last_id, $rewrite_urls = true) {
+	function get_new_lines($link, $last_id) {
 
 		if (!$last_id) $last_id = get_initial_last_id($link);
 
@@ -663,10 +660,6 @@
 		$lines = array();
 
 		while ($line = db_fetch_assoc($result)) {
-			if ($rewrite_urls) {
-				$line["message"] = rewrite_urls(htmlspecialchars($line["message"]));
-			}
-
 			$line["sender_color"] = color_of($line["sender"]);
 			$line["incoming"] = sql_bool_to_bool($line["incoming"]);
 			array_push($lines, $line);
@@ -905,17 +898,6 @@
 			}
 		}
 		return $password;
-	}
-
-	function rewrite_urls($line) {
-		global $url_regex;
-
-		$urls = null;
-
-		$result = preg_replace("/(([a-z]+):\/\/[^ ]+)/i",
-			"<a target=\"_blank\" onclick=\"return url_clicked(this, event)\" href=\"\\1\">\\1</a>", $line);
-
-		return $result;
 	}
 
 	function get_user_login($link, $id) {

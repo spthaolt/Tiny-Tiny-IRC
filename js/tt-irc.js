@@ -717,6 +717,7 @@ function handle_update(transport) {
 
 				lines[i].ts = lines[i].ts.replace(/\-/g, '/');
 				lines[i].ts = new Date(Date.parse(lines[i].ts));
+				lines[i].message = rewrite_urls(lines[i].message);
 
 				if (lines[i].message_type == MSGT_EVENT) {
 					handle_event(connection_id, lines[i]);
@@ -2114,8 +2115,8 @@ function rewrite_emoticons(str) {
 			}
 		}
 
-		if (typeof rewrite_local != "undefined")
-			str = rewrite_local(str);
+		if (typeof rewrite_emoticons_local != "undefined")
+			str = rewrite_emoticons_local(str);
 
 		return str;
 

@@ -328,6 +328,11 @@ function make_timestamp(d) {
 
 function rewrite_urls(s) {
 	try {
+		if (typeof rewrite_urls_local != "undefined")
+			s = rewrite_urls_local(s);
+
+		console.log(s);
+
 		if (s) return s.replace(/(([a-z]+):\/\/[^ ]+)/ig,
 			"<a target=\"_blank\" onclick=\"return url_clicked(this, event)\" href=\"$1\">$1</a>");
 
