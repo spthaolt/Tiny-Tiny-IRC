@@ -717,7 +717,7 @@ function handle_update(transport) {
 
 				lines[i].ts = lines[i].ts.replace(/\-/g, '/');
 				lines[i].ts = new Date(Date.parse(lines[i].ts));
-				lines[i].message = rewrite_urls(lines[i].message);
+				lines[i].message = rewrite_urls(lines[i].message.replace(/</, "&lt;"));
 
 				if (lines[i].message_type == MSGT_EVENT) {
 					handle_event(connection_id, lines[i]);
