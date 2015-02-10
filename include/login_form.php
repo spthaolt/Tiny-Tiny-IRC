@@ -55,6 +55,9 @@
 <script type="text/javascript">
 function init() {
 	document.forms["loginForm"].login.focus();
+
+	set_cookie("ttirc_emoticons", "true",
+		<?php print SESSION_COOKIE_LIFETIME ?>);
 }
 
 function language_change(elem) {
