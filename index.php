@@ -200,7 +200,7 @@
 		<div class="autocomplete" id="input-suggest" style="display:none"></div>
 	</div></div>
 
-	<a class="btn" onclick="Element.toggle('emoticons')" id="emoticon-prompt">:)</a>
+	<a class="btn" onclick="Element.toggle('emoticons')" id="emoticon-prompt">:(</a>
 
 </div>
 
