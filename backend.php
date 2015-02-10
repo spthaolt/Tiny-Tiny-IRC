@@ -563,7 +563,7 @@
 		$tmp = array();
 
 		$result = db_query($link, "SELECT emoticon FROM ttirc_emoticons_popcon
-					WHERE owner_uid = " . $_SESSION["uid"] . " ORDER BY times_used DESC LIMIT 30");
+					WHERE owner_uid = " . $_SESSION["uid"] . " ORDER BY times_used DESC");
 
 		while ($line = db_fetch_assoc($result)) {
 			$k = $line["emoticon"];
